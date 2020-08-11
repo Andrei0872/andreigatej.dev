@@ -1,0 +1,43 @@
+.c-about {
+  padding: 3rem;
+}
+
+.c-about .c-about__title {
+  font-size: 2.2rem;
+  margin-left: 2rem;
+}
+
+.c-about .c-about__content {
+  padding-top: 2rem;
+  font-size: 1.3rem;
+  line-height: 2rem;
+}
+
+.c-about .c-about__content p {
+  margin-top: 1rem;
+}
+
+@media all and (max-width: 520px) {
+  .c-about .c-about__title {
+    font-size: 1.9rem;
+  }
+}
+
+@media all and (max-width: 825px) {
+  .c-about .c-about__content {
+    font-size: 1.1rem;
+  }
+}
+
+@media all and (max-width: 650px) {
+  .c-about .c-about__content {
+    font-size: .9rem;
+  }
+}
+
+@media all and (min-width: 530px) {
+  .c-about .c-about__content {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
