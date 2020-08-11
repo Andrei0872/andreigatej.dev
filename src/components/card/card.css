@@ -1,0 +1,49 @@
+.c-card {
+  background-color: var(--main-grey);
+  border-radius: 1rem;
+  margin-top: 3rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  transition: transform .3s;
+}
+
+.c-card:hover {
+  transform: translateY(-1.5rem);
+}
+
+.c-card__title {
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 100%;
+  padding-bottom: 0.5rem;
+  font-size: 1.3rem;
+}
+
+.c-card__logo {
+  position: absolute;
+	width: 3.5rem;
+	height: 3.5rem;
+	border: 1px solid black;
+	border-radius: 50%;
+	top: 0;
+	left: 50%;
+	right: 50%;
+	transform: translateY(-55%) translateX(-50%);
+	z-index: 1;
+	background-color: bisque;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1.5rem;
+}
+
+.c-card__content {
+  width: 100%;
+  padding: 1.2rem;
+  line-height: 1.5rem;
+}
