@@ -1,0 +1,22 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --main-grey: #828282;
+}
+
+html, body {
+  height: 100%;
+}
+
+#___gatsby, #gatsby-focus-wrapper {
+  height: 100%;
+}
+
+.h-base-link {
+  text-decoration: none;
+  color: black;
+}
