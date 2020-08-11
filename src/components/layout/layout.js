@@ -14,7 +14,14 @@ import Header from "../header/"
 import MenuOverlay from "../menu-overlay/menu-overlay";
 import Footer from "../footer/footer";
 
-const Layout = ({ children, links }) => {
+const links = [
+  { name: 'Home', href: '/' },
+  { name: 'Work', href: '#work' },
+  { name: 'About', href: '#about' },
+  { name: 'Contact', href: '#contact' },
+];
+
+const Layout = ({ children }) => {
   // const data = useStaticQuery(graphql`
   //   query SiteTitleQuery {
   //     site {

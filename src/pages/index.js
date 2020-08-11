@@ -6,15 +6,8 @@ import Home from "../components/home"
 import Work from "../components/work"
 import About from "../components/about"
 
-const links = [
-  { name: 'Home', href: '/' },
-  { name: 'Work', href: '#work' },
-  { name: 'About', href: '#about' },
-  { name: 'Contact', href: '#contact' },
-];
-
 const IndexPage = () => (
-  <Layout links={links}>
+  <Layout>
     <SEO title="Andrei Gatej" />
     <Home />
     <Work />
