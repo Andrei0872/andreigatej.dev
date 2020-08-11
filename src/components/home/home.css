@@ -1,0 +1,129 @@
+.c-home {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: auto;
+  align-items: center;
+
+  --image-width: 21vw;
+}
+
+/* TODO: use `vw` */
+.gatsby-image-wrapper {
+  height: 48vh;
+  width: var(--image-width);
+  border-radius: 10px;
+}
+
+.c-home .c-home__desc {
+  text-align: center;
+}
+
+.c-home .c-home__desc > p:first-child {
+  font-size: 4rem;;
+}
+
+.c-home .c-home__desc > p:last-child {
+  font-size: 1.8rem;
+  padding: 0 4rem;
+  margin-top: 1rem
+}
+
+.c-home .c-home__img {
+  transform: translateY(-5vh);
+}
+
+.c-home .c-home__caption {
+	margin-top: 0.6rem;
+	font-size: 0.9rem;
+	width: var(--image-width);
+	text-align: center;
+}
+
+.is-important {
+  font-size: 1.1em;
+  position: relative;
+}
+
+.is-important::after {
+  content: '';
+  position: absolute;
+  background-color: red;
+  height: 7px;
+  width: 108%;
+  left: 0;
+  bottom: 0;
+  transform: rotate(-1deg) translateX(-4%);
+  opacity: .4;
+  box-shadow: -0.1rem 0rem 0.3rem 0.2rem red;
+  border-radius: 1rem;
+}
+
+@media all and (max-width: 1330px) {
+  .c-home {
+    --image-width: 25vw;
+  }
+}
+
+@media all and (max-width: 1270px) {
+  .c-home {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .c-home .c-home__desc {
+    margin-top: 3rem;
+  }
+
+  .c-home .c-home__desc > p:first-child {
+    font-size: 3rem;;
+  }
+
+  .c-home .c-home__desc > p:last-child {
+    font-size: 1.3rem;
+  }
+}
+
+@media all and (max-width: 1110px) {
+  .c-home .c-home__desc > p:first-child {
+    font-size: 2.7rem;;
+  }
+
+  .c-home .c-home__desc > p:last-child {
+    font-size: 1.4rem;
+  }
+
+  .c-home {
+    --image-width: 20rem;
+  }
+}
+
+@media all and (max-width: 750px) {
+  .c-home .c-home__desc > p:first-child {
+    font-size: 2.2rem;;
+  }
+
+  .c-home .c-home__desc > p:last-child {
+    font-size: 1.1rem;
+    padding: 0 2rem;
+  }
+}
+
+
+@media all and (max-width: 424px) {
+  .c-home .c-home__desc > p:first-child {
+    font-size: 1.7rem;;
+  }
+
+  .c-home .c-home__desc > p:last-child {
+    font-size: .9rem;
+  }
+
+  .c-home {
+    --image-width: 17rem;
+  }
+}
+
+@media all and (max-width: 424px) {
+
+}
