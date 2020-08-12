@@ -16,9 +16,9 @@ import Footer from "../footer/footer";
 
 const links = [
   { name: 'Home', href: '/' },
-  { name: 'Work', href: '#work' },
-  { name: 'About', href: '#about' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'Work', href: '/#work' },
+  { name: 'About', href: '/#about' },
+  { name: 'Contact', href: '/#contact' },
 ];
 
 const Layout = ({ children }) => {
