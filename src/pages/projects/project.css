@@ -1,0 +1,41 @@
+.c-project {
+  display: flex;
+  flex-direction: column;
+  border: .3rem solid black;
+  background: var(--light-yellow);
+  transition: transform .2s;
+  cursor: pointer;
+}
+
+.c-project:hover {
+  transform: translateY(-.3rem);
+}
+
+.c-project__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  padding: .4rem .6rem;
+  border-bottom: .2rem solid black;
+}
+
+.c-project__tags {
+  display: flex;
+  flex: 1 0 auto;
+  justify-content: flex-end;
+}
+
+.c-project__tag {
+  margin-right: .5rem;
+  font-size: .8rem;
+}
+
+.c-project__tag--important {
+  font-weight: bold;
+}
+
+.c-project__content {
+  padding: 0.8rem;
+  line-height: 1.2rem;
+}
