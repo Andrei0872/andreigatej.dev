@@ -16,6 +16,14 @@
   padding-top: 2.5rem;
 }
 
+.c-projects__back {
+  background-color: khaki;
+  border-radius: 1rem;
+  padding: 0.8rem;
+  font-weight: bold;
+  border: .5px solid black;
+}
+
 @media all and (max-width: 1110px) {
   .c-projects {
     width: 65%;

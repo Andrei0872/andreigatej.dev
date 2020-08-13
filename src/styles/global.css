@@ -5,7 +5,8 @@
 }
 
 :root {
-  --main-grey: #828282;
+  --main-grey: rgba(130, 130, 110, 1);
+  --light-yellow: rgba(255, 255, 153, 0.6);
 }
 
 html, body {

@@ -1,10 +1,14 @@
 import React from 'react'
 import Layout from '../../components/layout'
-import Img from "gatsby-image"
 
 import './projects.css'
 import './project.css'
 import { Link, useStaticQuery } from 'gatsby'
+import Tag from '../../components/tag/'
+
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 export default function Projects() {
   const data = useStaticQuery(graphql`
@@ -24,21 +28,22 @@ export default function Projects() {
       <div className="c-projects">
         <div className="c-projects__header">
           <h1 className="c-projects__title">Projects</h1>
-          <Link className="c-projects__back" to="/#work">Work section</Link>
+          <Link className="c-projects__back h-base-link" to="/#work">
+            < FontAwesomeIcon icon={faArrowLeft} /> Work section
+          </Link>
         </div>
-
+        
         <div className="c-projects__content">
           <article className="c-project">
             <div className="c-project__header">
               <h2 className="c-project__title">Project title</h2>
               <div className="c-project__tags">
-                <div className="c-project__tag">tag1</div>
-                <div className="c-project__tag">tag1</div>
-                <div className="c-project__tag">tag1</div>
+                <Tag className = "c-project__tag c-project__tag--important" > contribution </Tag>
+                <Tag className="c-project__tag">vue</Tag>
+                <Tag className="c-project__tag">nodejs</Tag>
+                <Tag className="c-project__tag">mysql</Tag>
               </div>
             </div>
-
-            <div className="c-project__image">image here</div>
 
             <div className="c-project__content">
               <h3 className="c-project__desc-title">Description</h3>
