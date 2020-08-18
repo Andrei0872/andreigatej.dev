@@ -3,12 +3,7 @@
   flex-direction: column;
   border: .3rem solid black;
   background: var(--light-yellow);
-  transition: transform .2s;
-  cursor: pointer;
-}
-
-.c-project:hover {
-  transform: translateY(-.3rem);
+  margin-top: 3rem;
 }
 
 .c-project__header {
@@ -38,4 +33,9 @@
 .c-project__content {
   padding: 0.8rem;
   line-height: 1.2rem;
+}
+
+.c-project__desc-content {
+  margin-top: 1rem;
+  line-height: 1.6rem;
 }
