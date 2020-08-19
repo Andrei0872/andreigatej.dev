@@ -1,0 +1,58 @@
+.c-common {
+  height: 100%;
+  padding-top: 5rem;
+  width: 55%;
+  margin: 0 auto;
+}
+
+.c-common__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.c-common__content {
+  height: 100%;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.c-common__back {
+  background-color: khaki;
+  border-radius: 1rem;
+  padding: 0.8rem;
+  font-weight: bold;
+  border: .5px solid black;
+}
+
+@media all and (max-width: 1110px) {
+  .c-common {
+    width: 65%;
+  }
+}
+
+@media all and (max-width: 900px) {
+  .c-common__title {
+    font-size: 1.6rem;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .c-common {
+    width: 75%;
+  }
+
+  .c-common__title {
+    font-size: 1.4rem;
+  }
+}
+
+@media all and (max-width: 600px) {
+  .c-common {
+    width: 85%;
+  }
+
+  .c-common__back {
+    font-size: .9rem;
+  }
+}
