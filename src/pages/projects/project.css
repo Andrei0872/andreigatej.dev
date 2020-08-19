@@ -17,8 +17,9 @@
 
 .c-project__tags {
   display: flex;
-  flex: 1 0 auto;
+  flex-grow: 1;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .c-project__tag {
