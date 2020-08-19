@@ -9,4 +9,8 @@ This website.
 
 <br>
 
-[*GitHub Repository*](https://github.com/Andrei0872/andreigatej.dev)
+<a href="https://github.com/Andrei0872/andreigatej.dev" target="_blank">
+  <i>
+    GitHub Repository
+  </i>
+</a>

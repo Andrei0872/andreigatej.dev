@@ -4,7 +4,11 @@ order: 5
 tags: ["contribution", "javascript"]
 ---
 
-From the [official repository](https://github.com/nas5w/javascript-tips-and-tidbits):
+From the <a href="https://github.com/nas5w/javascript-tips-and-tidbits" target="_blank">
+  <i>
+    official repository
+  </i>
+</a>:
 
 <p style="margin-top: .7rem">
   <i>
@@ -14,4 +18,9 @@ From the [official repository](https://github.com/nas5w/javascript-tips-and-tidb
 
 <br>
 
-[*My Contributions*](https://github.com/nas5w/javascript-tips-and-tidbits/commits?author=Andrei0872).
+
+<a href="https://github.com/nas5w/javascript-tips-and-tidbits/commits?author=Andrei0872" target="_blank">
+  <i>
+    My Contributions
+  </i>
+</a>

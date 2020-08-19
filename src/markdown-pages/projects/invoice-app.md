@@ -17,4 +17,8 @@ One of my favorite discoveries was the use of **Stored Procedures** and **Trigge
 
 <br>
 
-[*GitHub Repository*](https://github.com/Andrei0872/vue-invoice-app).
+<a href="https://github.com/Andrei0872/vue-invoice-app" target="_blank">
+  <i>
+    GitHub Repository
+  </i>
+</a>

@@ -4,7 +4,11 @@ order: 3
 tags: ["contribution", "node", "graphql", "postgresql"]
 ---
 
-Quoted from [daily.dev repository](https://github.com/dailydotdev/daily):    
+Quoted from <a href="https://github.com/dailydotdev/daily" target="_blank">
+  <i>
+    daily.dev repository
+  </i>
+</a>:
 
 <p style="margin-top: .7rem">
   <i>
@@ -18,5 +22,13 @@ I contributed to adding GraphQL to the server, translating the existing logic fo
 
 <br>
 
-[*App's GitHub Repository*](https://github.com/dailydotdev/daily-api).  
-[*My Contributions*](https://github.com/dailydotdev/daily-api/commit/f529680d77611a0ca140c935f7e4fa5837d6a8f4).
+<a href="https://github.com/dailydotdev/daily-api" target="_blank">
+  <i>
+    App's GitHub Repository
+  </i>
+</a> <br> 
+<a href="https://github.com/dailydotdev/daily-api/commit/f529680d77611a0ca140c935f7e4fa5837d6a8f4" target="_blank">
+  <i>
+    My Contributions
+  </i>
+</a>

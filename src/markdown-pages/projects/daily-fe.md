@@ -4,7 +4,11 @@ order: 2
 tags: ["contribution", "vue", "graphql", "javascript"]
 ---
 
-Quoted from [daily.dev repository](https://github.com/dailydotdev/daily):    
+Quoted from <a href="https://github.com/dailydotdev/daily" target="_blank">
+  <i>
+    daily.dev repository
+  </i>
+</a>:
 
 <p style="margin-top: .7rem">
   <i>
@@ -22,5 +26,13 @@ One of the achievements from this project is sustaining the additional features 
 
 <br>
 
-[*App's GitHub Repository*](https://github.com/dailydotdev/daily-apps).  
-[*My Contributions*](https://github.com/dailydotdev/daily-apps/commits?author=Andrei0872).
+<a href="https://github.com/dailydotdev/daily-apps" target="_blank">
+  <i>
+    App's GitHub Repository
+  </i>
+</a> <br> 
+<a href="https://github.com/dailydotdev/daily-apps/commits?author=Andrei0872" target="_blank">
+  <i>
+    My Contributions
+  </i>
+</a>
