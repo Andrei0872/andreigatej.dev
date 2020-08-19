@@ -32,14 +32,14 @@ export default function Projects() {
       <CommonPagesLayout title="Projects">
         {
           projects.map(proj => (
-            <article className="c-project">
+            <article key={proj.frontmatter.title} className="c-project">
               <div className="c-project__header">
                 <h2 className="c-project__title">{proj.frontmatter.title}</h2>
                 <div className="c-project__tags">
                   {
                     proj.frontmatter.tags && 
                     proj.frontmatter.tags.map(t => (
-                      <Tag className={`c-project__tag ${t === 'contribution' ? 'c-project__tag--important' : ''}`}>{t}</Tag>    
+                      <Tag key={t} className={`c-project__tag ${t === 'contribution' ? 'c-project__tag--important' : ''}`}>{t}</Tag>    
                     ))
                   }
                 </div>

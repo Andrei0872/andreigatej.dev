@@ -6,9 +6,10 @@
 
 :root {
   --main-grey: rgba(130, 130, 110, 1);
+  --secondary-grey: #303242;
+  --light-grey: #F5E4C3;
   --light-yellow: rgba(255, 255, 153, 0.4);
   --dark-yellow: #FFFF7F;
-  --secondary-grey: #303242;
 }
 
 html, body {
