@@ -36,7 +36,7 @@
   position: relative;
 }
 
-.c-header .c-header__list-container > .c-header__list-item:not(:last-child)::after {
+/* .c-header .c-header__list-container > .c-header__list-item:not(:last-child)::after {
   content: "";
   position: absolute;
   width: 1px;
@@ -44,7 +44,7 @@
   right: calc(var(--items-space) / 2 * -1);
   background-color: grey;
   top: -10%;
-}
+} */
 
 .c-header__hamburger {
   display: flex;
