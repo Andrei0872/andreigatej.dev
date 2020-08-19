@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function CommonPagesLayout({ children, title }) {
   return (
-    <div class="c-common">
+    <div className="c-common">
       <div className="c-common__header">
         <h1 className="c-common__title">{title}</h1>
         <Link className="c-common__back h-base-link" to="/#work">
