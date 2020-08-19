@@ -1,1 +1,3 @@
-export { default } from './blog';
+import Component from './blog';
+
+export default Component;

@@ -1,1 +1,3 @@
-export { default } from './tag'
+import Component from './tag'
+
+export default Component;

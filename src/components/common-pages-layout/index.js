@@ -1,1 +1,3 @@
-export { default } from './common-pages-layout'
+import Component from './common-pages-layout'
+
+export default Component;

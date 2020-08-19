@@ -1,1 +1,3 @@
-export { default } from './work'
+import Component from './work'
+
+export default Component;

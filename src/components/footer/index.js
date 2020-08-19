@@ -1,1 +1,3 @@
-export { default } from './footer'
+import Component from './footer'
+
+export default Component;

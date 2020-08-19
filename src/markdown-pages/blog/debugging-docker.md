@@ -3,7 +3,6 @@ slug: /blog/debugging-docker-source-code
 title: "Debugging Docker's source code"
 tags: ["docker"]
 published: false
-publication: false
 date: 2020-08-30
 ---
 
