@@ -50,11 +50,11 @@ export default function Blog() {
         return { [allTagsKey]: true }
       }
 
-      const {[allTagsKey]: _, ...rest} = tags;
+      const {[allTagsKey]: _, [tag]: crtTag, ...rest} = tags;
 
       return {
         ...rest,
-        [tag]: !rest[tag]
+        ...!crtTag &&  { [tag]: true }
       }
     });
   }
