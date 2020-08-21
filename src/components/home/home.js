@@ -2,7 +2,7 @@ import React from 'react'
 import Img from "gatsby-image"
 
 import './home.css'
-import { useStaticQuery } from 'gatsby'
+import { useStaticQuery, graphql } from 'gatsby'
 
 export default function Home() {
   const data = useStaticQuery(graphql`

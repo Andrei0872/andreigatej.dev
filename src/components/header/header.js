@@ -26,7 +26,7 @@ const Header = ({ siteTitle, links, toggleOverlay, isActive }) => (
         }
       </ul>
 
-      <div 
+      <div
         onClick={toggleOverlay} 
         className={"c-header__hamburger " + (isActive ? 'c-header__hamburger--active' : '')}
       >
