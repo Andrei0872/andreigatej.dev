@@ -26,3 +26,25 @@ html, body {
   text-decoration: none;
   color: black;
 }
+
+.is-important {
+  font-size: 1.1em;
+  position: relative;
+  font-weight: bold;
+  letter-spacing: .1rem;
+  color: #0E2431;
+}
+
+/* .is-important::after {
+  content: '';
+  position: absolute;
+  background-color: red;
+  height: 7px;
+  width: 108%;
+  left: 0;
+  bottom: 0;
+  transform: rotate(-1deg) translateX(-4%);
+  opacity: .4;
+  box-shadow: -0.1rem 0rem 0.3rem 0.2rem red;
+  border-radius: 1rem;
+} */
