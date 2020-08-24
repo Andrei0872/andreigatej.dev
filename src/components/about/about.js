@@ -13,7 +13,7 @@ export default function About() {
         </p>
         <p>
           Regarding development, I prefer working within the <b className="is-important">JavaScript ecosystem</b>, hence I'm familiar with <b className="is-important">TypeScript</b>,
-          <b className="is-important">Angular</b>, <b className="is-important">RxJS</b> and <b className="is-important">Node.js</b>. I love working on both Front-End and Back-End. 
+          <b className="is-important"> Angular</b>, <b className="is-important">RxJS</b> and <b className="is-important">Node.js</b>. I love working on both Front-End and Back-End. 
           Nevertheless, I'm always willing to explore and learn new skills or technologies. 
         </p>
         <p>
