@@ -6,6 +6,7 @@
   background-color: beige;
   position: fixed;
   z-index: 2;
+  padding: 2.2rem 0;
 
   --items-space: 1.5rem;
 }
