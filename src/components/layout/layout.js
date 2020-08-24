@@ -12,6 +12,7 @@ import './layout.css';
 import Header from "../header/"
 import MenuOverlay from "../menu-overlay/menu-overlay";
 import Footer from "../footer/footer";
+import SEO from "../seo";
 
 const links = [
   { name: 'Home', href: '/' },
@@ -24,9 +25,10 @@ const Layout = ({ children }) => {
   const [isOverlayOpened, setOverlayStatus] = React.useState(false);
 
   const toggleOverlay = () => setOverlayStatus(!isOverlayOpened);
-
+  
   return (
     <>
+      <SEO title="Andrei Gatej" />
       <MenuOverlay isOpened={isOverlayOpened} toggleOverlay={toggleOverlay} links={links} />
       <Header siteTitle="Andrei Gatej" isActive={isOverlayOpened} links={links} toggleOverlay={toggleOverlay} />
       <main className="c-main">{children}</main>
