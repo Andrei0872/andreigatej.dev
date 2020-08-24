@@ -19,7 +19,7 @@
 .c-work .c-work__card {
   flex: 0 0 22em;
   display: grid;
-  grid-template-rows: 4rem 11rem;
+  grid-template-rows: 4rem 12rem;
   margin-right: 1rem;
 }
 
