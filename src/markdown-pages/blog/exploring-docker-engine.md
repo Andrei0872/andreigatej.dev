@@ -40,6 +40,15 @@ configDir     = os.Getenv("DOCKER_CONFIG")
 * `strings.splitN(str, sep, N)`
 * `switch proto { case "fd": ... }`
 * `/net` - what is dial?
+* a process per container ?
+* https://www.youtube.com/watch?v=z-ITjDQT7DU
+* https://www.youtube.com/watch?v=_WgUwUf1d34
+* https://www.youtube.com/watch?v=Js_140tDlVI&ab_channel=Docker
+* https://blog.lizzie.io/linux-containers-in-500-loc.html
+
+* check /proc/PID/uid_map in container
+* check fs in container (mount namespace
+* check hostname in container
 
 ## takeaways
 
@@ -63,3 +72,13 @@ configDir     = os.Getenv("DOCKER_CONFIG")
 		String() string  // string form of address (for example, "192.0.2.1:25", "[2001:db8::1]:80")
 	}
 	```
+
+```go
+// checking if a PID exists - useful for `/var/run/docker.pid`
+func processExists(pid int) bool {
+	if _, err := os.Stat(filepath.Join("/proc", strconv.Itoa(pid))); err == nil {
+		return true
+	}
+	return false
+}
+```
