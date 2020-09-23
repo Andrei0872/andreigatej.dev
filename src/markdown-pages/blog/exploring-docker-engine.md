@@ -45,10 +45,14 @@ configDir     = os.Getenv("DOCKER_CONFIG")
 * https://www.youtube.com/watch?v=_WgUwUf1d34
 * https://www.youtube.com/watch?v=Js_140tDlVI&ab_channel=Docker
 * https://blog.lizzie.io/linux-containers-in-500-loc.html
+* `what is containerd`
+* https://www.youtube.com/watch?v=x1npPrzyKfs&ab_channel=linuxfestnorthwest
 
 * check /proc/PID/uid_map in container
 * check fs in container (mount namespace
 * check hostname in container
+
+* how can containers from a network communicate with each other(`FORWARD` policy?)
 
 ## takeaways
 
@@ -82,3 +86,30 @@ func processExists(pid int) bool {
 	return false
 }
 ```
+
+```bash
+/var/run/containerd/.../moby/hash/config.json | jq .root # the location of the root filesystem
+```
+
+## very interesting, worth showing
+
+### creating a container from an ubuntu image
+
+```bash
+docker container run --name my-container --rm -it ubuntu:18.04 bash
+```
+
+As a side note, if we were to start the container like this:
+
+```bash
+docker container run --name my-container2 --rm  ubuntu:18.04
+```
+
+it will be created and destroyed *immediately*. This is because containers are **running processes** and since in the container there is no running process, it can't be alive after its creation. By using `-it ... bash` we're starting a process (`bash`) and so the container is alive as long as the `bash` process is alive. It can be killed by typing `exit` or pressing or `CTRL + D`.
+
+## references
+
+### iptables
+
+* https://www.karlrupp.net/en/computer/nat_tutorial
+* https://www.thegeekstuff.com/2011/06/iptables-rules-examples/
