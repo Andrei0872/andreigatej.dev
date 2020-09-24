@@ -10,6 +10,7 @@
   --light-grey: #F5E4C3;
   --light-yellow: rgba(255, 255, 153, 0.4);
   --dark-yellow: #FFFF7F;
+  --selection-color: #faf7dd;
 }
 
 html, body {
@@ -38,4 +39,11 @@ html, body {
 
 h1 {
   font-family: 'Poppins', sans-serif;
+}
+
+::selection {
+  background: var(--selection-color);
+}
+::-moz-selection {
+  background: var(--selection-color);
 }
