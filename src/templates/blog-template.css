@@ -4,10 +4,14 @@
   height: 100%;
   margin: 0 auto;
   width: 65%;
+
+  --inline-code-color: #825e00;
+  --link-color: #433E0E;
 }
 
 .c-blog-post__title {
   text-align: center;
+  margin-top: 3rem;
 }
 
 .c-blog-post__content {
@@ -16,8 +20,24 @@
 
 .c-blog-post__content p {
   padding-top: .6rem;
-  line-height: 1.7rem;
-  font-size: 1.1rem;
+  line-height: 1.9rem;
+  font-size: 1.3rem;
+  padding-left: 0.5rem;
+}
+
+.c-blog-post__content h2, 
+.c-blog-post__content h3, 
+.c-blog-post__content h4, 
+.c-blog-post__content h5, 
+.c-blog-post__content h6 {
+  font-size: 1.8rem;
+  margin-top: 2rem;
+  padding-bottom: 0.7rem;
+}
+
+.c-blog-post__content a {
+  color: var(--link-color);
+  font-weight: bold;
 }
 
 .c-blog-post__back {
@@ -45,4 +65,18 @@
   .c-blog-post {
     width: 95%;
   }
+}
+
+deckgo-highlight-code {
+  margin: 1rem .5rem;
+  font-size: 1.3rem;
+}
+
+hr {
+  margin-top: 2rem;
+}
+
+code {
+  color: var(--inline-code-color);
+  padding: 0.2rem;
 }
