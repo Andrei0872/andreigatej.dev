@@ -59,11 +59,11 @@ export default function Blog() {
     });
   }
 
-  const filteredArticles =  articles.filter(isPublished).filter(hasPostAllActiveTags.bind(null, activeTags))
+  const filteredArticles = articles.filter(isPublished).filter(hasPostAllActiveTags.bind(null, activeTags))
   const noArticles = <h2 style={{ textAlign: 'center', marginTop: '5rem' }}>No articles available</h2>;
   
   let tags = new Set([allTagsKey, indepthDevKey]);
-  filteredArticles.forEach(({ frontmatter: { tags: t } }) => (tags = new Set([...tags, ...t])));
+  articles.filter(isPublished).forEach(({ frontmatter: { tags: t } }) => (tags = new Set([...tags, ...t])));
 
   return (
     <Layout>
