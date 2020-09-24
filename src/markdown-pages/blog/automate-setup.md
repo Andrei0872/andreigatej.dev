@@ -11,8 +11,6 @@ tags: ["automation"]
 
 It usually takes me around 30 minutes - 1 hour to set up everything I need in order to start working on a new OS(in this case, Ubuntu). So I figured it would be worth the time spent on building a script that would automate all of this. Moreover, bash scripting has always been something cryptic to me, so I thought this was a good opportunity to get comfortable with writing such scripts.  
 
-Note: this has been tested on...
-
 ## Usage
 
 Open your terminal in your preferred location and create a file that will eventually be invoked in order to install the programs you'd need.
