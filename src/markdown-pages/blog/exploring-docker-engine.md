@@ -107,6 +107,31 @@ docker container run --name my-container2 --rm  ubuntu:18.04
 
 it will be created and destroyed *immediately*. This is because containers are **running processes** and since in the container there is no running process, it can't be alive after its creation. By using `-it ... bash` we're starting a process (`bash`) and so the container is alive as long as the `bash` process is alive. It can be killed by typing `exit` or pressing or `CTRL + D`.
 
+### docker networking
+
+```bash
+# show the existing bridges
+# notice there is nothing under the `interfaces` column
+brctl show
+docker0		8000.0242192bc7be	no
+
+
+# first, create  the container
+docker container run --name my-cont --rm -d -it ubuntu:20.04 bash
+
+# now we can see that the container has been connected to the network
+brctl show
+docker0		8000.0242192bc7be	no		vethdd21dfa
+
+
+# after adding another container
+docker container run --name my-cont2 --rm -d -it ubuntu:20.04 bash
+# we should see another interface added to the column
+brctl show
+docker0		8000.0242192bc7be	no		veth70d54dc
+																	vethdd21dfa
+```
+
 ## references
 
 ### iptables
