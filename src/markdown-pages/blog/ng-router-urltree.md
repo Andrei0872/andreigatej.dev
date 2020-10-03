@@ -1,7 +1,7 @@
 ---
-title: "(1) Demystifying angular/router: Getting to know UrlTree, ActivatedRouteSnapshot and ActivatedRoute"
+title: "Angular Router: Getting to know UrlTree, ActivatedRouteSnapshot and ActivatedRoute"
 publication: null
-date: 2020-02-14
+date: 2020-10-03
 published: true
 slug: /blog/angular-router-urlree
 tags: ["angular"]
@@ -280,7 +280,7 @@ console.log(r.parseUrl('/q/(a/(c//left:cp)//left:qp)(left:ap)'))
 
 As we've seen from the previous section, an `UrlTree` contains the `fragment`, `queryParams` and the `UrlSegmentGroup`s that create the URL segments. At the same time, there are other important units that make up the process of resolving the next route: `ActivatedRouteSnapshot` and `ActivatedRoute`. This process also consists of multiple **phrases**, e.g: running guards, running resolvers, activating the routes(i.e updating the view accordingly); these phases will operate on 2 other _tree structures_: a tree of `ActivatedRouteSnapshot`s(also named `RouterStateSnapshot`) and a tree of `ActivatedRoute`s(also named `RouterState`).
 
-The `ActivatedRouteSnapshot` tree will be immediately created after the `UrlTree` has been built. One significant difference between these two tree structures is that in an `UrlTree` only outlets(named or `primary` ,by default) are considered children(child = `UrlSegmentGroup`), whereas in `RouterStateSnapshot`, each matched path of a `Route` object determines an `ActivatedRouteSnapshot` child.
+The `ActivatedRouteSnapshot` tree will be immediately created after the `UrlTree` has been built. One significant difference between these two tree structures is that in an `UrlTree` only outlets(named or `primary`, by default) are considered children(child = `UrlSegmentGroup`), whereas in `RouterStateSnapshot`, each matched path of a `Route` object determines an `ActivatedRouteSnapshot` child.
 
 Let's see an example. For this route configuration:
 
@@ -532,7 +532,8 @@ navigateByUrl(url: string|UrlTree, extras: NavigationExtras = {skipLocationChang
 
 `RouterLink` will create a new `UrlTree`, based on the current `UrlTree` and the provided commands.
 
-We will explore them in detail in future articles from this series, as they are pretty complex.
+<!-- TODO: refer to those articles -->
+We will explore them in detail in future articles, as they are pretty complex.
 
 ---
 
