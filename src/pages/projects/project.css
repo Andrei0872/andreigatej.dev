@@ -24,7 +24,7 @@
 
 .c-project__tag {
   margin-right: .5rem;
-  font-size: .8rem;
+  font-size: .9rem;
 }
 
 .c-project__tag--important {
@@ -34,6 +34,7 @@
 .c-project__content {
   padding: 0.8rem;
   line-height: 1.2rem;
+  font-size: 1.2rem;
 }
 
 .c-project__desc-content {
