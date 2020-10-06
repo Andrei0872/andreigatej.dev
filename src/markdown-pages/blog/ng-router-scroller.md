@@ -1,13 +1,12 @@
 ---
 title: "Demystifying angular/router: what is `RouterScroller` and why is it useful ?"
-publication: null
-date: 2020-02-14
-published: false
-slug: /blog/test
-tags: ["angular"]
-series: Demystifying angular/router
-part: 2
+publication: https://indepth.dev/demystifying-angular-router-what-is-routerscroller-and-why-is-it-useful-2/
+date: 2020-10-6
+published: true
+slug: /blog/does-not-matter
+tags: ["angular", "publication: inDepth.dev"]
 ---
+
 
 The `RouterScroller` entity is a very interesting part of the Angular Router. In this post, we're going to have a look at how it works, what makes its features possible and how it can be configured, depending on the developer's needs.
 
