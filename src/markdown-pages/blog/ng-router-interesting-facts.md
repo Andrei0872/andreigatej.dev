@@ -1,35 +1,126 @@
-# Demystifying angular/router: Revealing some interesting facts and features
+# Angular Router: Revealing some interesting facts and features
+
+It is undeniable that the `angular/router` package is full of useful features. In this package, instead of focusing on an a single and precise topic, we're going to look at some interesting facts and features of this package that you might not be aware of. These can range from sorts of comparisons(e.g `relative` vs `absolute` redirects) to nonobvious details(e.g `ActivatedRoute`'s properties; how the URL is set in the browser).
 
 ## Relative vs Absolute Redirect
 
-https://stackblitz.com/edit/exp-routing-redirect-abs-vs-nonabs-path?file=src%2Fapp%2Fapp.module.ts
+When setting up the route configuration array, we often come across the `redirectTo` property. Although its purpose is defined by its name, it also has a few interesting traits that are worth examining.
 
-* the diff between `redirectTo: 'foo/bar'` and `redirectTo: '/foo/bar'` (?)
-  * `/` - will start again from the **root**(the first outermost array of routes)
-  * `` - will start the search from the first route from the array this current route resides in
-* only abs redirects can have named outlets (?)
-* a redirect operation can be done only once, as specified by the `allowRedirects` flag, which is set to `false` after one redirect op occurs:
-  ```ts
-  // `expandWildCardWithParamsAgainstRouteUsingRedirect`
+The path this property takes in can either be relative or absolute. Before revealing the differences between these 2 options, let's see what configuration we'll be using:
 
-  // non-absolute redirect
-  return this.expandSegment(ngModule, group, routes, newSegments, outlet, false);
-  ```
-* absoulte redirects can include `child outlets` in the `redirectTo` url
-  ```ts
+```typescript
+const routes: Routes = [
   {
-    path: 'a',
-    redirectTo: '/(foo:bar)'
+    path: '',
+    pathMatch: 'full',
+    component: DefaultComponent
   },
-  ```
+  {
+    path: 'a/b',
+    component: AComponent, // reachable from `DefaultComponent`
+    children: [
+      {
+        // Reached when `redirectTo: 'err-page'` (relative) is used
+        path: 'err-page',
+        component: BComponent,
+      },
+      {
+        path: '**',
+        redirectTo: 'err-page'
+      },
+    ],
+  },
+  {
+    // Reached when `redirectTo: '/err-page'` is used
+    path: 'err-page',
+    component: DComponent,
+  }
+]
+```
 
-  ```html
-  <router-outlet name="foo"></router-outlet>
-  ```
+*A StackBlitz demo can be found [here](https://stackblitz.com/edit/exp-routing-redirect-abs-vs-nonabs-path?file=src%2Fapp%2Fapp.module.ts)*.
 
----
+With the current option, `redirectTo: 'err-page'`(relative path), the `BComponent` will be used. If we'd change it to `/err-page`, then the `DComponent` should be used. As a generalization, we could say that one of the difference between `redirectTo: 'foo/bar'` and `redirectTo: '/foo/bar'` is that when using an absolute path, the search for the next configuration object will start from the **root**, that is, the first, outermost array of routes. 
 
-### Wildcard vs Non-wildcard path
+```typescript
+const routes: Routes = [
+  // **STARTS FROM HERE**
+  {
+    /* ... */
+  },
+  {
+    /* ... */
+    children: [
+      /* ... */
+      {
+        path: '**',
+        redirectTo: '/err-page'
+      },
+    ],
+  },
+
+  {
+    path: 'err-page',
+    /* ... */
+  }
+]
+```
+
+Whereas when using a relative path, the search will start from the first route in the array from where the redirect operation has started:
+
+```typescript
+const routes: Routes = [
+  {
+    /* ... */
+  },
+  {
+    /* ... */
+    children: [
+      // **STARTS FROM HERE**
+      /* ... */
+      {
+        path: '**',
+        redirectTo: 'err-page'
+      },
+    ],
+  },
+
+  {
+    path: 'err-page',
+    /* ... */
+  }
+]
+```
+
+Furthermore, another great feature that absolute redirects have is that they can include named outlets:
+
+```typescript
+{
+  path: 'a/b',
+  component: AComponent,
+  children: [
+    {
+      path: '',
+      component: BComponent,
+    },
+    {
+      path: 'c',
+      outlet: 'c-outlet',
+      component: CComponent,
+    },
+  ],
+},
+{
+  path: 'd-route',
+  redirectTo: '/a/b/(c-outlet:c)'
+}
+```
+
+*[StackBlitz demo](https://stackblitz.com/edit/exp-routing-redirect-named-outlet?file=src%2Fapp%2Fapp.module.ts)*.
+
+It is worth mentioning that an absolute redirect operation can occur only once during a route transition. 
+
+## Wildcard vs Non-wildcard path
 
 https://stackblitz.com/edit/exp-routing-redirect-non-wildcard?file=src%2Fapp%2Fapp.module.ts
 
@@ -517,10 +608,12 @@ expect(recordedData).toEqual([{data: 0}, {data: 1}]);
 
 ---
 
-## Positional params and _matrix_ params
+## Positional params vs _matrix_ params
 
 * the last matched segment will have its **positional** params and **matrix** params **merged**
 
 ```ts
 'a/:id' -> 'a/123;k1=v1;k2=v2' --> route.snapshot.paramsMap = { a, k1, k2 }
 ```
+
+* https://stackoverflow.com/questions/62850709/nested-routing-in-angular/62854244#62854244
