@@ -15,9 +15,9 @@ In this part, we're going to cover why `UrlTree` is the foundation of a route tr
 
 *Note: You can find each example [here](https://ng-run.com/edit/mzWif1S1fotcDGdwlnEA).*
 
-As we'll see in the following sections, an URL is a **serialized** version of an `UrlTree`. As a result, an `UrlTree` is the **deserialized** version of an `URL`. 
+As we'll see in the following sections, a URL is a **serialized** version of a `UrlTree`. As a result, a `UrlTree` is the **deserialized** version of a `URL`. 
 
-What an `UrlParser` does it to convert a URL into an `UrlTree` and it is primarily used by `DefaultUrlSerializer`. `DefaultUrlSerializer` is the default implementation of `UrlSerializer` and it's used, for instance, by `Router.parseUrl()` method:
+What a `UrlParser` does it to convert a URL into a `UrlTree` and it is primarily used by `DefaultUrlSerializer`. `DefaultUrlSerializer` is the default implementation of `UrlSerializer` and it's used, for instance, by `Router.parseUrl()` method:
 
 ```typescript
 parseUrl(url: string): UrlTree {
@@ -38,7 +38,7 @@ This also means that, if needed, we can use our **custom** implementation of `Ur
 { provide: UrlSerializer, useClass: DefaultUrlSerializer },
 ```
 
-An URL can have this structure: `segments?queryParams#fragment`; but, before diving into some examples, let's first define what are the main components of an `UrlTree`:
+An URL can have this structure: `segments?queryParams#fragment`; but, before diving into some examples, let's first define what are the main components of a `UrlTree`:
 
 ```typescript
 export class UrlTree {
@@ -53,9 +53,9 @@ export class UrlTree {
 
 From the aforementioned URL structure, we can already see that `queryParams` and `fragment` have found their pair. However, in which way does the `segments` part correspond with `UrlSegmentsGroup`?
 
-An example of an URL would be `a/b/c`. Here, we have no *explicit* groups, only two _implicit_ groups and its **segments**(we'll see why a bit later). Groups are delimited by `()` and are very useful when we're dealing with multiple **router outlets**(e.g **named** outlets).
+An example of a URL would be `a/b/c`. Here, we have no *explicit* groups, only two _implicit_ groups and its **segments**(we'll see why a bit later). Groups are delimited by `()` and are very useful when we're dealing with multiple **router outlets**(e.g **named** outlets).
 
-Let's see the structure of an `UrlSegmentGroup`:
+Let's see the structure of a `UrlSegmentGroup`:
 
 ```typescript
 export class UrlSegmentGroup {
@@ -67,7 +67,7 @@ export class UrlSegmentGroup {
   ) { }
 ```
 
-As stated earlier, there are 2 _implicit_ groups. The first one is the **root** `UrlSegmentGroup`, which does not have any segments, only one child `UrlSegmentGroup`. The reason behind this is that it should correspond to the root of the component tree, e.g `AppComponent`, which is inherently not included in any route configuration. As we'll discover in the next articles from this series, the way Angular resolves route transitions is based on traversing the `UrlTree`, while taking into account the `Routes` configuration. The second `UrlSegmentGroup`, whose parent is the first one, is the one that actually contains the segments. We'll see how an `UrlSegment` looks in a minute.
+As stated earlier, there are 2 _implicit_ groups. The first one is the **root** `UrlSegmentGroup`, which does not have any segments, only one child `UrlSegmentGroup`. The reason behind this is that it should correspond to the root of the component tree, e.g `AppComponent`, which is inherently not included in any route configuration. As we'll discover in the next articles from this series, the way Angular resolves route transitions is based on traversing the `UrlTree`, while taking into account the `Routes` configuration. The second `UrlSegmentGroup`, whose parent is the first one, is the one that actually contains the segments. We'll see how a `UrlSegment` looks in a minute.
 
 We might have a more complex URL, such as `foo/123/(a//named:b)`. The resulted `UrlSegmentGroup` will be this:
 
@@ -127,7 +127,7 @@ export class UrlSegment {
 
 Besides **positional parameters**(e.g `foo/:a/:b`), segments can have parameters declared like this: `segment/path;k1=v1;k2=v2`.
 
-So, an `UrlTree` can be summarized in: the `root` `UrlSegmentGroup`, the `queryParams` object and the `fragment` of the issued URL.
+So, a `UrlTree` can be summarized in: the `root` `UrlSegmentGroup`, the `queryParams` object and the `fragment` of the issued URL.
 
 ### What is the difference between `/()` and `()`?
 
@@ -151,7 +151,7 @@ const routes = [
 
 It's worth mentioning that in this entire process of resolving the _next_ route, the routes array will be iterated over once for each `UrlSegmentGroup` child at a certain level. This applies to the nested arrays too(e.g `children`, `loadChildren`).
 
-So, an URL that matches the above configuration would be: `foo(special:bar)`. This is because the root `UrlSegmentGroup`'s child `UrlSegmentGroup`s are:
+So, a URL that matches the above configuration would be: `foo(special:bar)`. This is because the root `UrlSegmentGroup`'s child `UrlSegmentGroup`s are:
 
 ```typescript
 {
@@ -278,9 +278,9 @@ console.log(r.parseUrl('/q/(a/(c//left:cp)//left:qp)(left:ap)'))
 
 ## UrlTree, ActivatedRouteSnapshot and ActivatedRoute
 
-As we've seen from the previous section, an `UrlTree` contains the `fragment`, `queryParams` and the `UrlSegmentGroup`s that create the URL segments. At the same time, there are other important units that make up the process of resolving the next route: `ActivatedRouteSnapshot` and `ActivatedRoute`. This process also consists of multiple **phrases**, e.g: running guards, running resolvers, activating the routes(i.e updating the view accordingly); these phases will operate on 2 other _tree structures_: a tree of `ActivatedRouteSnapshot`s(also named `RouterStateSnapshot`) and a tree of `ActivatedRoute`s(also named `RouterState`).
+As we've seen from the previous section, a `UrlTree` contains the `fragment`, `queryParams` and the `UrlSegmentGroup`s that create the URL segments. At the same time, there are other important units that make up the process of resolving the next route: `ActivatedRouteSnapshot` and `ActivatedRoute`. This process also consists of multiple **phrases**, e.g: running guards, running resolvers, activating the routes(i.e updating the view accordingly); these phases will operate on 2 other _tree structures_: a tree of `ActivatedRouteSnapshot`s(also named `RouterStateSnapshot`) and a tree of `ActivatedRoute`s(also named `RouterState`).
 
-The `ActivatedRouteSnapshot` tree will be immediately created after the `UrlTree` has been built. One significant difference between these two tree structures is that in an `UrlTree` only outlets(named or `primary`, by default) are considered children(child = `UrlSegmentGroup`), whereas in `RouterStateSnapshot`, each matched path of a `Route` object determines an `ActivatedRouteSnapshot` child.
+The `ActivatedRouteSnapshot` tree will be immediately created after the `UrlTree` has been built. One significant difference between these two tree structures is that in a `UrlTree` only outlets(named or `primary`, by default) are considered children(child = `UrlSegmentGroup`), whereas in `RouterStateSnapshot`, each matched path of a `Route` object determines an `ActivatedRouteSnapshot` child.
 
 Let's see an example. For this route configuration:
 
@@ -455,9 +455,9 @@ get queryParamMap(): Observable<ParamMap> {
 
 ## When is UrlTree used ?
 
-Now that we've understood what an `UrlTree` is, we can explore a few use cases.
+Now that we've understood what a `UrlTree` is, we can explore a few use cases.
 
-### When an `UrlTree` is returned from a guard, it will result in a redirect operation
+### When a `UrlTree` is returned from a guard, it will result in a redirect operation
 
 As we can see from the [source code](https://github.com/angular/angular/blob/master/packages/router/src/router.ts#L617-L625):
 
@@ -509,7 +509,7 @@ const routes = [
 
 ### `Router.navigateByUrl()`
 
-The [`Router.navigateByUrl(url)`](https://github.com/angular/angular/blob/master/packages/router/src/router.ts#L1080-L1091) method converts the provided `url` into an `UrlTree`:
+The [`Router.navigateByUrl(url)`](https://github.com/angular/angular/blob/master/packages/router/src/router.ts#L1080-L1091) method converts the provided `url` into a `UrlTree`:
 
 ```typescript
 navigateByUrl(url: string|UrlTree, extras: NavigationExtras = {skipLocationChange: false}):
