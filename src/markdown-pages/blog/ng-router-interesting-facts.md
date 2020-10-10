@@ -2,7 +2,7 @@
 
 It is undeniable that the `angular/router` package is full of useful features. In this package, instead of focusing on an a single and precise topic, we're going to look at some interesting facts and features of this package that you might not be aware of. These can range from sorts of comparisons(e.g `relative` vs `absolute` redirects) to nonobvious details(e.g `ActivatedRoute`'s properties; how the URL is set in the browser).
 
-## Relative vs Absolute Redirect
+## Relative vs Absolute Redirects
 
 When setting up the route configuration array, we often come across the `redirectTo` property. Although its purpose is defined by its name, it also has a few interesting traits that are worth examining.
 
@@ -120,58 +120,119 @@ Furthermore, another great feature that absolute redirects have is that they can
 
 It is worth mentioning that an absolute redirect operation can occur only once during a route transition. 
 
-## Wildcard vs Non-wildcard path
+The `path` property which resides in the same configuration object as the `redirectTo` property poses a few more interesting possibilities. The `path` property can take in a simple string which defines a route path, or `'**'`, making it a wildcard route. This route will match any route it is compared against. Now, let's have a look at the options a non-wildcard route gives us.
 
-https://stackblitz.com/edit/exp-routing-redirect-non-wildcard?file=src%2Fapp%2Fapp.module.ts
+Firstly, with a non-wildcard route we can reuse the `query params` and the `positional params`(the params that follow the `:nameOfParam` model) from the current issued URL:
 
-* you can **reuse** the `query params` and the `positional params` from the current URL
-  * `createQueryParams` - `?name=:foo` - `foo` taken from the actual url(e.g: `foo='andrei'`)
-  * `createSegmentGroup > createSegments` - `path: 'a/:id'`, `redirectTo: 'err-page/:id'` - `id` taken from `a/:id`
-* when using a `non-wildcard` path and a `relative` redirect, that extra segments of the URL will be added to the `redirectTo`'s segments
-  ```ts
-    {
+```typescript
+const routes: Routes = [
+  {
     path: 'a/b',
     component: AComponent,
     children: [
       {
+        // Reached when `redirectTo: 'err-page'` (relative) is used
         path: 'err-page',
         component: BComponent,
       },
       {
+        path: 'c/:id',
+        // foo=:foo - get the value of the `foo` query param that 
+        // exists in the URL that against this route
+        // it works for relative paths as well: `err-page/:id?errored=true&foo=:foo`
+        redirectTo: '/err-page/:id?errored=true&foo=:foo'
+      },
+    ],
+  },
+  {
+    // Reached when `redirectTo: '/err-page'` is used
+    path: 'err-page/:id',
+    component: DComponent,
+  }
+]
+```
+
+*[StackBlitz demo](https://stackblitz.com/edit/exp-routing-redirect-non-wildcard?file=src%2Fapp%2Fapp.module.ts).*
+
+In the above snippet, we can see that this pattern is followed
+  * `?name=:foo` - the `foo` query param is taken from the actual url
+  * `path: 'a/:id'`, `redirectTo: 'err-page/:id'` - the `id` positional param is taken from `a/:id`
+
+And here is how we'd navigate to such route:
+
+```html
+<button routerLink="a/b/c/123" [queryParams]="{ foo: 'foovalue' }">...</button>
+```
+
+Also, when using a `non-wildcard` path and a `relative` redirect, that extra segments of the URL will be added to the `redirectTo`'s segments
+
+```ts
+const routes: Routes = [
+  {
+    path: 'a/b',
+    component: AComponent,
+    children: [
+      {
+        path: 'err-page/test',
+        component: BComponent,
+      },
+      {
+        // `redirectTo: '/err-page'` - would lead to errors
         path: 'c',
         redirectTo: 'err-page'
       },
     ],
   },
-
-  router.navigateByUrl("a/b/c/not-matched")
-  ```
-  which may lead to `NoMatch` errors in some cases
-
----
-
-```ts
-[{path: 'a/:id', redirectTo: 'd/a/:id/e'}, {path: '**', component: ComponentC}],
-  '/a;p1=1/1;p2=2', (t: UrlTree) => {
-    expectTreeToBe(t, '/d/a;p1=1/1;p2=2/e');
-  };
+  
+  // this could never be reached from `path: 'c'`
+  {
+    path: 'err-page/test',
+    component: DComponent,
+  }
+]
 ```
 
-```ts
-checkRedirect(
-  [{
-    path: 'a',
-    children: [
-      {path: 'bb', component: ComponentB}, {path: 'b', redirectTo: 'bb'},
+*Note: This only works for `relative` redirects.*
 
-      {path: 'cc', component: ComponentC, outlet: 'aux'},
-      {path: 'b', redirectTo: 'cc', outlet: 'aux'}
-    ]
-  }],
-  'a/(b//aux:b)', (t: UrlTree) => {
-    expectTreeToBe(t, 'a/(bb//aux:cc)');
-  });
+So, we can reach `BComponent`'s route this way:
+
+```html
+<button routerLink="a/b/c/test">...</button>
 ```
+
+*[StackBlitz demo](https://stackblitz.com/edit/exp-routing-redirect-non-wildcard-relative?file=src%2Fapp%2Fapp.module.ts).*
+
+Things can even get a bit more complicated(and interesting), when we consider `matrix params`(e.g `;k1=v1;k2=v2`) as well. As a side note, `positional params` are those which we explicitly define in the route paths(e.g `/:id`), whereas `matrix params` are taken together with their path. Internally, Angular uses entities such as `UrlSegmentGroup`, `UrlSegment` to achieve its features. If we peek at the [`UrlSegment`'s implementation](https://github.com/angular/angular/blob/master/packages/router/src/url_tree.ts#L209-L212), we can see mentioned matrix params. With this in mind, let's see an example:
+
+```typescript
+const routes: Routes = [
+  {
+    path: 'd/a/:id/e',
+    component: DComponent,
+  },
+  {
+    // `redirectTo: '/d/a/:id/e'` would work as well
+    path: 'a/:id', 
+    redirectTo: 'd/a/:id/e'
+  },
+]
+```
+
+If we start a navigation with
+
+```html
+<button [routerLink]="['/a', { p1: 1 }, '1', { p2: 2, p3: 3 }]">...</button>
+```
+
+*[StackBlitz demo.](https://stackblitz.com/edit/exp-routing-redirect-non-wildcard-relative-matrix-params?file=src%2Fapp%2Fapp.module.ts)*
+
+the `DComponent`'s route will be activated and will end up having this URL: `.../d/a;p1=1/1;p2=2;p3=3/e`
+
+First of all, `['a/path', { p1, p2, p3 }]` is the way to pass matrix params to a segment. The matrix params will be bound to the precedent path. Then, as we've learnt from the previous paragraphs, we can use positional params that are present in the current route in the `redirectTo` path. The important thing to notice is that the matrix params of a given segment will be preserved in the new navigation's path, if used in `redirectTo`.
+
+Lastly, it is worth mentioning that wildcard routes can only reuse `query params`. Positional params are not possible because in order to reuse such params, they first have to find their match in the `path` property and since `'**'` is used, they can't be used any further in `redirectTo`.
+
+Here's is a [StackBlitz demo](https://stackblitz.com/edit/exp-routing-redirect-wilcard-queryparams?file=src/app/app.module.ts) that illustrates how to reuse query params in a wildcard route.
 
 ---
 
@@ -616,4 +677,4 @@ expect(recordedData).toEqual([{data: 0}, {data: 1}]);
 'a/:id' -> 'a/123;k1=v1;k2=v2' --> route.snapshot.paramsMap = { a, k1, k2 }
 ```
 
-* https://stackoverflow.com/questions/62850709/nested-routing-in-angular/62854244#62854244
+* `pathMatch` property: https://stackoverflow.com/questions/62850709/nested-routing-in-angular/62854244#62854244
