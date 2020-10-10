@@ -248,17 +248,13 @@ If you'd like to play around with some examples, you can find them in this [Stac
 
 ---
 
-## How is the URL set in the browser?
+## How is the URL set in the browser ?
 
-`Router.setBrowserUrl`
-```ts
-// urlUploadingStrategy
-// `eager` check
-// beforePreactivation
-// GUARDS
-// afterPreactivation
-// `deferred` check
-```
+Under the hood, Angular Router simply uses the native [history API](https://developer.mozilla.org/en-US/docs/Web/API/History). For example, when navigating to a new route, `/user/:id`, the `history.pushState` method is invoked. Similarly, it uses `history.replaceState` when navigating to the same path or when the `replaceUrl` option is set to `true`.
+
+
+<!-- TODO: embed this -->
+Here's a [StackBlitz demo](https://stackblitz.com/edit/exp-routing-replace-state?file=src%2Fapp%2Fapp.module.ts) that demonstrates the behavior that can be achieved with the `replaceUrl` option.
 
 ---
 
