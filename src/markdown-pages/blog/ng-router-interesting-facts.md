@@ -236,31 +236,15 @@ Here's is a [StackBlitz demo](https://stackblitz.com/edit/exp-routing-redirect-w
 
 ---
 
-## router.navigate vs router.navigateByUrl
+## Router.navigate vs Router.navigateByUrl
 
-```ts
-/* 
-`navigate()` - it will create a new UrlTree according to the current UrlTree; 
-since `relativeTo` is not specified, the root `ActivatedRoute` will be chosen -> it will go through each children and it wll replace where it encounters the `outlet`'s name
+Although they both have the same purpose, to start a new navigation, they also have a few dissimilarities. Before revealing them, it's important to know that Angular Router operates on a `UrlTree` in order perform the navigation. A `UrlTree` can be thought of a deserialized version of a URL(a string).
 
-`navigateByUrl` - will create a new UrlTree, regardless of the current one
-*/
-router.resetConfig([{
-  path: 'team/:id',
-  component: TeamCmp,
-  children: [
-    {path: 'user/:name', component: UserCmp},
-    {path: 'simple', component: SimpleCmp, outlet: 'right'}
-  ]
-}]);
+`navigate()` will create the `UrlTree` needed for the navigation based on the current `UrlTree`. This might be a bit tricky to use, since in some cases it is needed to provide the `relativeTo` route as well: `navigate(commandsArray, { relativeTo: ActivatedRouteInstance })`. If the `relativeTo` option is not specified, the root `ActivatedRoute` will be chosen.
 
-router.navigateByUrl('/team/22/user/victor');
-advance(fixture);
-router.navigate(['team/22', {outlets: {right: 'simple'}}]);
-advance(fixture);
+The `navigateByUrl()` method will create a new `UrlTree`, regardless of the current one.
 
-expect(fixture.nativeElement).toHaveText('team 22 [ user victor, right: simple ]');
-```
+If you'd like to play around with some examples, you can find them in this [StackBlitz demo](https://stackblitz.com/edit/exp-routing-replace?file=src%2Fapp%2Fcomponents%2Fb.component.ts)
 
 ---
 
