@@ -252,32 +252,22 @@ If you'd like to play around with some examples, you can find them in this [Stac
 
 Under the hood, Angular Router simply uses the native [history API](https://developer.mozilla.org/en-US/docs/Web/API/History). For example, when navigating to a new route, `/user/:id`, the `history.pushState` method is invoked. Similarly, it uses `history.replaceState` when navigating to the same path or when the `replaceUrl` option is set to `true`.
 
-
-<!-- TODO: embed this -->
 Here's a [StackBlitz demo](https://stackblitz.com/edit/exp-routing-replace-state?file=src%2Fapp%2Fapp.module.ts) that demonstrates the behavior that can be achieved with the `replaceUrl` option.
 
----
-
-## Passing state to a route transition
-
-```ts
-// `state` - available in `router.getCurrentNavigation().extras.state`
-// `state` - will be stored in an history's item
-// can be used, for example, to store the position of the current page, so that on `popstate` event
-// that `state` will be available in the `NavigationStart`
-router.navigateByUrl('/simple', {state: {foo: 'bar'}});
-tick();
-```
+<!-- GIF -->
 
 ---
 
-## `skipLocationChange` option
+## The skipLocationChange option
 
-```ts
-// `skipLocationChange === true` - do not call `router.setBrowserUrl`, which means that nothing will be added to the history stack
-// but the router's internal status will be updated accordingly(e.g route params, query params, anything that can be `observed` from `ActivatedRoute`)
-router.navigateByUrl('/team/33', {skipLocationChange: true});
-```
+What this options does is to ensure that the `Router`'s method which is responsible for setting the browser's URL, thus adding items to the history's stack, will not be called. However, the `Router`'s internal status will be updated accordingly(e.g route params, query params, anything that can be `observed` from `ActivatedRoute`).
+
+Here you can find a [StackBlitz demo](https://stackblitz.com/edit/exp-routing-skiplocationchange?file=src%2Fapp%2Fcomponents%2Fa.component.ts). 
+
+<!-- GIF -->
+
+As you can see, because this option is used, the `/d` will not even be shown in the address bar. Despite this, the `/d` route's component (`DComponent`) will be loaded.
+
 
 ---
 
@@ -648,13 +638,5 @@ expect(recordedData).toEqual([{data: 0}, {data: 1}]);
 ```
 
 ---
-
-## Positional params vs _matrix_ params
-
-* the last matched segment will have its **positional** params and **matrix** params **merged**
-
-```ts
-'a/:id' -> 'a/123;k1=v1;k2=v2' --> route.snapshot.paramsMap = { a, k1, k2 }
-```
 
 * `pathMatch` property: https://stackoverflow.com/questions/62850709/nested-routing-in-angular/62854244#62854244
