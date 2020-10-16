@@ -1,6 +1,6 @@
 # Angular Router: Revealing some interesting facts and features
 
-It is undeniable that the `angular/router` package is full of useful features. In this package, instead of focusing on an a single and precise topic, we're going to look at some interesting facts and features of this package that you might not be aware of. These can range from sorts of comparisons(e.g `relative` vs `absolute` redirects) to nonobvious details(e.g `ActivatedRoute`'s properties; how the URL is set in the browser).
+It is undeniable that the `angular/router` package is full of useful features. In this article, instead of focusing on an a single and precise topic, we're going to look at some interesting facts and features of this package that you might not be aware of. These can range from sorts of comparisons(e.g `relative` vs `absolute` redirects) to nonobvious details(e.g `ActivatedRoute`'s properties; how the URL is set in the browser etc).
 
 ## Relative vs Absolute Redirects
 
@@ -273,6 +273,9 @@ As you can see, because this option is used, the `/d` will not even be shown in 
 
 ## How are `ActivatedRoute`'s properties updated
 
+* starting point: https://stackblitz.com/edit/exp-routing-redirect-non-wildcard
+* prerequisite: https://andreigatej.dev/blog/angular-router-urlree
+
 ```ts
 /* 
 { path: 'foo/:id', comp: FooComp }
@@ -322,6 +325,12 @@ export function advanceActivatedRoute(route: ActivatedRoute): void {
   }
 }
 ```
+
+---
+
+## Is it necessary to unsubscribe from ActivatedRoute's properties ?
+
+* https://stackoverflow.com/questions/62254252/angular-observables-never-come-to-completion-handler/62259184#62259184
 
 ---
 
