@@ -1,5 +1,8 @@
 # Demystifying angular/router: an in depth look at `RouterLink`, `RouterLinkActive` and `RouterOutlet` directives
 
+* https://stackoverflow.com/questions/62599257/why-routerlink-adds-the-input-to-the-end-of-current-url-in-bracket/62607924#62607924
+* https://stackoverflow.com/questions/63407040/ngmodulefactoryloader-load-is-not-able-to-find-the-module/63409187#63409187
+
 <!-- INTRO -->
 
 ## RouterOutlet directive
