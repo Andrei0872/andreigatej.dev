@@ -2,6 +2,9 @@
 
 It is undeniable that the `angular/router` package is full of useful features. In this article, instead of focusing on an a single and precise topic, we're going to look at some interesting facts and features of this package that you might not be aware of. These can range from sorts of comparisons(e.g `relative` vs `absolute` redirects) to nonobvious details(e.g `ActivatedRoute`'s properties; how the URL is set in the browser etc).
 
+* this article assumes the reader has some basic knowledge of Angular Router;
+* by the end of this article, you should have a better understanding of what this package is capable of and, hopefully, a few questions answered about it
+
 ## Relative vs Absolute Redirects
 
 When setting up the route configuration array, we often come across the `redirectTo` property. Although its purpose is defined by its name, it also has a few interesting traits that are worth examining.
@@ -230,7 +233,7 @@ the `DComponent`'s route will be activated and will end up having this URL: `...
 
 First of all, `['a/path', { p1, p2, p3 }]` is the way to pass matrix params to a segment. The matrix params will be bound to the precedent path. Then, as we've learnt from the previous paragraphs, we can use positional params that are present in the current route in the `redirectTo` path. The important thing to notice is that the matrix params of a given segment will be preserved in the new navigation's path, if used in `redirectTo`.
 
-Lastly, it is worth mentioning that wildcard routes can only reuse `query params`. Positional params are not possible because in order to reuse such params, they first have to find their match in the `path` property and since `'**'` is used, they can't be used any further in `redirectTo`.
+Lastly, it is should be mentioned that wildcard routes can only reuse `query params`. Positional params are not possible because in order to reuse such params, they first have to find their match in the `path` property and since `'**'` is used, they can't be used any further in `redirectTo`.
 
 Here's is a [StackBlitz demo](https://stackblitz.com/edit/exp-routing-redirect-wilcard-queryparams?file=src/app/app.module.ts) that illustrates how to reuse query params in a wildcard route.
 
@@ -271,10 +274,172 @@ As you can see, because this option is used, the `/d` will not even be shown in 
 
 ---
 
-## How are `ActivatedRoute`'s properties updated
+## The hierarchy created by the RouterOutlet directive
+
+An Angular Router's fundamental unit is the `RouterOutlet` directive(identifiable as `router-outlet`). Without it, it would not be possible to actually show something in the browser. But, as we've seen while building Angular applications, it's not rare the case when we end up having nested `router-outlet`tags. Speaking of that, let's assume we have a route configuration like this:
+
+```typescript
+// in order to be able to see the `BarComponent`'s view, we'd need to have 2 `router-outlet`
+// 1 in `app.component.html` -> needed to render `FooComponent`
+// 1 in `foo.component` -> needed to render `BarComponent`
+
+const routes = [
+  {
+    path: 'foo',
+    component: FooComponent,
+    children: [
+      { path: 'bar/:id', component: BarComponent }   
+    ]
+  }
+];
+```
+
+and let's also assume that we inject `ActivatedRoute` inside `BarComponent`, have you ever wondered why, when navigating to `foo/bar/123`, the `ActivatedRoute` instance is the _correct_ one(e.g it exposes the `params`, `queryParams` that are related to `bar/:id` route)? It's again an important detail that's handled by the `RouterOutlet` directive. In this section, we're going to explore how is this achieved(**hint**: it involves creating a custom injector).
+
+Let's consider a simple scenario - we have a route configuration like this:
+
+```typescript
+// app.module.ts
+const routes = [
+  {
+    path: 'foo',
+    component: FooComponent,
+  }
+]
+```
+
+And now, in order to be able to see the rendered view on `/foo`, we need to insert the `router-outlet` _tag_ in `app.component.html`
+
+```html
+<button routerLink="/foo">Go to /foo route</button>
+
+<router-outlet></router-outlet>
+```
+
+This is where things start to get interesting. Let's see what the [first steps of initialization](https://github.com/angular/angular/blob/master/packages/router/src/directives/router_outlet.ts#L71-L77) are:
+
+```typescript
+constructor(
+    private parentContexts: ChildrenOutletContexts, private location: ViewContainerRef,
+    private resolver: ComponentFactoryResolver, @Attribute('name') name: string,
+    private changeDetector: ChangeDetectorRef) {
+  // in case we're using named outlet, we provide the `name` property
+  // as we can see, it defaults to `PRIMARY_OUTLET`(`primary`)
+  this.name = name || PRIMARY_OUTLET;
+  parentContexts.onChildOutletCreated(this.name, this);
+}
+```
+
+We can already see something which is not that common: `ChildrenOutletContexts`. Let's see [what it is about](https://github.com/angular/angular/blob/master/packages/router/src/router_outlet_context.ts#L33):
+
+```typescript
+export class ChildrenOutletContexts {
+  // contexts for child outlets, by name.
+  private contexts = new Map<string, OutletContext>();
+
+  /** Called when a `RouterOutlet` directive is instantiated */
+  onChildOutletCreated(childName: string, outlet: RouterOutlet): void {
+    const context = this.getOrCreateContext(childName);
+    context.outlet = outlet;
+    this.contexts.set(childName, context);
+  }
+  /* ... */
+
+  getOrCreateContext(childName: string): OutletContext {
+    let context = this.getContext(childName);
+
+    if (!context) {
+      context = new OutletContext();
+      this.contexts.set(childName, context);
+    }
+
+    return context;
+  }
+
+  getContext(childName: string): OutletContext|null {
+    return this.contexts.get(childName) || null;
+  }
+}
+
+export class OutletContext {
+  outlet: RouterOutlet|null = null;
+  route: ActivatedRoute|null = null;
+  resolver: ComponentFactoryResolver|null = null;
+  children = new ChildrenOutletContexts();
+  attachRef: ComponentRef<any>|null = null;
+}
+```
+
+So, when any `RouterDirective` is created, it will right away invoke `ChildrenOutletContexts.onChildOutletCreated()`. Then, we either reuse an existing _context_(we'll see an example a bit later) or we create a new one, which is the current situation. We've introduced the _context_ concept and it can be accurately described by the `OutletContext`. An interesting thing to notice here is that a _context_ has a `children` property, which points `ChildrenOutletContexts`. What this means is that we can visualize this process as a tree of _contexts_, more exactly a tree of `OutletContext` instances.
+
+What you might wonder now is why the `ChildrenOutletContexts` class needs to maintains a map of `OutletContext`s:
+
+```typescript
+private contexts = new Map<string, OutletContext>();
+```
+
+Even if this question didn't not immediately come to mind, it's a question that's worth asking. To answer this, let's recall that we can also have **named outlets**. So, what would the `context` `Map` instance look like if we would add these? :
+
+```typescript
+const routes = [
+  {
+    path: 'foo',
+    component: FooComponent,
+  },
+  {
+    path: 'bar',
+    component: BarComponent,
+    outlet: 'named-bar'
+  }
+]
+```
+
+```html
+<!-- app.component.html -->
+<button routerLink="/foo">Go to /foo route</button>
+<button [routerLink]="[{ outlets: { named-bar: bar } }]">Go to /bar route - named outlet</button>
+
+<router-outlet></router-outlet>
+<router-outlet name="named-bar"></router-outlet>
+```
+
+This time, the _main_ `ChildrenOutletContexts` class will have its `onChildOutletCreated` called twice, each time a new `OutletContext` will be created. So, the `context` will be as follows:
+
+```typescript
+{
+  primary: OutletContext,
+  'named-bar': OutletContext
+}
+```
+
+If we were to use the `tree`'s parlance, we'd say that the `context` map represents a **level** of a tree and each of its values would go one level deeper.
+
+Let's sharpen this newly learned concept with a help of a [StackBlitz demo](https://stackblitz.com/edit/exp-routing-router-outlet?file=src%2Fapp%2Fapp.module.ts), with the help of which we'll be able to see that this hierarchy is about:
+
+<!-- TODO: embed https://stackblitz.com/edit/exp-routing-router-outlet?file=src%2Fapp%2Fapp.module.ts -->
+
+You can visualize it by checking the console's output after clicking the initial button. This might also serve as a debugging technique in case something seems to not go right with your routes.
+
+Now that are more familiar with the `RouterOutlet`'s hierarchy, we can now find out what makes possible the `ActivatedRoute` to be scoped to a certain route. 
+
+* fresh SB: https://stackblitz.com/edit/exp-routing-router-outlet-fvdwjd?file=src%2Fapp%2Fapp.module.ts
+* `OutletInjector`
+* show example + SB
+* show when the context is reused
+* show `*ngIf`
+
+---
+
+## How `ActivatedRoute`'s properties are updated
 
 * starting point: https://stackblitz.com/edit/exp-routing-redirect-non-wildcard
 * prerequisite: https://andreigatej.dev/blog/angular-router-urlree
+
+* there will be a tree of `ActivatedRoute` nodes; the nodes are determined based on the provided route configuration
+* whenever a new navigation occurs, Angular Router creates a new `ActivatedRoute` tree based on the current one; it will not create a new one entirely, for example some nodes can be reused, which is the case where the existing `ActivatedRoute` is updated and these results can be seen in the component; 
+  * ex where nodes are reused
+  * ex where notes are added
+  * * ex where notes are removed
 
 ```ts
 /* 
@@ -335,6 +500,8 @@ export function advanceActivatedRoute(route: ActivatedRoute): void {
 ---
 
 ## `paramsInheritanceStrategy` option
+
+* not only `params`, but also the `data` values
 
 ```ts
 /* 
@@ -462,6 +629,8 @@ checkRecognize(
 
 ## `queryParamsHandling`
 
+* show _tip_ on how to reuse the same view(without reloading the page), but with different `queryParams`
+
 ```ts
 it('should update hrefs when query params or fragment change', fakeAsync(() => {
       @Component({
@@ -516,6 +685,10 @@ expect(native.getAttribute('href')).toEqual('/home?a=123&q=456');
 ---
 
 ## What happens when a route transition fails ? 
+
+* what does it mean _to fail_ ?
+  * route guard returned `false`
+  * error occurred - can't find a match
 
 ```ts
 /* 
