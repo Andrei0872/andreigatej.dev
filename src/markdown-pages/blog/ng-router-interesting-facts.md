@@ -422,11 +422,37 @@ You can visualize it by checking the console's output after clicking the initial
 
 Now that are more familiar with the `RouterOutlet`'s hierarchy, we can now find out what makes possible the `ActivatedRoute` to be scoped to a certain route. 
 
-* fresh SB: https://stackblitz.com/edit/exp-routing-router-outlet-fvdwjd?file=src%2Fapp%2Fapp.module.ts
-* `OutletInjector`
-* show example + SB
-* show when the context is reused
-* show `*ngIf`
+[At the end](https://github.com/angular/angular/blob/master/packages/router/src/directives/router_outlet.ts#L173) of the file where `RouterOutlet` is implemented, there is something that's worth some attention:
+
+```typescript
+class OutletInjector implements Injector {
+  constructor(
+      private route: ActivatedRoute, private childContexts: ChildrenOutletContexts,
+      private parent: Injector) {}
+
+  get(token: any, notFoundValue?: any): any {
+    if (token === ActivatedRoute) {
+      return this.route;
+    }
+
+    if (token === ChildrenOutletContexts) {
+      return this.childContexts;
+    }
+
+    return this.parent.get(token, notFoundValue);
+  }
+}
+```
+
+If we take a look at how `RouterOutlet` renders something to the screen, we'd see how `OutletInjector` is used:
+
+```typescript
+const injector = new OutletInjector(activatedRoute, childContexts, this.location.injector);
+// this.location - `ViewContainerRef`
+this.activated = this.location.createComponent(factory, this.location.length, injector);
+```
+
+This is what allows us to always get the proper `ActivatedRoute`, when required. When a component injects `ActivatedRoute`, it will look up the injector tree until it finds the first occurrence of the token. The _scope_ is actually created when `RouterOutlet` creates a new view. As we can see in `OutletInjector`'s implementation, when the `ActivatedRoute` token is required, it will provide the _activatedRoute_ that was received when the injector was created.
 
 ---
 
