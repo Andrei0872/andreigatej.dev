@@ -456,72 +456,159 @@ This is what allows us to always get the proper `ActivatedRoute`, when required.
 
 ---
 
-## How `ActivatedRoute`'s properties are updated
+## Is it necessary to unsubscribe from ActivatedRoute's properties ?
 
-* starting point: https://stackblitz.com/edit/exp-routing-redirect-non-wildcard
-* prerequisite: https://andreigatej.dev/blog/angular-router-urlree
+The short answer is **no**.
 
-* there will be a tree of `ActivatedRoute` nodes; the nodes are determined based on the provided route configuration
-* whenever a new navigation occurs, Angular Router creates a new `ActivatedRoute` tree based on the current one; it will not create a new one entirely, for example some nodes can be reused, which is the case where the existing `ActivatedRoute` is updated and these results can be seen in the component; 
-  * ex where nodes are reused
-  * ex where notes are added
-  * * ex where notes are removed
+[Here's](https://github.com/angular/angular/blob/master/packages/router/src/create_router_state.ts#L76-L80) how an `ActivatedRoute` is created:
 
-```ts
-/* 
-{ path: 'foo/:id', comp: FooComp }
+```typescript
+function createActivatedRoute(c: ActivatedRouteSnapshot) {
+  return new ActivatedRoute(
+      new BehaviorSubject(c.url), new BehaviorSubject(c.params), new BehaviorSubject(c.queryParams),
+      new BehaviorSubject(c.fragment), new BehaviorSubject(c.data), c.outlet, c.component, c);
+}
+```
 
-inside `FooComp`
+Assuming you have a configuration that looks like this:
 
-route.params.subscribe(() => ....)
+```typescript
+{
+  path: 'a/:id',
+  component: AComponent,
+  children: [
+    {
+      path: 'b',
+      component: BComponent,
+    },
+    {
+      path: 'c',
+      component: CComponent,
+    },
+  ]
+}
+```
 
-on `foo/1` -> we'd get { id: 1 }
-on `foo/1` -> nothing
-on `foo/2` -> we'd get { id: 2 }
+and an issued URL like `a/123/b`
 
-create_router_state/createNode()
+you'd end up having a **tree** of `ActivatedRoute`s:
 
-const value = prevState.value;
-value._futureSnapshot = curr.value;
-const children = createOrReuseChildren(routeReuseStrategy, curr, prevState);
-return new TreeNode<ActivatedRoute>(value, children);
+```
+ APP
+  |
+  A
+  |
+  B
+```
 
-setting `_futureSnapshot` is very imp for the comparison
-*/
-export function advanceActivatedRoute(route: ActivatedRoute): void {
-  if (route.snapshot) {
-    const currentSnapshot = route.snapshot;
-    const nextSnapshot = route._futureSnapshot;
-    route.snapshot = nextSnapshot;
-    if (!shallowEqual(currentSnapshot.queryParams, nextSnapshot.queryParams)) {
-      (<any>route.queryParams).next(nextSnapshot.queryParams);
+Whenever you schedule a navigation(e.g `router.navigateToUrl()`), the router has to go through some important phases:
+
+* **apply redirects**: checking for redirects, loading lazy-loaded modules, finding `NoMatch` errors
+* **recognize**: creating the `ActivatedRouteSnapshot` tree
+* **preactivation**: comparing the resulted tree with the current one; this phase also _collects_ `canActivate` and `canDeactivate` guards, based on the differences found
+* **running guards**
+* **create router state**: where `ActivatedRoute` tree is created
+* **activating the routes**: this is the cherry on the cake and the place where the `ActivatedRoute` tree is leveraged
+  
+It is also important to mention the role that `router-outlet` plays.
+
+As it has been described in the previous section, Angular keeps track of the `router-outlet`s with the help of a `Map` object.
+
+So, for our route configuration:
+
+```typescript
+{
+  path: 'a/:id',
+  component: AComponent,
+  children: [
+    {
+      path: 'b',
+      component: BComponent,
+    },
+    {
+      path: 'c',
+      component: CComponent,
+    },
+  ]
+}
+```
+
+the `RouterOutlet`'s contexts `Map` would look like this(roughly):
+
+```typescript
+{
+  primary: { // Where `AComponent` resides [1]
+    children: {
+      // Here `AComponent`'s children reside [2]
+      primary: { children: { /* ... */ } }
     }
-    if (currentSnapshot.fragment !== nextSnapshot.fragment) {
-      (<any>route.fragment).next(nextSnapshot.fragment);
-    }
-    if (!shallowEqual(currentSnapshot.params, nextSnapshot.params)) {
-      (<any>route.params).next(nextSnapshot.params);
-    }
-    if (!shallowEqualArrays(currentSnapshot.url, nextSnapshot.url)) {
-      (<any>route.url).next(nextSnapshot.url);
-    }
-    if (!shallowEqual(currentSnapshot.data, nextSnapshot.data)) {
-      (<any>route.data).next(nextSnapshot.data);
-    }
-  } else {
-    route.snapshot = route._futureSnapshot;
-
-    // this is for resolved data
-    (<any>route.data).next(route._futureSnapshot.data);
   }
 }
 ```
 
----
+When a `RouterOutlet` is activated(it is about to render something), its [`activateWith`](https://github.com/angular/angular/blob/master/packages/router/src/directives/router_outlet.ts#L132-L149) method will be called. We've seen in the previous section that this is the place where the `OutletInjector` is created, which is what provides the scope for `ActivatedRoute`s:
 
-## Is it necessary to unsubscribe from ActivatedRoute's properties ?
+```typescript
+activateWith(activatedRoute: ActivatedRoute, resolver: ComponentFactoryResolver|null) {
+  if (this.isActivated) {
+    throw new Error('Cannot activate an already activated outlet');
+  }
 
-* https://stackoverflow.com/questions/62254252/angular-observables-never-come-to-completion-handler/62259184#62259184
+  this._activatedRoute = activatedRoute;
+    
+  /* ... */
+
+  const injector = new OutletInjector(activatedRoute, childContexts, this.location.injector);
+  this.activated = this.location.createComponent(factory, this.location.length, injector);
+}
+```
+
+Note that `this.activated` holds the **routed component**(e.g `AComponent`) and `this._activatedRoute` holds the `ActivatedRoute` for this component.
+
+Let's see now [what happens](https://github.com/angular/angular/blob/master/packages/router/src/operators/activate_routes.ts#L109-L126) when we're navigating to another route and the current view is destroyed:
+
+```typescript
+deactivateRouteAndOutlet(
+    route: TreeNode<ActivatedRoute>, parentContexts: ChildrenOutletContexts): void {
+  const context = parentContexts.getContext(route.value.outlet);
+
+  if (context) {
+    const children: {[outletName: string]: any} = nodeChildrenAsMap(route);
+    
+    // from this we can also deduce that a component requires an additional `router-outlet` in this template
+    // if it is part of route config. object where there is also a `children`/`loadChildren` property
+    // the `route`'s `children` can also refer the routes obtained after loading a lazy module
+    const contexts = route.value.component ? context.children : parentContexts;
+
+    // Deactivate children first
+    forEach(children, (v: any, k: string) => this.deactivateRouteAndItsChildren(v, contexts));
+
+    if (context.outlet) {
+      // Destroy the component
+      context.outlet.deactivate();
+      // Destroy the contexts for all the outlets that were in the component
+      context.children.onOutletDeactivated();
+    }
+  }
+}
+```
+
+where `RouterOutlet.deactivate()` looks [like this](https://github.com/angular/angular/blob/master/packages/router/src/directives/router_outlet.ts#L122-L130):
+
+```typescript
+deactivate(): void {
+  if (this.activated) {
+    const c = this.component;
+    this.activated.destroy(); // Destroying the current component
+    this.activated = null;
+    // Nulling out the activated route - so no `complete` notification
+    this._activatedRoute = null;
+    this.deactivateEvents.emit(c);
+  }
+}
+```
+
+Notice that `this._activatedRoute = null;`, which means there is no need to unsubscribe from `ActivatedRoute`'s observable properties. That's because these properties are `BehaviorSubject`s and, as we know, a `Subject` type maintains a list of subscribers. The memory leak may occur when the subscriber has not _removed itself_ from the list(it can remote itself by using `subscriber.unsubscribe()`). But when the entity that holds everything(in this case the list of subscribers) is nulled out, it can be garbage collected, since it's no longer referenced, meaning that the subscriber which has not unsubscribed can non longer be invoked.
 
 ---
 
@@ -848,3 +935,20 @@ expect(recordedData).toEqual([{data: 0}, {data: 1}]);
 ---
 
 * `pathMatch` property: https://stackoverflow.com/questions/62850709/nested-routing-in-angular/62854244#62854244
+* plus
+  ```typescript
+  // issuing `/foo` -> will go to the right route
+  const routes = [
+    {
+      path: '',
+      component: /* ... */,
+    },
+    {
+      path: 'foo',
+      component: /* ... */
+    }
+  ]
+  ```
+
+
+FRESH: https://stackblitz.com/edit/exp-routing-router-outlet-fvdwjd?file=src%2Fapp%2Fapp.module.ts
