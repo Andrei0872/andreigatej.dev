@@ -722,107 +722,98 @@ There is also a nice tip that is related to this feature and this allows us to r
 
 ## How to specify when guards and resolvers should run
 
-```ts
-function configureRouter(router: Router, runGuardsAndResolvers: RunGuardsAndResolvers):
-    ComponentFixture<RootCmpWithTwoOutlets> {
-  const fixture = createRoot(router, RootCmpWithTwoOutlets);
+One of the fascinating things about `@angular/router` is the amount of features and customizations it provides us with. One of them is the `runGuardsAndResolvers` option, which can be used in the `Route` configuration object:
 
-  router.resetConfig([
-    {
-      path: 'a',
-      runGuardsAndResolvers,
-      component: RouteCmp,
-      canActivate: ['guard'],
-      resolve: {data: 'resolver'}
-    },
-    {path: 'b', component: SimpleCmp, outlet: 'right'}, {
-      path: 'c/:param',
-      runGuardsAndResolvers,
-      component: RouteCmp,
-      canActivate: ['guard'],
-      resolve: {data: 'resolver'}
-    },
-    {
-      path: 'd/:param',
-      component: WrapperCmp,
-      runGuardsAndResolvers,
-      children: [
-        {
-          path: 'e/:param',
-          component: SimpleCmp,
-          canActivate: ['guard'],
-          resolve: {data: 'resolver'},
-        },
-      ]
-    }
-  ]);
-
-  router.navigateByUrl('/a');
-  advance(fixture);
-  return fixture;
-}
-
+```typescript
 export type RunGuardsAndResolvers =
     'pathParamsChange'|'pathParamsOrQueryParamsChange'|'paramsChange'|'paramsOrQueryParamsChange'|
     'always'|((from: ActivatedRouteSnapshot, to: ActivatedRouteSnapshot) => boolean);
+```
 
-// `paramsChange` - matrix params changed (default)
- const fixture = configureRouter(router, 'paramsChange');
+Instead of using a StackBlitz application, this time we'll use some examples extracted from a few test cases. The route configuration will be this:
 
-const cmp: RouteCmp = fixture.debugElement.children[1].componentInstance;
+```typescript
+// runGuardsAndResolvers: RunGuardsAndResolvers = 'paramsChange' (the default value)
+[
+  {
+    path: 'a',
+    runGuardsAndResolvers,
+    component: /* ... */,
+    canActivate: ['guard'],
+    resolve: {data: 'resolver'}
+  },
+]
+```
+
+with the mention that `resolver` is simply a counter, which is incremented every time its function is invoked.
+
+Here are some examples, along with the logic that defines the test case:
+
+```typescript
+router.navigateByUrl('/a');
+const cmp = /* ... */; // the component associated with the `path: 'a'` route
 const recordedData: any[] = [];
-cmp.route.data.subscribe((data: any) => recordedData.push(data));
+cmp.route.data.subscribe((data: any) => recordedData.push(data)); // the values will be of type: `{ data: counterValue }`
 
-expect(guardRunCount).toEqual(1);
+runGuardsAndResolvers = `paramsChange` // run guards & resolvers when either `positional params` or `matrix params` change
+
+// since the first navigation already occurred, the resolver function was invoked once
 expect(recordedData).toEqual([{data: 0}]);
 
+// although it's the same URL, the matrix params are different, so the guards and resolvers will be invoked once again
 router.navigateByUrl('/a;p=1');
-advance(fixture);
-expect(guardRunCount).toEqual(2);
 expect(recordedData).toEqual([{data: 0}, {data: 1}]);
 
+// same case the previous one
 router.navigateByUrl('/a;p=2');
-advance(fixture);
-expect(guardRunCount).toEqual(3);
 expect(recordedData).toEqual([{data: 0}, {data: 1}, {data: 2}]);
 
-// would've changed if `paramsOrQueryParamsChange`
 router.navigateByUrl('/a;p=2?q=1');
-advance(fixture);
-expect(guardRunCount).toEqual(3);
+// this time, nothing is changed, because only the `queryParams` have changed, but not the params
+// this would've worked if `runGuardsAndResolvers` was set to `paramsOrQueryParamsChange`
+// so, `paramsOrQueryParamsChange` = `paramsChange` | `queryParamsChange`
 expect(recordedData).toEqual([{data: 0}, {data: 1}, {data: 2}]);
+```
 
-// `pathParamsChange` - a/1 !== a/2
-// Changing any optional params will not result in running guards or resolvers
+The `pathParamsChange` option might seem a bit confusing at first, but we might be able to clarify it a few examples:
+
+```typescript
+// let's presume the counter has been reset 
+
+// run guards & resolvers when only the positional params change
+// under the hood its just comparing the URLs of 2 `ActivatedRouteSnapshot` nodes that have the same route config. object
+runGuardsAndResolvers = 'pathParamsChange'
+
+router.navigateByUrl('/a');
+
+// `pathParamsChange` implies something like `a/1 !== a/2`
+// changing any optional(matrix) params will not result in running guards or resolvers
 router.navigateByUrl('/a;p=1');
-advance(fixture);
-expect(guardRunCount).toEqual(1);
 expect(recordedData).toEqual([{data: 0}]);
 
 router.navigateByUrl('/a;p=2');
-advance(fixture);
-expect(guardRunCount).toEqual(1);
 expect(recordedData).toEqual([{data: 0}]);
+```
 
-// `pathParamsOrQueryParamsChange`
-// Changing matrix params will not result in running guards or resolvers
+Lastly, we have `pathParamsOrQueryParamsChange` which is the same as `pathParamsChange` from above, but it will also run the guards and the resolvers when `queryParams` change:
+
+```typescript
+// let's presume the counter has been reset 
+
+runGuardsAndResolvers = 'pathParamsOrQueryParamsChange'
+
+router.navigateByUrl('/a');
+
+// changing matrix params will not result in running guards or resolvers
 router.navigateByUrl('/a;p=1');
-advance(fixture);
-expect(guardRunCount).toEqual(1);
 expect(recordedData).toEqual([{data: 0}]);
 
 router.navigateByUrl('/a;p=2');
-advance(fixture);
-expect(guardRunCount).toEqual(1);
 expect(recordedData).toEqual([{data: 0}]);
 
-// Adding query params will re-run guards/resolvers
+// adding query params will re-run guards/resolvers
 router.navigateByUrl('/a;p=2?q=1');
-advance(fixture);
-expect(guardRunCount).toEqual(2);
 expect(recordedData).toEqual([{data: 0}, {data: 1}]);
-
-// `(from, to) => to.paramMap.get('p') === '2'` - a predicate fn
 ```
 
 ---
