@@ -612,131 +612,92 @@ Notice that `this._activatedRoute = null;`, which means there is no need to unsu
 
 ---
 
-## `paramsInheritanceStrategy` option
+## The `paramsInheritanceStrategy` option
 
-* not only `params`, but also the `data` values
+This option can be specified as part of the `ExtraOptions` object when calling `RouterModule.forRoot([], extraOptions)` and accepts 2 values: `'emptyOnly'`(default) or `'always'`. When using `'emptyOnly'`, what is does is to allow for `params` and `data` objects to be _inherited_ from the parent route, if the current route(not necessarily the activated one) has `path: ''` or if the parent route is a componentless route.
 
-```ts
-/* 
-`paramsInheritanceStrategy: 'emptyOnly'|'always' = 'emptyOnly';`
+For instance, with such route configuration:
 
-if route config obj has `path: ''` | the parent route has a componentless route -> it will inherit `data` and `params` from the parent 
-*/
-const fixture = createRoot(router, RootCmpWithTwoOutlets);
-router.resetConfig([{
-  path: 'parent/:id',
-  data: {one: 1},
-  resolve: {two: 'resolveTwo'},
-  children: [
-    {path: '', data: {three: 3}, resolve: {four: 'resolveFour'}, component: RouteCmp}, {
-      path: '',
-      data: {five: 5},
-      resolve: {six: 'resolveSix'},
-      component: RouteCmp,
-      outlet: 'right'
-    }
-  ]
-}]);
-
-router.navigateByUrl('/parent/1');
-advance(fixture);
-
-const primaryCmp = fixture.debugElement.children[1].componentInstance;
-const rightCmp = fixture.debugElement.children[3].componentInstance;
-
-expect(primaryCmp.route.snapshot.data).toEqual({one: 1, two: 2, three: 3, four: 4});
-expect(rightCmp.route.snapshot.data).toEqual({one: 1, two: 2, five: 5, six: 6});
-```
-
-```ts
-// worth a visualization! :)
-// + `inheritedParamsDataResolve`
-inheritParamsAndData(routeNode: TreeNode<ActivatedRouteSnapshot>): void {
-  const route = routeNode.value;
-
-  const i = inheritedParamsDataResolve(route, this.paramsInheritanceStrategy);
-  route.params = Object.freeze(i.params);
-  route.data = Object.freeze(i.data);
-
-  routeNode.children.forEach(n => this.inheritParamsAndData(n));
-}
-```
-
-```ts
-// `data`
-// `paramsInheritanceStrategy`
-// (!) could include such comparison in `features of angular/router`
- checkRecognize(
-[{
-  path: 'a',
-  data: {one: 1},
-  children: [{path: 'b', data: {two: 2}, component: ComponentB}]
-}],
-'a/b', (s: RouterStateSnapshot) => {
-  const r: ActivatedRouteSnapshot =
-      (s as any).firstChild(<any>(s as any).firstChild(s.root))!;
-  // because the parent is a componentless route
-  expect(r.data).toEqual({one: 1, two: 2});
-});
-
-// example where the parent is **not** a componentless route
-// assuming `paramsInheritanceStrategy: 'empty'`
-// if set on `always` - it will inherit from the parent as well
-checkRecognize(
-[{
-  path: 'a',
-  component: ComponentA,
-  data: {one: 1},
-  children: [{path: 'b', data: {two: 2}, component: ComponentB}]
-}],
-'a/b', (s: any /* RouterStateSnapshot */) => {
-  const r: ActivatedRouteSnapshot = s.firstChild(<any>s.firstChild(s.root))!;
-  expect(r.data).toEqual({two: 2});
-});
-
-// could also include this in `params` section
-it('should inherit params', () => {
-  checkRecognize(
-      [{
-        path: 'a',
-        component: ComponentA,
-        children:
-            [{path: '', component: ComponentB, children: [{path: '', component: ComponentC}]}]
-      }],
-      '/a;p=1', (s: RouterStateSnapshot) => {
-        checkActivatedRoute((s as any).firstChild(s.root)!, 'a', {p: '1'}, ComponentA);
-        checkActivatedRoute(
-            (s as any).firstChild((s as any).firstChild(s.root)!)!, '', {p: '1'}, ComponentB);
-        checkActivatedRoute(
-            (s as any).firstChild((s as any).firstChild((s as any).firstChild(s.root)!)!)!,
-            '', {p: '1'}, ComponentC);
-      });
-});
-
-checkRecognize(
-[{
-  path: 'p/:id',
-  children: [{
-    path: 'a/:name',
+```typescript
+const routes: Routes = [
+  {
+    path: "",
+    pathMatch: "full",
+    component: DefaultComponent
+  },
+  {
+    path: "a/:id",
+    data: { one: 1 },
+    resolve: { two: "resolveTwo" },
+    // component: AComponent,
     children: [
-      {path: 'b', component: ComponentB, children: [{path: 'c', component: ComponentC}]}
+      { path: "", data: { three: 3 }, component: BComponent },
+      {
+        path: "",
+        data: { four: 4 },
+        resolve: { five: "resolveFive" },
+        component: CComponent,
+        outlet: "named-c"
+      }
     ]
-  }]
-}],
-'p/11/a/victor/b/c', (s: RouterStateSnapshot) => {
-  const p = (s as any).firstChild(s.root)!;
-  checkActivatedRoute(p, 'p/11', {id: '11'}, undefined!);
-
-  const a = (s as any).firstChild(p)!;
-  checkActivatedRoute(a, 'a/victor', {id: '11', name: 'victor'}, undefined!);
-
-  const b = (s as any).firstChild(a)!;
-  checkActivatedRoute(b, 'b', {id: '11', name: 'victor'}, ComponentB);
-
-  const c = (s as any).firstChild(b)!;
-  checkActivatedRoute(c, 'c', {}, ComponentC);
-});
+  }
+];
 ```
+
+if we navigate to `/a/123`, firstly, both `children` routes will be activated(because both have `path: ''`), then both of them will inherit the `data` and `params` object from their parent: `params: { id: 123, }`, `data: { one: 1, two: valueOfResolveTwo }`. Had we uncommented the `component: AComponent,` line, the results would be the same, since the condition for inheritance is for the route object to either have a componentless parent route, or the route itself to have the `path` set to `''`.
+
+You can see the above results and experiment further in this [StackBlitz demo](https://stackblitz.com/edit/exp-routing-paramsinheritance-sample-1?file=src%2Fapp%2Fapp.module.ts).
+
+Let's also examine a few other examples:
+
+```typescript
+[
+  {
+    path: 'a',
+    data: { one: 1 },
+    children: [ { path: 'b', data: { two: 2 }, component: ComponentB } ]
+  }
+]
+```
+
+After navigating to `a/b`, the `ComponentB`'s `ActivatedRoute.data` will be `{one: 1, two: 2}`, because the parent `ActivatedRoute` belongs to a componentless route.
+
+```typescript
+[
+  {
+    path: 'a',
+    component: ComponentA,
+    data: { one: 1 },
+    children: [ { path: 'b', data: { two: 2 }, component: ComponentB } ],
+  },
+]
+```
+
+After navigating to `a/b`, the `ComponentB`'s `ActivatedRoute.data` will be `{ two: 2 }`, because neither the current `ActivatedRoute` belongs to a `path: ''` route, nor the parent `ActivatedRoute` belongs to a componentless route. Had we set `paramsInheritanceStrategy: 'always'`, we would get `{ one: 1, two: 2 }`.
+
+And lastly
+
+```typescript
+[
+  {
+    path: 'foo/:id',
+    children: [
+      {
+        path: 'a/:name',
+        children: [
+          { 
+            path: 'b', 
+            component: ComponentB, 
+            children: [ { path: 'c', component: ComponentC } ]
+          }
+        ]
+      }
+    ]
+  }
+]
+```
+
+After navigating to `foo/123/a/andrei/b/c`, the `ComponentB`'s `ActivatedRoute` will have the `params` set to `{ id: 123, name: 'andrei' }`(its parent belongs to a componentless route and the parent of its parent does the same), whereas the `ComponentC`'s `ActivatedRoute` will have `params` set to `{}`, since the route it belongs to has `path: 'c'` and the parent `ActivatedRoute` does _not_ belong to a componentless route.
 
 ---
 
@@ -952,3 +913,7 @@ expect(recordedData).toEqual([{data: 0}, {data: 1}]);
 
 
 FRESH: https://stackblitz.com/edit/exp-routing-router-outlet-fvdwjd?file=src%2Fapp%2Fapp.module.ts
+
+## Conclusion
+
+* most of examples have been inspired from the tests written for `@angular/router`
