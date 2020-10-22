@@ -701,89 +701,21 @@ After navigating to `foo/123/a/andrei/b/c`, the `ComponentB`'s `ActivatedRoute` 
 
 ---
 
-## `queryParamsHandling`
+## The `queryParamsHandling` option
 
 * show _tip_ on how to reuse the same view(without reloading the page), but with different `queryParams`
 
-```ts
-it('should update hrefs when query params or fragment change', fakeAsync(() => {
-      @Component({
-        selector: 'someRoot',
-        template:
-            `<router-outlet></router-outlet><a routerLink="/home" preserveQueryParams preserveFragment>Link</a>`
-      })
-      class RootCmpWithLink {
-      }
-      TestBed.configureTestingModule({declarations: [RootCmpWithLink]});
-      const router: Router = TestBed.inject(Router);
-      const fixture = createRoot(router, RootCmpWithLink);
+This option can be specified as a property on `RouterLink` directive or `RouterLinkWithRef` directive and can accept two values: ``merge`` or `'preserve'`.
 
-      router.resetConfig([{path: 'home', component: SimpleCmp}]);
+All the examples can be found in this [StackBlitz demo](https://stackblitz.com/edit/exp-routing-queryparamshandling?file=src%2Fapp%2Fcomponents%2Fa.component.ts).
 
-      const native = fixture.nativeElement.querySelector('a');
+There is also a nice tip that is related to this feature and this allows us to reuse the same view, without reloading the component, but with different `queryParams`:
 
-      router.navigateByUrl('/home?q=123');
-      advance(fixture);
-      expect(native.getAttribute('href')).toEqual('/home?q=123');
-
-      router.navigateByUrl('/home?q=456');
-      advance(fixture);
-      expect(native.getAttribute('href')).toEqual('/home?q=456');
-
-      router.navigateByUrl('/home?q=456#1');
-      advance(fixture);
-      expect(native.getAttribute('href')).toEqual('/home?q=456#1');
-    }));
-
-// `merge` strategy
-@Component({
-  selector: 'someRoot',
-  template:
-    `<router-outlet></router-outlet><a routerLink="/home" [queryParams]="{removeMe: null, q: 456}" queryParamsHandling="merge">Link</a>`
-})
-class RootCmpWithLink {
-}
-TestBed.configureTestingModule({declarations: [RootCmpWithLink]});
-const router: Router = TestBed.inject(Router);
-const fixture = createRoot(router, RootCmpWithLink);
-
-router.resetConfig([{path: 'home', component: SimpleCmp}]);
-
-const native = fixture.nativeElement.querySelector('a');
-
-router.navigateByUrl('/home?a=123&removeMe=123');
-advance(fixture);
-expect(native.getAttribute('href')).toEqual('/home?a=123&q=456');
-```
-
----
-
-## What happens when a route transition fails ? 
-
-* what does it mean _to fail_ ?
-  * route guard returned `false`
-  * error occurred - can't find a match
-
-```ts
-/* 
-if the guard checks do not pass, the route navigation will simply return false and the current URL will remain intact
-
-`this.resetUrlToCurrentUrlTree();`
-*/
-const fixture = createRoot(router, RootCmp);
-
-router.resetConfig([
-  {path: 'one', component: SimpleCmp},
-  {path: 'two', component: SimpleCmp, canActivate: ['alwaysFalse']}
-]);
-
-router.navigateByUrl('/one');
-advance(fixture);
-expect(location.path()).toEqual('/one');
-
-location.go('/two');
-advance(fixture);
-expect(location.path()).toEqual('/one');
+```html
+<!-- assuming the current route has `k1='v1'` -->
+<!-- after clicking the button, the same component will be used(without being reloaded) -->
+<!-- but the `queryParams` this time will be those written below -->
+<button [queryParams]="{ k2: 'v2', k1: 'foo-value-refreshed' }" [routerLink]="[]">...</button>
 ```
 
 ---
