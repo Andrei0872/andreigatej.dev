@@ -1,9 +1,8 @@
 # Angular Router: Revealing some interesting facts and features
 
-It is undeniable that the `angular/router` package is full of useful features. In this article, instead of focusing on an a single and precise topic, we're going to look at some interesting facts and features of this package that you might not be aware of. These can range from sorts of comparisons(e.g `relative` vs `absolute` redirects) to nonobvious details(e.g `ActivatedRoute`'s properties; how the URL is set in the browser etc).
+It is undeniable that the `angular/router` package is full of useful features. This time, instead of focusing on an a single and precise topic, we're going to look at some interesting facts and properties of this package that you might not be aware of. These can range from sorts of comparisons(e.g `relative` vs `absolute` redirects) to nonobvious details(e.g `RouterOutlet`'s hierarchy; how the URL is set in the browser etc).
 
-* this article assumes the reader has some basic knowledge of Angular Router;
-* by the end of this article, you should have a better understanding of what this package is capable of and, hopefully, a few questions answered about it
+This article assumes the reader has some basic knowledge of Angular Router(e.g. route navigations, outlets). By the end of it, you should have a better understanding of what this package is capable of.
 
 ## Relative vs Absolute Redirects
 
@@ -257,8 +256,6 @@ Under the hood, Angular Router simply uses the native [history API](https://deve
 
 Here's a [StackBlitz demo](https://stackblitz.com/edit/exp-routing-replace-state?file=src%2Fapp%2Fapp.module.ts) that demonstrates the behavior that can be achieved with the `replaceUrl` option.
 
-<!-- GIF -->
-
 ---
 
 ## The skipLocationChange option
@@ -267,10 +264,7 @@ What this options does is to ensure that the `Router`'s method which is responsi
 
 Here you can find a [StackBlitz demo](https://stackblitz.com/edit/exp-routing-skiplocationchange?file=src%2Fapp%2Fcomponents%2Fa.component.ts). 
 
-<!-- GIF -->
-
 As you can see, because this option is used, the `/d` will not even be shown in the address bar. Despite this, the `/d` route's component (`DComponent`) will be loaded.
-
 
 ---
 
@@ -294,9 +288,9 @@ const routes = [
 ];
 ```
 
-and let's also assume that we inject `ActivatedRoute` inside `BarComponent`, have you ever wondered why, when navigating to `foo/bar/123`, the `ActivatedRoute` instance is the _correct_ one(e.g it exposes the `params`, `queryParams` that are related to `bar/:id` route)? It's again an important detail that's handled by the `RouterOutlet` directive. In this section, we're going to explore how is this achieved(**hint**: it involves creating a custom injector).
+and let's also assume that we inject `ActivatedRoute` inside `BarComponent`. Have you ever wondered why, when navigating to `foo/bar/123`, the `ActivatedRoute` instance is the _correct_ one(e.g it exposes the `params`, `queryParams` that are related to `bar/:id` route)? It's again an important detail that's handled by the `RouterOutlet` directive. In this section, we're going to explore how is this achieved(**hint**: it involves creating a custom injector!).
 
-Let's consider a simple scenario - we have a route configuration like this:
+Let's consider a simpler scenario - we have a route configuration like this:
 
 ```typescript
 // app.module.ts
@@ -370,7 +364,7 @@ export class OutletContext {
 }
 ```
 
-So, when any `RouterDirective` is created, it will right away invoke `ChildrenOutletContexts.onChildOutletCreated()`. Then, we either reuse an existing _context_(we'll see an example a bit later) or we create a new one, which is the current situation. We've introduced the _context_ concept and it can be accurately described by the `OutletContext`. An interesting thing to notice here is that a _context_ has a `children` property, which points `ChildrenOutletContexts`. What this means is that we can visualize this process as a tree of _contexts_, more exactly a tree of `OutletContext` instances.
+So, when any `RouterDirective` is created, it will right away invoke `ChildrenOutletContexts.onChildOutletCreated()`. Then, it will either reuse an existing _context_ or it create a new one, which is the current situation. We've introduced the _context_ concept and it can be accurately described by the `OutletContext`. An interesting thing to notice here is that a _context_ has a `children` property, which points `ChildrenOutletContexts`. What this means is that we can visualize this process as a tree of _contexts_, more exactly a tree of `OutletContext` instances.
 
 What you might wonder now is why the `ChildrenOutletContexts` class needs to maintains a map of `OutletContext`s:
 
@@ -412,7 +406,7 @@ This time, the _main_ `ChildrenOutletContexts` class will have its `onChildOutle
 }
 ```
 
-If we were to use the `tree`'s parlance, we'd say that the `context` map represents a **level** of a tree and each of its values would go one level deeper.
+If we were to use the `tree`'s parlance, we'd say that the `context` map's entries represents a **level** of a tree and each of its values would go one level deeper.
 
 Let's sharpen this newly learned concept with a help of a [StackBlitz demo](https://stackblitz.com/edit/exp-routing-router-outlet?file=src%2Fapp%2Fapp.module.ts), with the help of which we'll be able to see that this hierarchy is about:
 
@@ -818,25 +812,8 @@ expect(recordedData).toEqual([{data: 0}, {data: 1}]);
 
 ---
 
-* `pathMatch` property: https://stackoverflow.com/questions/62850709/nested-routing-in-angular/62854244#62854244
-* plus
-  ```typescript
-  // issuing `/foo` -> will go to the right route
-  const routes = [
-    {
-      path: '',
-      component: /* ... */,
-    },
-    {
-      path: 'foo',
-      component: /* ... */
-    }
-  ]
-  ```
-
-
-FRESH: https://stackblitz.com/edit/exp-routing-router-outlet-fvdwjd?file=src%2Fapp%2Fapp.module.ts
-
 ## Conclusion
 
-* most of examples have been inspired from the tests written for `@angular/router`
+In this article we went through many of the `@angular/router`'s useful features. I hope it was able to answer some questions you might have got about this package and shed a light on why it is so powerful.
+
+**Thanks for reading!**
