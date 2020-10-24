@@ -12,7 +12,11 @@ export default function MenuOverlay({ links, toggleOverlay, isOpened }) {
         {
           links.map((l, idx) => (
             <li key={idx} onClick={toggleOverlay} className="c-overlay__item">
-              <Link className="h-base-link" to={l.href}>{l.name}</Link>
+              {
+                l.external
+                  ? <a className="h-base-link is-external" target="_blank" rel="noopener noreferrer" href={l.href}>{l.name}</a>
+                  : <Link className="h-base-link" to={l.href}>{l.name}</Link>
+              }
             </li>
           ))
         }

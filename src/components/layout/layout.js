@@ -19,6 +19,7 @@ const links = [
   { name: 'Work', href: '/#work' },
   { name: 'About', href: '/#about' },
   { name: 'Contact', href: '/#contact' },
+  { name: 'Resume', href: 'https://andreigatej.dev/resume.pdf', external: true },
 ];
 
 const Layout = ({ children }) => {

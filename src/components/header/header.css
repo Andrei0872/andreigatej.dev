@@ -37,6 +37,11 @@
   position: relative;
 }
 
+.c-header .c-header__list-container > .c-header__list-item > a.is-external {
+  text-decoration: underline;
+  font-style: italic;
+} 
+
 /* .c-header .c-header__list-container > .c-header__list-item:not(:last-child)::after {
   content: "";
   position: absolute;
