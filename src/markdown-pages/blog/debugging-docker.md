@@ -8,6 +8,8 @@ date: 2020-08-30
 
 some intro
 
+* debugging with the help of containers will also ensure that the docker daemon is created with _root privileges_
+
 ## Docker CLI
 
 **docker-compose.yml**
@@ -67,11 +69,13 @@ CMD ["dlv", "debug", "/go/src/github.com/docker/cli/cmd/docker", "--headless", "
 steps:
 
 * `docker-compose up --build`
-* press `F5`
+* press `F5`, after you see something like `app_1  | API server listening at: [::]:2345` printed in the terminal
 
 ---
 
 ## Docker Engine
+
+make sure you run `make build` so the `bundles/` directory is created
 
 **docker-compose.yml**
 
