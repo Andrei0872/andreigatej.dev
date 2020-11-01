@@ -56,6 +56,8 @@ configDir     = os.Getenv("DOCKER_CONFIG")
 
 ## takeaways
 
+* `/var/run/docker` - the `ExecRoot`
+
 * `case "udp", "udp4", "udp6":`
 * get the actual type that implements an interface
   ```go
@@ -89,6 +91,16 @@ func processExists(pid int) bool {
 
 ```bash
 /var/run/containerd/.../moby/hash/config.json | jq .root # the location of the root filesystem
+```
+
+* `runc`
+
+```go
+// StockRuntimeName is the reserved name/alias used to represent the
+// OCI runtime being shipped with the docker daemon package.
+StockRuntimeName = "runc"
+
+// this is also de default runtime
 ```
 
 ## very interesting, worth showing
@@ -138,3 +150,24 @@ docker0		8000.0242192bc7be	no		veth70d54dc
 
 * https://www.karlrupp.net/en/computer/nat_tutorial
 * https://www.thegeekstuff.com/2011/06/iptables-rules-examples/
+
+## Questions
+
+* `docker.go#loadDaemonConfig`
+
+	```go
+	if flags.Changed("graph") && flags.Changed("data-root") {
+		return nil, errors.New(`cannot specify both "--graph" and "--data-root" option`)
+	}
+  ```
+
+* `Config.CommonConfig.MaxConcurrentDownloads`
+* `Config.CommonUnixConfig.Runtimes`
+* `daemon/config/config.go#config.ValidatePlatformConfig()` - `INC` * `cgroups`
+* what happens if `cli.Config.Rootless=true` ?
+* `daemon_unix.go#setupRemappedRoot` - `config.RemappedRoot` - what it does; related to **user namespaces**; on Google: docker daemon mapped roots; (my crt understanding): if you want to run docker in _rootless_ mode, you'll have to grant execute access (`+x`) to your user; worth researching on mount namespaces;
+  * linux mount propagation
+* `/var/lib/docker/unmount-on-shutdown` -> `daemon_unix.go#setupDaemonRootPropagation` 
+* `daemon.go#newAPIServerConfig` - what happens if `TLS` is set? `if cli.Config.TLS != nil && *cli.Config.TLS {}`
+
+https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt
