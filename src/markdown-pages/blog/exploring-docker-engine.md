@@ -153,6 +153,19 @@ docker0		8000.0242192bc7be	no		veth70d54dc
 
 ## Questions
 
+* `listeners_linux.go#Init` - `'fd'` ?
+
+* `daemon.go#loadListeners` -
+  
+```go
+// how does `allocateDaemonPort` work?
+if proto == "tcp" {
+		if err := allocateDaemonPort(addr); err != nil {
+			return nil, err
+		}
+	}
+```
+
 * `docker.go#loadDaemonConfig`
 
 	```go
@@ -169,5 +182,40 @@ docker0		8000.0242192bc7be	no		veth70d54dc
   * linux mount propagation
 * `/var/lib/docker/unmount-on-shutdown` -> `daemon_unix.go#setupDaemonRootPropagation` 
 * `daemon.go#newAPIServerConfig` - what happens if `TLS` is set? `if cli.Config.TLS != nil && *cli.Config.TLS {}`
+
+* named pipes
+	```go
+	func parseDaemonHost(addr string) (string, error) {
+		addrParts := strings.SplitN(addr, "://", 2)
+		if len(addrParts) == 1 && addrParts[0] != "" {
+			addrParts = []string{"tcp", addrParts[0]}
+		}
+
+		switch addrParts[0] {
+		case "tcp":
+			return ParseTCPAddr(addrParts[1], DefaultTCPHost)
+		case "unix":
+			return parseSimpleProtoAddr("unix", addrParts[1], DefaultUnixSocket)
+		case "npipe":
+			return parseSimpleProtoAddr("npipe", addrParts[1], DefaultNamedPipe)
+		case "fd":
+			return addr, nil
+		default:
+			return "", fmt.Errorf("Invalid bind address format: %s", addr)
+		}
+	}
+	```
+
+* so the same daemon can be bound to multiple servers?
+
+```go
+// `api/server/go`
+type Server struct {
+	cfg         *Config
+	servers     []*HTTPServer
+	routers     []router.Router
+	middlewares []middleware.Middleware
+}
+```
 
 https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt
