@@ -56,6 +56,27 @@ configDir     = os.Getenv("DOCKER_CONFIG")
 
 ## takeaways
 
+### `containerD`
+  ```go
+	// DefaultAddress is the default unix socket address
+	DefaultAddress = "/run/containerd/containerd.sock"
+	```
+	https://github.com/containerd/containerd
+
+	pid location: `/var/run/docker/containerd/containerd.pid"`
+	configuration path: `"/var/run/docker/containerd/containerd.toml"`
+	containerd: "--config" "/var/run/docker/containerd/containerd.toml" "--log-level" "info"
+	`remote.GRPC.Address` = `"/var/run/docker/containerd/containerd.sock"`
+	starting point for exploration:
+	
+starting point for exploration
+
+```go
+client, err = containerd.New(r.GRPC.Address, containerd.WithTimeout(60*time.Second))
+```
+
+* `/var/run/docker` && `/var/lib/docker`
+
 * `/var/run/docker` - the `ExecRoot`
 
 * `case "udp", "udp4", "udp6":`
@@ -153,6 +174,8 @@ docker0		8000.0242192bc7be	no		veth70d54dc
 
 ## Questions
 
+* linux signal trap
+
 * `listeners_linux.go#Init` - `'fd'` ?
 
 * `daemon.go#loadListeners` -
@@ -217,5 +240,32 @@ type Server struct {
 	middlewares []middleware.Middleware
 }
 ```
+
+* what is a `Shim` ?
+
+* what is `OOM` score ?
+
+```go
+// WithOOMScore defines the oom_score_adj to set for the containerd process.
+func WithOOMScore(score int) DaemonOpt {
+	return func(r *remote) error {
+		r.OOMScore = score
+		return nil
+	}
+}
+```
+
+* what is `CRI` ? - `CriContainerR`
+
+```go
+// /home/anduser/go/src/github.com/docker/docker/daemon/config/config.go
+
+// CriContainerd determines whether a supervised containerd instance
+// should be configured with the CRI plugin enabled. This allows using
+// Docker's containerd instance directly with a Kubernetes kubelet.
+CriContainerd bool `json:"cri-containerd,omitempty"`
+```
+
+* what is the `supervisor` package ? `"github.com/docker/docker/libcontainerd/supervisor"`
 
 https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt
