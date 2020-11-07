@@ -73,5 +73,31 @@ func NewUnixSocket(path string, gid int) (net.Listener, error) {
 }
 ```
 
-## Golang findings
+* check if a process is alive using the `kill` command
 
+```go
+// IsProcessAlive returns true if process with a given pid is running.
+func IsProcessAlive(pid int) bool {
+	err := unix.Kill(pid, syscall.Signal(0))
+	if err == nil || err == unix.EPERM {
+		return true
+	}
+
+	return false
+}
+```
+
+* file truncation
+
+```go
+// `foo.txt`: 12345
+// without `os.O_TRUNC` 99995
+
+func main() {
+	f, _ := os.OpenFile("foo.txt", os.O_WRONLY|os.O_TRUNC, 0600)
+
+	f.Write([]byte("9999"))
+}
+```
+
+https://stackoverflow.com/questions/32717793/understanding-file-truncation/32717926
