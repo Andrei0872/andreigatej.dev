@@ -75,6 +75,22 @@ steps:
 
 ## Docker Engine
 
+* clone the repo somewhere not in your `$GOPATH`
+  git clone ...
+* cd into `GOPATH$` and create a `src` directory; if it already exists, cd into it
+* copy the contents from the cloned repo in the current `src` directory
+  cp -r  ./ ~/Documents/docker-engine
+  this makes sure we can see the definitions of the dependencies used; we are not done yet, for example if we were to inspect the file where the entry point resides in, we'd see some red squiggles under imports like
+    containertypes "github.com/docker/docker/api/types/container"
+    "github.com/docker/docker/errdefs"
+	  "github.com/docker/docker/opts"
+  at a closer look, we notice that everything that's under `github.com/docker/docker` is exactly what the `docker-engine` directory contains; 
+  the means whereby we can address this issue is by creating the `github.com/docker/docker` directory under `src`
+  mkdir -p github.com/docker/docker && cd $_
+  and then copy the `docker-engine`'s contents into the newly created directory
+  cp -rT ~/Documents/docker-engine ./
+
+
 make sure you run `make build` so the `bundles/` directory is created
 
 **docker-compose.yml**
