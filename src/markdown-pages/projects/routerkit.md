@@ -2,6 +2,7 @@
 title: RouterKit
 order: 6
 tags: ["contribution", "angular", "angular-router"]
+date: 2000-01-02
 ---
 
 <a href="https://github.com/retarsis/routerkit" target="_blank">

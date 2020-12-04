@@ -2,6 +2,7 @@
 title: Daily (Back End)
 order: 3
 tags: ["contribution", "node", "graphql", "postgresql"]
+date: 2019-07-01
 ---
 
 Quoted from <a href="https://github.com/dailydotdev/daily" target="_blank">

@@ -12,7 +12,7 @@ import CommonPagesLayout from '../../components/common-pages-layout/common-pages
 export default function Projects() {  
   const { projects: { nodes: projects } } = useStaticQuery(graphql`
     query FetchProjects {
-      projects: allMarkdownRemark(filter: {fileAbsolutePath: {regex: "/projects/"}}, sort: {order: ASC, fields: frontmatter___order}) {
+      projects: allMarkdownRemark(filter: {fileAbsolutePath: {regex: "/projects/"}}, sort: {order: DESC, fields: frontmatter___date}) {
         totalCount
         nodes {
           fileAbsolutePath

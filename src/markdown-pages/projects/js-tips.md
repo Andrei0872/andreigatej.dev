@@ -2,6 +2,7 @@
 title: Javascript tips and tidbits 
 order: 5
 tags: ["contribution", "javascript"]
+date: 2000-01-01
 ---
 
 From the <a href="https://github.com/nas5w/javascript-tips-and-tidbits" target="_blank">

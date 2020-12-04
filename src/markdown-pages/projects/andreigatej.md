@@ -1,8 +1,8 @@
 ---
 title: andreigatej.dev
-date: 18.08.2020
 tags: ["react", "gatsby"]
 order: 4
+date: 2019-04-19
 ---
 
 This website.
