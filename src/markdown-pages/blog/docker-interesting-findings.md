@@ -101,3 +101,11 @@ func main() {
 ```
 
 https://stackoverflow.com/questions/32717793/understanding-file-truncation/32717926
+
+* listen to signals from the OSgo/src/github.com/docker/docker/pkg/signal/trap.go
+
+	```go
+	c := make(chan os.Signal, 1)
+	gosignal.Notify(c, signals...)
+	// then `for sig := range c { }`
+	```
