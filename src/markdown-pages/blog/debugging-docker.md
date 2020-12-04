@@ -91,7 +91,8 @@ steps:
   cp -rT ~/Documents/docker-engine ./
 
 
-make sure you run `make build` so the `bundles/` directory is created
+make sure you run `make build` so the `bundles/` directory is created(by running the `make binary` command)
+also make sure you comment `# bundles` from `/bundles`
 
 **docker-compose.yml**
 
