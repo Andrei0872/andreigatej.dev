@@ -1,7 +1,7 @@
 ---
 title: "Demystifying angular/router: what is `RouterScroller` and why is it useful ?"
 publication: https://indepth.dev/demystifying-angular-router-what-is-routerscroller-and-why-is-it-useful-2/
-date: 2020-10-6
+date: 2020-10-06
 published: true
 slug: /blog/does-not-matter
 tags: ["angular", "publication: inDepth.dev"]

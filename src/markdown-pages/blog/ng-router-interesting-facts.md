@@ -1,3 +1,12 @@
+---
+title: "Angular Router: Revealing some interesting facts and features"
+publication: https://indepth.dev/posts/1379/angular-router-revealing-some-interesting-facts-and-features
+date: 2020-10-28
+published: true
+slug: /blog/router-revealing-some-interesting-facts-and-features
+tags: ["angular", "publication: inDepth.dev"]
+---
+
 # Angular Router: Revealing some interesting facts and features
 
 It is undeniable that the `angular/router` package is full of useful features. This time, instead of focusing on an a single and precise topic, we're going to look at some interesting facts and properties of this package that you might not be aware of. These can range from sorts of comparisons(e.g `relative` vs `absolute` redirects) to nonobvious details(e.g `RouterOutlet`'s hierarchy; how the URL is set in the browser etc).
