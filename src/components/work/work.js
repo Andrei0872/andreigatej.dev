@@ -49,7 +49,11 @@ const sections = [
 const navigateToArticleOrBlog = ({ slug, publication }) => publication ? window.open(publication) : navigate(slug);
 
 export default function Work() {
-  const { projects: { nodes: sampleProjects }, blog: { nodes: sampleArticles } } = useStaticQuery(graphql`
+  const { 
+    projects: { nodes: sampleProjects }, 
+    blog: { nodes: sampleArticles },
+    myDevNotes: { nodes: sampleNotes },
+  } = useStaticQuery(graphql`
     query FetchSamples {
       blog: allMarkdownRemark(filter: {fileAbsolutePath: {regex: "/blog/"}, frontmatter: {isSample: {eq: true}}}) {
         totalCount
@@ -74,11 +78,26 @@ export default function Work() {
           }
         }
       }
+
+      myDevNotes: allMarkdownRemark(filter: {fileAbsolutePath: {regex: "/my-dev-notes/"}, frontmatter: {isSample: {eq: true}}}) {
+        totalCount
+        nodes {
+          fileAbsolutePath
+          frontmatter {
+            title
+            tags
+            slug
+          }
+          html
+        }
+      }
+
     }
   `);
 
   sections[1].samples = sampleProjects;
   sections[2].samples = sampleArticles;
+  sections[3].samples = sampleNotes;
   
   return (
     <section id="work" className="c-work">

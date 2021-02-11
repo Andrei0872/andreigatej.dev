@@ -3,6 +3,7 @@ title: "JavaScript Notes"
 slug: /my-dev-notes/javascript-notes
 parent: "Dev Notes"
 date: 2019-04-20
+isSample: true
 ---
 
 - [Concepts](#concepts)

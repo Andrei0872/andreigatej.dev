@@ -3,6 +3,7 @@ title: "Git Notes"
 slug: /my-dev-notes/git-notes
 parent: "Dev Notes"
 date: 2019-04-20
+isSample: true
 ---
 
 - [Concepts](#concepts)

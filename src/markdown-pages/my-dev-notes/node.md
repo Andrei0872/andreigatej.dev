@@ -3,6 +3,7 @@ title: "Node.js Notes"
 slug: /my-dev-notes/nodejs-notes
 parent: "Dev Notes"
 date: 2019-04-20
+isSample: true
 ---
 
 # Node.js Notebook

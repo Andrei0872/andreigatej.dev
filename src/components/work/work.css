@@ -19,6 +19,11 @@
 .c-work-section > p {
   margin-top: 0.7rem;
   font-size: 1.3rem;
+  line-height: 1.7rem;
+}
+
+.c-work-section > *:not(:first-child) {
+  padding-left: 0.5rem;
 }
 
 button.c-work-section__button {
