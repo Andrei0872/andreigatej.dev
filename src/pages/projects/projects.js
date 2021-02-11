@@ -9,7 +9,7 @@ import Tag from '../../components/tag/'
 import CommonPagesLayout from '../../components/common-pages-layout/common-pages-layout'
 
 
-export default function Projects() {  
+export default function Projects(props) {  
   const { projects: { nodes: projects } } = useStaticQuery(graphql`
     query FetchProjects {
       projects: allMarkdownRemark(filter: {fileAbsolutePath: {regex: "/projects/"}}, sort: {order: DESC, fields: frontmatter___date}) {
@@ -19,6 +19,7 @@ export default function Projects() {
           frontmatter {
             title
             tags
+            slug
           }
           html
         }
@@ -27,12 +28,20 @@ export default function Projects() {
   `
   );
 
+  if (props.location.hash) {
+    setTimeout(() => {
+      const elem = document.querySelector(props.location.hash)
+
+      elem && elem.scrollIntoView();
+    }, 0);
+  }
+
   return (
     <Layout>
       <CommonPagesLayout title="Projects">
         {
           projects.map(proj => (
-            <article key={proj.frontmatter.title} className="c-project">
+            <article id={proj.frontmatter.slug.slice(proj.frontmatter.slug.indexOf('#') + 1)} key={proj.frontmatter.title} className="c-project">
               <div className="c-project__header">
                 <h2 className="c-project__title">{proj.frontmatter.title}</h2>
                 <div className="c-project__tags">

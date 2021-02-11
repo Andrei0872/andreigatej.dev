@@ -3,6 +3,7 @@ title: andreigatej.dev
 tags: ["react", "gatsby"]
 order: 4
 date: 2019-04-19
+slug: /projects#andreigatej-dev
 ---
 
 This website.

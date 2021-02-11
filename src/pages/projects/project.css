@@ -4,6 +4,7 @@
   border: .3rem solid black;
   background: var(--light-yellow);
   margin-top: 3rem;
+  scroll-margin-top: 100px;
 }
 
 .c-project__header {
