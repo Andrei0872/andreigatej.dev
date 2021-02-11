@@ -30,6 +30,7 @@ export default function Blog() {
             published
             slug
             publication
+            date
           }
           html
         }
@@ -37,7 +38,7 @@ export default function Blog() {
     }
   `
   );
-  
+
   const [activeTags, setActiveTags] = React.useState({ [allTagsKey]: true });
 
   const toggleTag = tag => {
@@ -61,7 +62,7 @@ export default function Blog() {
 
   const filteredArticles = articles.filter(isPublished).filter(hasPostAllActiveTags.bind(null, activeTags))
   const noArticles = <h2 style={{ textAlign: 'center', marginTop: '5rem' }}>No articles available</h2>;
-  
+
   let tags = new Set([allTagsKey, indepthDevKey]);
   articles.filter(isPublished).forEach(({ frontmatter: { tags: t } }) => (tags = new Set([...tags, ...t])));
 
@@ -86,7 +87,12 @@ export default function Blog() {
          filteredArticles.length
             && filteredArticles
               .map(a => (
-                <article onClick={navigateToArticle.bind(null, a.frontmatter)} key={a.frontmatter.title} className="c-article">
+                <article 
+                  data-date={new Date(a.frontmatter.date).toLocaleDateString()}
+                  onClick={navigateToArticle.bind(null, a.frontmatter)} 
+                  key={a.frontmatter.title} 
+                  className="c-article"
+                >
                   <div className="c-article__title">{a.frontmatter.title}</div>
                   <div className="c-article__tags">
                     {

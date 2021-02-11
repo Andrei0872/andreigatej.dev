@@ -1,7 +1,7 @@
 .c-common {
   height: 100%;
   padding-top: 5rem;
-  width: 55%;
+  width: 65%;
   margin: 0 auto;
 }
 
@@ -28,7 +28,7 @@
 
 @media all and (max-width: 1110px) {
   .c-common {
-    width: 65%;
+    width: 75%;
   }
 }
 

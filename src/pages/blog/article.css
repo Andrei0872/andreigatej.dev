@@ -1,7 +1,7 @@
 .c-article {
   display: flex;
   flex-direction: column;
-  margin-top: 1rem;
+  margin-top: 2rem;
   border: 1px solid black;
   border-radius: 7px;
   padding: 0.6rem;
@@ -9,10 +9,18 @@
   border: 3px solid var(--secondary-grey);
   cursor: pointer;
   transition: transform .2s;
+  position: relative;
 }
 
-.c-article:first-of-type {
-  margin-top: 2rem;
+.c-article::after {
+  position: absolute;
+  content: attr(data-date);
+  right: 0;
+  top: 100%;
+  background: khaki;
+  padding: 0.4rem;
+  font-size: 0.8rem;
+  border-radius: 3px;
 }
 
 .c-article:hover {
