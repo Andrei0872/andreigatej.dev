@@ -20,6 +20,8 @@ export default function Template({ data, }) {
 
         <Link className="h-base-link c-blog-post__back" to={parentPath}>Back to {frontmatter.parent || 'Blog'}</Link>
 
+        {parentPath.includes('blog') ? <div className="c-blog-post__date">Published on {new Date(frontmatter.date).toLocaleDateString()}</div> : null}
+
         <div className="c-blog-post__content" dangerouslySetInnerHTML={{ __html: html }}></div>
       </div>
     </Layout>
@@ -34,6 +36,7 @@ export const pageQuery = graphql`
         slug
         title
         parent
+        date
       }
     }
   }

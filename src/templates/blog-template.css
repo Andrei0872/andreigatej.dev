@@ -23,6 +23,11 @@ ul > li {
   margin-top: 3rem;
 }
 
+.c-blog-post__date {
+  padding-left: 1rem;
+  font-style: italic;
+}
+
 .c-blog-post__content {
   padding: 1rem;
 }
