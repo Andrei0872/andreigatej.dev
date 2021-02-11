@@ -42,7 +42,7 @@ const sections = [
     </p>,
     samples: [],
     clickHandler: () => navigate('/my-dev-notes'),
-    buttonText: 'More notes',
+    buttonText: 'More Dev notes',
   },
 ];
 
