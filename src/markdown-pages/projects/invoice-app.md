@@ -3,6 +3,7 @@ title: "Invoice Application"
 tags: ["vue", "node", "mysql", "express"]
 order: 1
 date: 2019-08-07
+isSample: true
 ---
 
 *An application meant to facilitate the process of writing up a traditional invoice. Keeping track of goods sent and services provided should be a computer's job.*

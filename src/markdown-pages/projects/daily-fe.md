@@ -3,6 +3,7 @@ title: Daily (Front End)
 order: 2
 tags: ["contribution", "vue", "graphql", "javascript"]
 date: 2019-07-01
+isSample: true
 ---
 
 Quoted from <a href="https://github.com/dailydotdev/daily" target="_blank">

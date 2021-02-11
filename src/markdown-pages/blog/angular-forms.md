@@ -5,4 +5,5 @@ date: 2020-02-14
 published: true
 slug: /blog/forms
 tags: ["angular", "publication: inDepth.dev"]
+isSample: true
 ---

@@ -7,6 +7,7 @@ slug: /blog/angular-router-urlree
 tags: ["angular"]
 series: Demystifying angular/router
 part: 1
+isSample: true
 ---
 
 In this part, we're going to cover why `UrlTree` is the foundation of a route transition and how `ActivatedRouteSnapshot` and `ActivatedRoute` provide a way to achieve features like **guards**, **resolvers**, or how an `ActivatedRoute` can be _updated_.

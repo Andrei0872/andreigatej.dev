@@ -5,4 +5,5 @@ date: 2020-04-7
 published: true
 slug: /blog/ngrxstore
 tags: ["angular", "ngrx", "publication: inDepth.dev"]
+isSample: true
 ---

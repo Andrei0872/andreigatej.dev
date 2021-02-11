@@ -5,6 +5,7 @@ date: 2020-10-28
 published: true
 slug: /blog/router-revealing-some-interesting-facts-and-features
 tags: ["angular", "publication: inDepth.dev"]
+isSample: true
 ---
 
 # Angular Router: Revealing some interesting facts and features
