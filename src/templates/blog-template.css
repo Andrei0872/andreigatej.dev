@@ -9,6 +9,15 @@
   --link-color: #433E0E;
 }
 
+ul > li > ul > li {
+  margin-left: 1rem;
+  margin-top: .4rem;
+}
+
+ul > li {
+  margin-top: .5rem;
+}
+
 .c-blog-post__title {
   text-align: center;
   margin-top: 3rem;
@@ -16,6 +25,10 @@
 
 .c-blog-post__content {
   padding: 1rem;
+}
+
+.c-blog-post__content h1, h2, h3, h4, h5 {
+  scroll-margin-top: 100px;
 }
 
 .c-blog-post__content p {

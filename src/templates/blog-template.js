@@ -11,12 +11,14 @@ export default function Template({ data, }) {
   const { markdownRemark } = data
   const { frontmatter, html } = markdownRemark
   
+  const parentPath = frontmatter.slug.slice(0, frontmatter.slug.indexOf('/', 1));
+  
   return (
     <Layout>
       <div className="c-blog-post">
         <h1 className="c-blog-post__title">{frontmatter.title}</h1>
 
-        <Link className="h-base-link c-blog-post__back" to="/blog">Back to Blog</Link>
+        <Link className="h-base-link c-blog-post__back" to={parentPath}>Back to {frontmatter.parent || 'Blog'}</Link>
 
         <div className="c-blog-post__content" dangerouslySetInnerHTML={{ __html: html }}></div>
       </div>
@@ -31,6 +33,7 @@ export const pageQuery = graphql`
       frontmatter {
         slug
         title
+        parent
       }
     }
   }

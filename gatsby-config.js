@@ -29,7 +29,7 @@ module.exports = {
       },
     },
     
-    // MD files - projects and blog
+    // MD files - projects & blog & my notes
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -45,6 +45,13 @@ module.exports = {
       },
     },
     {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `my-dev-notes`,
+        path: `${__dirname}/src/markdown-pages/my-dev-notes/`,
+      },
+    },
+    {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [
@@ -55,6 +62,7 @@ module.exports = {
               theme: 'vscode'
             }
           },
+          'gatsby-remark-autolink-headers'
         ],
       },
     },
