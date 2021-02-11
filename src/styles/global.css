@@ -14,6 +14,7 @@
   --yellow-1: #F5F3BB;
   --gray-1: #D0D7DD;
   --dark-blue-1: #232130;
+  --dark-blue-2: #0E2431;
 }
 
 html, body {
@@ -37,7 +38,7 @@ html, body {
   position: relative;
   font-weight: bold;
   letter-spacing: .1rem;
-  color: #0E2431;
+  color: var(--dark-blue-2);
 }
 
 h1 {
