@@ -11,6 +11,9 @@
   --light-yellow: rgba(255, 255, 153, 0.4);
   --dark-yellow: #FFFF7F;
   --selection-color: #faf7dd;
+  --yellow-1: #F5F3BB;
+  --gray-1: #D0D7DD;
+  --dark-blue-1: #232130;
 }
 
 html, body {
