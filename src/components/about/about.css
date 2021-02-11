@@ -1,5 +1,6 @@
 .c-about {
   padding: 3rem;
+  padding-top: 2rem;
 }
 
 .c-about .c-about__title {
@@ -8,7 +9,7 @@
 }
 
 .c-about .c-about__content {
-  padding-top: 2rem;
+  padding-top: 1rem;
   font-size: 1.3rem;
   line-height: 2rem;
 }
@@ -37,7 +38,7 @@
 
 @media all and (min-width: 530px) {
   .c-about .c-about__content {
-    width: 80%;
-    margin: 0 auto;
+    width: 90%;
+    padding-left: 2rem;
   }
 }
