@@ -18,8 +18,6 @@ export default function Footer() {
   return (
     <footer id="contact" className="c-footer">
       <div className="c-footer__content">
-        <h4 className="c-footer__title">Contact:</h4>
-        
         <ul className="c-footer__contacts">
           {
             contacts.map((c, i) => (
