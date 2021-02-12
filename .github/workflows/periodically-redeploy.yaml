@@ -1,0 +1,30 @@
+name: periodically-redeploy
+
+on:
+  schedule:
+    - cron: '12 0 * * *'
+
+env:
+  REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+  REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
+  PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+jobs:
+  repo-sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+          ref: 'master'
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - run: |
+          ssh-keyscan -t rsa andreigatej.dev >> ~/.ssh/known_hosts
+          
+          git remote add prod "$REMOTE_PATH"
+          git config --global user.email "andreigtj01@gmail.com"
+          git config --global user.name "Andrei Gatej"
+          git push prod master --force
