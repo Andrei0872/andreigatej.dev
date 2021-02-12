@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    description: `Andrei Gatej's portfolio website`,
+    description: `Andrei Gătej's portfolio website`,
     author: `andreigtj01@gmail.com`,
-    title: 'Andrei Gatej',
+    title: 'Andrei Gătej',
     siteUrl: 'https://andreigatej.dev/'
   },
   plugins: [

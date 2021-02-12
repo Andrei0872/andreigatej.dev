@@ -29,9 +29,9 @@ const Layout = ({ children }) => {
   
   return (
     <>
-      <SEO title="Andrei Gatej" />
+      <SEO title="Andrei Gătej" />
       <MenuOverlay isOpened={isOverlayOpened} toggleOverlay={toggleOverlay} links={links} />
-      <Header siteTitle="Andrei Gatej" isActive={isOverlayOpened} links={links} toggleOverlay={toggleOverlay} />
+      <Header siteTitle="Andrei Gătej" isActive={isOverlayOpened} links={links} toggleOverlay={toggleOverlay} />
       <main className="c-main">{children}</main>
       <Footer />
     </>
