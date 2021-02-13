@@ -15,6 +15,8 @@ date: 2019-04-20
   - [Update multiple npm packages](#update-multiple-npm-packages)
   - [List only files in a directory](#list-only-files-in-a-directory)
 - [Send a file over SSH](#send-a-file-over-ssh)
+- [sed](#sed)
+  - [using the matched pattern](#using-the-matched-pattern)
 
 ## Concepts
 
@@ -82,4 +84,15 @@ ssh foo@bar 'cat > foo-cpy.ts' < foo.ts
 # or
 
 cat foo.ts | ssh foo@bar 'cat > foo-cpy.ts'
+```
+
+---
+
+## sed
+
+### using the matched pattern
+
+```bash
+echo "andreigatej.dev" | sed 's/./!&!/g'
+# !a!!n!!d!!r!!e!!i!!g!!a!!t!!e!!j!!.!!d!!e!!v!
 ```
