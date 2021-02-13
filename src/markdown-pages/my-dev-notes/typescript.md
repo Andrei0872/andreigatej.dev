@@ -43,6 +43,7 @@ isSample: true
 - [The `declare` keyword](#the-declare-keyword)
 - [`ThisParameterType<F>`](#thisparametertypef)
 - [`Array[number]`](#arraynumber)
+- [Tuples: rest parameters and optional elements](#tuples-rest-parameters-and-optional-elements)
     
 
 ## Knowledge
@@ -986,4 +987,23 @@ const r = foo(a);
 
 r.bar
 r.foo
+```
+
+---
+
+## Tuples: rest parameters and optional elements
+
+[TypeScript Playground](https://www.typescriptlang.org/play?ts=4.2.0-beta#code/FAehAICcFMGcBdwAcCGkUFtbgMYoHbgBG04BAngO4AW0Mw85SpAKuALzgDaAdH-gFcMJSFwC6AGnAJIAS3wBzMcBwB7fAjIAucG05cAjBIBMEgMxSARAeNnLYgNzAGTVgY7ciq1QBtoBKT4eQWE6cSkZeSUVdU0UAx0Wd314SAFoKQMABiypYxypAHICABMYWULHZ0ZmXWMPLgAzWUgEHRCRCOg1fBKAfh1IxWUwXFjEFGNE+v0DKp64qbqGo0L4OHhKp2dgIA).
+
+```typescript
+// rest params can be anywhere
+type T = [...number[], string]
+const a: T = [1,2,3, "123"];
+
+type T1 = [boolean, ...number[], string]
+const a1: T1 = [true, 100, 200, 'andrei'];
+
+type T2 = [first: number, second?: string]
+// const a2: T2 = [1];
+const a2: T2 = [1,'test'];
 ```
