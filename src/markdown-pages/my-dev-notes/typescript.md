@@ -44,6 +44,7 @@ isSample: true
 - [`ThisParameterType<F>`](#thisparametertypef)
 - [`Array[number]`](#arraynumber)
 - [Tuples: rest parameters and optional elements](#tuples-rest-parameters-and-optional-elements)
+- [Template Literal Types](#template-literal-types)
     
 
 ## Knowledge
@@ -1006,4 +1007,26 @@ const a1: T1 = [true, 100, 200, 'andrei'];
 type T2 = [first: number, second?: string]
 // const a2: T2 = [1];
 const a2: T2 = [1,'test'];
+```
+
+---
+
+## Template Literal Types
+
+[TypeScript Playground](https://www.typescriptlang.org/play?ts=4.2.0-beta&ssl=1&ssc=1&pln=13&pc=47#code/C4TwDgpgBAqlC8UBEAzA9mpUA+yBGAhgE5a5J4QQkBQ1AxmgHYDOwUrRAXFAAYAkAbxgBfKAAsIAG0lpBHAJaMA5sJ4IoAcnRpxUmQEJD+jbQYs2jbowCuAWwpF1ARgBMAZgDc1APTfegm3sqYTAADx56JlYoAm5+AVBINBQoRhDw9Q0nbNcXJzCTSPNUp2d3L18oNABrIuiCJzjBRIhkkuE5YCJFFTC1RCz3KGHhgp8-ABVwaA0kHLCkDSh5ZlS0NgJmZnklRgI8SWhgHRbNHlc3Tu7ldJ4TM3rspoTptsYnDoEFG77M+dCNEA).
+
+```typescript
+type U = "foo" | "bar" | "beer"
+
+const str: `${U} hello${string}` = 'foo hello!!!!'
+
+const n: number = 123;
+// `${number}px`
+const a: `${typeof n}px` = '1111221px'
+
+const n1 = 123;
+// ok
+const a1: `${typeof n1}${string}px` = '123     px'
+// Type '"111px"' is not assignable to type '`123${string}px`'
+const a11: `${typeof n1}${string}px` = '111px'
 ```
