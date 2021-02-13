@@ -2,7 +2,7 @@ name: periodically-redeploy
 
 on:
   schedule:
-    - cron: '12 0 * * *'
+    - cron: '0 0 */10 * *'
 
 env:
   REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
