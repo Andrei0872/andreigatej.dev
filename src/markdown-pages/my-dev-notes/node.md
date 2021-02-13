@@ -18,7 +18,7 @@ isSample: true
 
 ## Event Loop
 
-[Resource](https://dev.to/kapantzak/js-illustrated-the-event-loop-4mco) :sparkles:
+[Resource](https://dev.to/kapantzak/js-illustrated-the-event-loop-4mco)
 
 * its job is to look into the call stack and **determine** if the **call stack** is **empty or not**
     * if **empty**, it looks into the **message queue** to see if there's **any pending call back waiting to be executed**
@@ -237,7 +237,7 @@ After executing​​​​​
 
 ## Streams
 
-:sparkles:[Resouce](https://stackoverflow.com/questions/18335499/nodejs-whats-the-difference-between-a-duplex-stream-and-a-transform-stream)
+[Resouce](https://stackoverflow.com/questions/18335499/nodejs-whats-the-difference-between-a-duplex-stream-and-a-transform-stream)
 
 ✨[Resouce](https://www.freecodecamp.org/news/node-js-streams-everything-you-need-to-know-c9141306be93/)
 

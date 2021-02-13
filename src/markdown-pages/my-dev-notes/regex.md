@@ -27,7 +27,7 @@ date: 2019-04-20
 
 ### Shorthands
 
-[Resource](https://javascript.info/regexp-quantifiers) :sparkles:
+[Resource](https://javascript.info/regexp-quantifiers)
 
 #### `+`
 

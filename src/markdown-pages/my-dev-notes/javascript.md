@@ -18,7 +18,7 @@ isSample: true
 - [Symbol](#symbol)
 - [Typed Arrays](#typed-arrays)
 - [Blob](#blob)
-- [:sparkles:Cool Stuff :sparkles:](#cool-stuff)
+- [Cool Stuff](#cool-stuff)
     - [Replacing Strings](#replacing-strings)
     - [Verifying if an object is a literal object](#verifying-if-an-object-is-a-literal-object)
 - [DOM](#dom)
@@ -1203,7 +1203,7 @@ console.log(flat(arr)) // [ 'a', 'b', 'c', 'd' ]
 </details>
 
 ### Multiple Class Inheritance
-[:sparkles:Resouce](https://stackoverflow.com/questions/29879267/es6-class-multiple-inheritance)
+[Resouce](https://stackoverflow.com/questions/29879267/es6-class-multiple-inheritance)
 
 <details>
 <summary>Example</summary>

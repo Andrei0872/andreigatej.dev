@@ -304,7 +304,7 @@ const f = new Foo(fooParam);
 
 ### Create a condition-based subset of types
 
-[:sparkles: Resouce](https://medium.com/dailyjs/typescript-create-a-condition-based-subset-types-9d902cea5b8c).
+[Resouce](https://medium.com/dailyjs/typescript-create-a-condition-based-subset-types-9d902cea5b8c).
 
 <details>
 <summary>Example</summary>
@@ -463,7 +463,7 @@ type R2 = RetType<typeof foo> // // Person
 
 ### `as const`
 
-[Resource](#https://dev.to/aexol/typescript-tutorial-use-as-const-to-export-colors-39fl) :sparkles:
+[Resource](#https://dev.to/aexol/typescript-tutorial-use-as-const-to-export-colors-39fl)
 
 * prevent widened literal types (from `"andrei"` to `string`)
 

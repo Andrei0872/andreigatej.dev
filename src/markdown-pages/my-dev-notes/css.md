@@ -270,7 +270,7 @@ input:not(:placeholder-shown) {
 
 ## BEM
 
-[Resource](https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/) :sparkles:
+[Resource](https://www.smashingmagazine.com/2016/06/battling-bem-extended-edition-common-problems-and-how-to-avoid-them/)
 
 ### Namespaces
 
@@ -285,7 +285,7 @@ input:not(:placeholder-shown) {
 
 ### Cascade
 
-[Resource](https://blog.logrocket.com/the-only-reason-your-css-fails-8e4388d562af/) :sparkles:
+[Resource](https://blog.logrocket.com/the-only-reason-your-css-fails-8e4388d562af/)
 
 * the **algorithm** the browsers use to **decide which rules** to apply to each element when they encounter **conflicting declarations**(more than one rule assigning different values to an elements' property)
 

@@ -52,7 +52,7 @@ date: 2019-04-20
 
 ## Indexing
 
-[Resource](https://medium.freecodecamp.org/database-indexing-at-a-glance-bb50809d48bd) :sparkles:
+[Resource](https://medium.freecodecamp.org/database-indexing-at-a-glance-bb50809d48bd)
 
 ### index vs key
 
