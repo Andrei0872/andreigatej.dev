@@ -3,7 +3,7 @@ title: "TypeScript Notes"
 slug: /my-dev-notes/typescript-notes
 parent: "Dev Notes"
 date: 2019-04-20
-isSample: true
+isArticleSample: true
 ---
 
 - [Knowledge](#knowledge)

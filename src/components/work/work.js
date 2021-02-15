@@ -79,7 +79,7 @@ export default function Work() {
         }
       }
 
-      myDevNotes: allMarkdownRemark(filter: {fileAbsolutePath: {regex: "/my-dev-notes/"}, frontmatter: {isSample: {eq: true}}}) {
+      myDevNotes: allMarkdownRemark(filter: {fileAbsolutePath: {regex: "/my-dev-notes/"}, frontmatter: {isArticleSample: {eq: true}}}) {
         totalCount
         nodes {
           fileAbsolutePath
@@ -91,7 +91,6 @@ export default function Work() {
           html
         }
       }
-
     }
   `);
 
@@ -99,6 +98,8 @@ export default function Work() {
   sections[2].samples = sampleArticles;
   sections[3].samples = sampleNotes;
   
+  console.log(sections)
+
   return (
     <section id="work" className="c-work">
       <h1 className="c-work__title">Work</h1>
