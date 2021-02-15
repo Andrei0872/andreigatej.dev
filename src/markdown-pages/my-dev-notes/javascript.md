@@ -3,29 +3,82 @@ title: "JavaScript Notes"
 slug: /my-dev-notes/javascript-notes
 parent: "Dev Notes"
 date: 2019-04-20
-isSample: true
+isArticleSample: true
 ---
 
 - [Concepts](#concepts)
-    * [Debouncing and Throttling](#debouncing-and-throttling)
-    * [thunk functions](#thunk-functions)
+  - [Execution Context](#execution-context)
+  - [Call Stack](#call-stack)
+  - [Debouncing and Throttling](#debouncing-and-throttling)
+    - [Debounce](#debounce)
+    - [Throttle- Concepts](#throttle--concepts)
+  - [compiled vs interpreted](#compiled-vs-interpreted)
+  - [thunk functions](#thunk-functions)
+  - [free variable](#free-variable)
 - [Objects and Classes](#objects-and-classes)
-    * [Extending Objects](#extending-objects)
+  - [Knowledge](#knowledge)
+  - [Deep Copy vs Shallow Copy](#deep-copy-vs-shallow-copy)
+  - [`Object.valueOf()`](#objectvalueof)
+  - [Objects are passed by reference](#objects-are-passed-by-reference)
+  - [`Object.getOwnPropertyDescriptors()`](#objectgetownpropertydescriptors)
+    - [Copying properties into an object](#copying-properties-into-an-object)
+  - [this](#this)
+    - [Implicit binding](#implicit-binding)
+    - [Explicit binding](#explicit-binding)
+    - [Default binding](#default-binding)
+    - [`bind()`](#bind)
+  - [Spread operator](#spread-operator)
+  - [Extending Objects](#extending-objects)
 - [Functions](#functions)
+  - [Arrow Functions](#arrow-functions)
 - [Asynchronous Programming](#asynchronous-programming)
+  - [Handling asynchronous operations in parallel](#handling-asynchronous-operations-in-parallel)
+  - [Promises](#promises)
+    - [`.then()` vs `async/await`](#then-vs-asyncawait)
+    - [Understanding Promises](#understanding-promises)
 - [Iterables and Generators](#iterables-and-generators)
+  - [Recursive Generators](#recursive-generators)
+  - [Async Generators](#async-generators)
+    - [Dealing with a collection of requests](#dealing-with-a-collection-of-requests)
 - [Proxy](#proxy)
+  - [Get safe object properties](#get-safe-object-properties)
+  - [Using a Proxy as an object's prototype](#using-a-proxy-as-an-objects-prototype)
+  - [Private class properties](#private-class-properties)
 - [Symbol](#symbol)
+  - [Symbol.description](#symboldescription)
+  - [Symbol.for()](#symbolfor)
 - [Typed Arrays](#typed-arrays)
 - [Blob](#blob)
+  - [Convert a `Blob` to another format](#convert-a-blob-to-another-format)
+  - [`Blob` as URL](#blob-as-url)
 - [Cool Stuff](#cool-stuff)
-    - [Replacing Strings](#replacing-strings)
-    - [Verifying if an object is a literal object](#verifying-if-an-object-is-a-literal-object)
+  - [Dynamically exclude properties](#dynamically-exclude-properties)
+  - [Organize Object Properties](#organize-object-properties)
+  - [Flat Array](#flat-array)
+  - [Fetch API](#fetch-api)
+  - [Multiple Class Inheritance](#multiple-class-inheritance)
+  - [`Promise.all()` vs `for-await-of`](#promiseall-vs-for-await-of)
+  - [Simple Reactive System](#simple-reactive-system)
+  - [Replacing strings](#replacing-strings)
+  - [Verifying if an object is a literal object](#verifying-if-an-object-is-a-literal-object)
 - [DOM](#dom)
-    - [Script tags](#script-tags)
+  - [Element.closest(_selectorString_)](#elementclosestselectorstring)
+  - [Incremental DOM](#incremental-dom)
+  - [Virtual DOM](#virtual-dom)
+  - [Properties](#properties)
+  - [Attributes](#attributes)
+  - [Script tags](#script-tags)
+    - [`defer`](#defer)
+    - [`async`](#async)
 - [Closures](#closures)
-- [Scope](#scope)
+  - [Scope](#scope)
+    - [Static Scope](#static-scope)
+    - [Dynamic Scope](#dynamic-scope)
+    - [Runtime-augmented scope](#runtime-augmented-scope)
 - [ES Modules](#es-modules)
+- [`__proto__` and `prototype`](#__proto__-and-prototype)
+- [`Object.keys` vs `Object.getOwnPropertyNames`](#objectkeys-vs-objectgetownpropertynames)
+- [WeakMap](#weakmap)
 
 ## Concepts
 
@@ -51,7 +104,88 @@ isSample: true
 
 * execute this function only if X ms have passed without it being executed
 
-#### Throttle
+#### Throttle- [Concepts](#concepts)
+  - [Execution Context](#execution-context)
+  - [Call Stack](#call-stack)
+  - [Debouncing and Throttling](#debouncing-and-throttling)
+    - [Debounce](#debounce)
+    - [Throttle](#throttle)
+  - [compiled vs interpreted](#compiled-vs-interpreted)
+  - [thunk functions](#thunk-functions)
+  - [free variable](#free-variable)
+- [Concepts](#concepts)
+  - [Execution Context](#execution-context)
+  - [Call Stack](#call-stack)
+  - [Debouncing and Throttling](#debouncing-and-throttling)
+    - [Debounce](#debounce)
+    - [Throttle- Concepts](#throttle--concepts)
+  - [compiled vs interpreted](#compiled-vs-interpreted)
+  - [thunk functions](#thunk-functions)
+  - [free variable](#free-variable)
+- [Objects and Classes](#objects-and-classes)
+  - [Knowledge](#knowledge)
+  - [Deep Copy vs Shallow Copy](#deep-copy-vs-shallow-copy)
+  - [`Object.valueOf()`](#objectvalueof)
+  - [Objects are passed by reference](#objects-are-passed-by-reference)
+  - [`Object.getOwnPropertyDescriptors()`](#objectgetownpropertydescriptors)
+    - [Copying properties into an object](#copying-properties-into-an-object)
+  - [this](#this)
+    - [Implicit binding](#implicit-binding)
+    - [Explicit binding](#explicit-binding)
+    - [Default binding](#default-binding)
+    - [`bind()`](#bind)
+  - [Spread operator](#spread-operator)
+  - [Extending Objects](#extending-objects)
+- [Functions](#functions)
+  - [Arrow Functions](#arrow-functions)
+- [Asynchronous Programming](#asynchronous-programming)
+  - [Handling asynchronous operations in parallel](#handling-asynchronous-operations-in-parallel)
+  - [Promises](#promises)
+    - [`.then()` vs `async/await`](#then-vs-asyncawait)
+    - [Understanding Promises](#understanding-promises)
+- [Iterables and Generators](#iterables-and-generators)
+  - [Recursive Generators](#recursive-generators)
+  - [Async Generators](#async-generators)
+    - [Dealing with a collection of requests](#dealing-with-a-collection-of-requests)
+- [Proxy](#proxy)
+  - [Get safe object properties](#get-safe-object-properties)
+  - [Using a Proxy as an object's prototype](#using-a-proxy-as-an-objects-prototype)
+  - [Private class properties](#private-class-properties)
+- [Symbol](#symbol)
+  - [Symbol.description](#symboldescription)
+  - [Symbol.for()](#symbolfor)
+- [Typed Arrays](#typed-arrays)
+- [Blob](#blob)
+  - [Convert a `Blob` to another format](#convert-a-blob-to-another-format)
+  - [`Blob` as URL](#blob-as-url)
+- [Cool Stuff](#cool-stuff)
+  - [Dynamically exclude properties](#dynamically-exclude-properties)
+  - [Organize Object Properties](#organize-object-properties)
+  - [Flat Array](#flat-array)
+  - [Fetch API](#fetch-api)
+  - [Multiple Class Inheritance](#multiple-class-inheritance)
+  - [`Promise.all()` vs `for-await-of`](#promiseall-vs-for-await-of)
+  - [Simple Reactive System](#simple-reactive-system)
+  - [Replacing strings](#replacing-strings)
+  - [Verifying if an object is a literal object](#verifying-if-an-object-is-a-literal-object)
+- [DOM](#dom)
+  - [Element.closest(_selectorString_)](#elementclosestselectorstring)
+  - [Incremental DOM](#incremental-dom)
+  - [Virtual DOM](#virtual-dom)
+  - [Properties](#properties)
+  - [Attributes](#attributes)
+  - [Script tags](#script-tags)
+    - [`defer`](#defer)
+    - [`async`](#async)
+- [Closures](#closures)
+  - [Scope](#scope)
+    - [Static Scope](#static-scope)
+    - [Dynamic Scope](#dynamic-scope)
+    - [Runtime-augmented scope](#runtime-augmented-scope)
+- [ES Modules](#es-modules)
+- [`__proto__` and `prototype`](#__proto__-and-prototype)
+- [`Object.keys` vs `Object.getOwnPropertyNames`](#objectkeys-vs-objectgetownpropertynames)
+- [WeakMap](#weakmap)
 
 * execute this function at most once every X ms 
 
@@ -1660,3 +1794,25 @@ Object.setPrototypeOf(obj, { inherited: 'foo' })
 Object.keys(obj) // ["age"]
 Object.getOwnPropertyNames(obj) // ["name", "age"]
 ```
+
+---
+
+## WeakMap
+
+* the **keys** are **weak**: if there are **no references** to the **key** and **no references** to the **value**, then the **value** can be **garbage collected**(when the key gets garbage collected, so does the value)
+* weak reference to that key from `WeakMap` === when the key is destroyed(nulled out), the garbage collector will be able to remove the entire **entry** from the `WeakMap`, thus freeing up memory
+* can be used to store metadata about DOM elements without interfering with garbage collection
+  
+  ```javascript
+  const map = new WeakMap();
+  const elem = document.getElementById('demo');
+
+  map.set(elem, { /* some data here */ })
+  ```
+
+  when the node(`elem` from above) is removed, it can also be removed from memory, because in a `WeakMap`, the keys are **weak references**
+
+  *note*: in order to not redundantly keep DOM elements in memory, you can also do `elem = null`(assuming `elem` was declared with `let`), but this won't work if you have defined custom properties on DOM elements.
+
+  a concrete example can be found [here](https://stackoverflow.com/a/45537392/9632621).
+* it's not iterable; that's because, when a key is destroyed, it and its entry in the `WeakMap` are ready to be garbage collected; but it's not known when this *freeing* process will happen, so the number of stored entries is not known at any moment of time.
