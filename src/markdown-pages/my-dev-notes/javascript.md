@@ -79,6 +79,7 @@ isArticleSample: true
 - [`__proto__` and `prototype`](#__proto__-and-prototype)
 - [`Object.keys` vs `Object.getOwnPropertyNames`](#objectkeys-vs-objectgetownpropertynames)
 - [WeakMap](#weakmap)
+- [Web Workers](#web-workers)
 
 ## Concepts
 
@@ -1735,3 +1736,22 @@ Object.getOwnPropertyNames(obj) // ["name", "age"]
 
   a concrete example can be found [here](https://stackoverflow.com/a/45537392/9632621).
 * it's not iterable; that's because, when a key is destroyed, it and its entry in the `WeakMap` are ready to be garbage collected; but it's not known when this *freeing* process will happen, so the number of stored entries is not known at any moment of time.
+
+---
+
+## Web Workers
+
+* a way to run scripts in background threads, **without interfering** with the main UI thread
+* you can use the `fetch` API, but can't use the DOM directly
+* have their **own execution context**
+* **data passed between** the main thread and the workers is **copied**, not shared
+* **dedicated worker** === a worker accessible only by the script that called it: `new Worker('worker.js')`
+  * tied to the web page that created it, thus is destroyed along with the page when it is destroyed
+* to communicate with the main thread, a worker can use 
+  * `worker.postMessage()`(sending data from main to worker) and `worker.onmessage`(receiving data in main thread from worker)
+  * `self.postMessage()`(send data from worker to main thread) and `self.onmessage = () => {}`(receiving data in worker from main thread)
+* **shared worker** === a worker that is accessible by multiple scripts(even if they are on different windows/iframes/other workers, so can be shared across multiple pages): `new SharedWorker('worker.js')`
+  * the communication is done via a `port`; the connection can be made in the `worker.js`'s script, inside `onconnect` handler, where the port would be selected; from this point, the connection *worker->main-thread* can be achieved either by doing `port.onmessage = () => {}`(implicitly) or `port.start();`(explicitly, when `message` event is defined with `addEventListener()`); to open a connection *main-thread->worker*, one can use `(new SharedWorker('worker.js')).port.onmessage = () => {}`
+* you can transfer objects with a **zero-copy operation**, if they are **transferable objects**(e.g `ArrayBuffer`, `Uint8Array`). [Resource](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#passing_data_by_transferring_ownership_transferable_objects).
+
+---
