@@ -80,6 +80,7 @@ isArticleSample: true
 - [`Object.keys` vs `Object.getOwnPropertyNames`](#objectkeys-vs-objectgetownpropertynames)
 - [WeakMap](#weakmap)
 - [Web Workers](#web-workers)
+- [Service Workers](#service-workers)
 
 ## Concepts
 
@@ -1755,3 +1756,20 @@ Object.getOwnPropertyNames(obj) // ["name", "age"]
 * you can transfer objects with a **zero-copy operation**, if they are **transferable objects**(e.g `ArrayBuffer`, `Uint8Array`). [Resource](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Using_web_workers#passing_data_by_transferring_ownership_transferable_objects).
 
 ---
+
+## Service Workers
+
+* a type of web workers that serve the purpose of being a **proxy between the browser and the network**
+* phases: 
+  * **register**: 
+  * **install**: you can create the cache here, for example; can use `self.waitUntil(promise)` to extend the installing stage; can use `self.skipWaiting()` to skip the installing phase and jump to the activating stage
+  * **activate**: the phase where the service worker takes control of the page; you can clean up old caches here; can use `self.waitUntil(promise)` to extend the activating phase; can use `self.clients.claim()` to start controlling all open clients without reloading them
+* can intercept resources requests
+* **clients** === pages, workers, or shared workers; a service worker can control **clients** that are **in-scope**
+  * check if a client is controlled: `navigator.serviceWorker.controller`
+  * unregister a service worker: `navigator.serviceWorker.getRegistration(navigator.serviceWorker.controller.scriptURL).then(r => r.unregister())`
+* if a page loads without a service worker, neither will its subresources; you'll have to either refresh the page, or call `self.clients.claim()`
+* by default, caching headers will be ignored when it comes to updating a service worker; this can be overridden, by setting the `updateViaCache` option when registering the service worker
+* a new service worker will wait for the current one to have zero clients(i.e the new service worker won't be activated until the existing one is no longer controlling clients - this behavior is ensuring that **only one version** of the service worker is running at a time); `self.skipWaiting()` skips the waiting, so the new service worker will be activated as soon as it has finished installing; you can spot these events with: `navigation.serviceWorker.addEventListener('controllerchange', () => {})`
+* cache storage API, just like IndexedDB and LocalStorage, is **origin storage**(meaning that *example.com/foo* and *example.com/bar* will share the same storage)
+* the **scope** of the service worker determines the pages that it can control
