@@ -17,6 +17,9 @@ date: 2021-02-22
   - [references in class](#references-in-class)
   - [destructors](#destructors)
   - [polymorphism & the `virtual` keyword](#polymorphism--the-virtual-keyword)
+- [inheritance](#inheritance)
+  - [both base classes have the same method](#both-base-classes-have-the-same-method)
+  - [the diamond problem](#the-diamond-problem)
 
 ## Pointer & References
 
@@ -355,5 +358,72 @@ int main () {
   y.seeCat();
 
   // without the `virtual` keyword inside `Dog` class: : "Dog barking"
+}
+```
+
+## inheritance
+
+* *interface* inheritance:
+  * subtyping(a subtype can be used in the context where the base type is expected)
+  * polymorphism
+* *implementation* inheritance
+  * increases code complexity
+  * *base classes* should be thin
+
+### both base classes have the same method
+
+```cpp
+class IFile {
+  public:
+    void read(string name) { }
+};
+
+class OFile {
+  public:
+  void read(string name) { }
+};
+
+class File : public IFile, public OFile {
+
+};
+
+int main () {
+  File f;
+  
+  // invalid: it is ambiguous
+  // f.read("a file name");
+
+
+  f.IFile::read("a-file-name");
+  f.OFile::read("another file name");
+}
+```
+
+### the diamond problem
+
+```cpp
+class File {
+  public:
+    string name;
+    void read () {}
+};
+
+class IFile : virtual public File {
+};
+
+class OFile : virtual public File
+{
+};
+
+class IOFile : public IFile, public OFile {
+
+};
+
+int main () {
+  IOFile f;
+
+  // without `virtual public File` phrases
+  // this would be invalid
+  f.read();
 }
 ```
