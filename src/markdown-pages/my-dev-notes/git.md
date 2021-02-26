@@ -51,6 +51,7 @@ isArticleSample: true
   - [git stash](#git-stash)
     - [Add untracked files in current directory](#add-untracked-files-in-current-directory)
     - [Inspecting the stash](#inspecting-the-stash)
+    - [Apply the changes of a given file from stash](#apply-the-changes-of-a-given-file-from-stash)
   - [git reset](#git-reset)
     - [Options](#options)
   - [git revert](#git-revert)
@@ -445,6 +446,13 @@ git stash show -p
 
 # show the content of an arbitrary stash
 git stash show -p stash@{1}
+```
+
+#### Apply the changes of a given file from stash
+
+```bash
+# stash@{0}^ - the parent
+git diff stash@{0}^ stash@{0} -- path/to/file | git apply
 ```
 
 ### git reset
