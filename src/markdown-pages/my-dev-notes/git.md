@@ -50,6 +50,7 @@ isArticleSample: true
     - [`git diff ..` vs `git diff ...`](#git-diff--vs-git-diff-)
   - [git stash](#git-stash)
     - [Add untracked files in current directory](#add-untracked-files-in-current-directory)
+    - [Inspecting the stash](#inspecting-the-stash)
   - [git reset](#git-reset)
     - [Options](#options)
   - [git revert](#git-revert)
@@ -428,6 +429,22 @@ D---E---F---G master
 
 ```bash
 git stash && git add ./ && git stash pop
+```
+
+#### Inspecting the stash
+
+```bash
+# list the stash
+git stash list
+
+# show file changed in the **last** stash
+git stash show
+
+# show the content of the most recent stash
+git stash show -p
+
+# show the content of an arbitrary stash
+git stash show -p stash@{1}
 ```
 
 ### git reset
