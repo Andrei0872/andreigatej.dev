@@ -5,16 +5,30 @@ parent: "Dev Notes"
 date: 2019-04-20
 ---
 
-
-* [Concepts](#concepts)
-  * [foreign key](#foreign-key)
-* [Indexing](#indexing)
-* [Normalization and Denormalization](#normalization-and-denormalization)
-* [Joins](#joins)
-* [Useful Commands](#useful-commands)
-  * [Copying a table](#copying-a-table)
-* [Tricks](#tricks)
-* [MySQL](#mysql)
+- [Concepts](#concepts)
+  - [Atomic operation](#atomic-operation)
+  - [Transactions](#transactions)
+  - [Data Access Layer](#data-access-layer)
+  - [ORM](#orm)
+  - [foreign key](#foreign-key)
+  - [surrogate key & natural key & candidate key](#surrogate-key--natural-key--candidate-key)
+- [Indexing](#indexing)
+  - [index vs key](#index-vs-key)
+- [Normalization and Denormalization](#normalization-and-denormalization)
+  - [Normalization](#normalization)
+  - [Denormalization](#denormalization)
+- [Joins](#joins)
+  - [Inner join](#inner-join)
+  - [Left Join](#left-join)
+  - [Right Join](#right-join)
+- [Useful Commands](#useful-commands)
+  - [Copying a table](#copying-a-table)
+- [Tricks](#tricks)
+  - [use the new value further in the update statement](#use-the-new-value-further-in-the-update-statement)
+- [MySQL](#mysql)
+  - [Views](#views)
+  - [Commands](#commands)
+    - [`on duplicate key`](#on-duplicate-key)
 
 ## Concepts
 
@@ -47,6 +61,11 @@ date: 2019-04-20
 * **primary key** from **other tables**
 
 * **connects** two **separate** tables together
+
+### surrogate key & natural key & candidate key
+
+* both **surrogate key** & **natural key** can be considered **unique identifiers**, but a **surrogate key** is **not** derived from **application data**(e.g `customer_id` - autoincremented), unlike a natural key(e.g `customer_number`)
+* a **candidate key** is a **column** or a **combination of columns** that can uniquely identify a record
 
 ---
 
