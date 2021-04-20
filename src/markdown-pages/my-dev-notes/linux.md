@@ -14,6 +14,7 @@ date: 2019-04-20
   - [Create a directory and cd into id immediately](#create-a-directory-and-cd-into-id-immediately)
   - [Update multiple npm packages](#update-multiple-npm-packages)
   - [List only files in a directory](#list-only-files-in-a-directory)
+  - [Get the real value of an alias command](#get-the-real-value-of-an-alias-command)
 - [Send a file over SSH](#send-a-file-over-ssh)
 - [sed](#sed)
   - [using the matched pattern](#using-the-matched-pattern)
@@ -72,6 +73,16 @@ npm i $(npm outdated | grep @angular | cut -d ' ' -f1 | xargs -I $ echo '$@lates
 ```bash
 # -p - append `/` to directories
 ls -p | grep -v /
+```
+
+### Get the real value of an alias command
+
+```bash
+type ll
+# Output: ll is an alias for ls -lh
+
+type l
+# Output: l is an alias for ls -lah
 ```
 
 ---
