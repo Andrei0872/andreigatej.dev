@@ -5,17 +5,15 @@ parent: "Dev Notes"
 date: 2019-04-20
 ---
 
-- [Concepts](#concepts)
-  - [Container](#container)
-  - [VM](#vm)
-  - [Image](#image)
-  - [OS kernel](#os-kernel)
-  - [Useful Commands](#useful-commands)
-    - [List names of all containers](#list-names-of-all-containers)
+- [Container](#container)
+- [VM](#vm)
+- [Image](#image)
+- [OS kernel](#os-kernel)
+- [Useful Commands](#useful-commands)
+  - [List names of all containers](#list-names-of-all-containers)
+  - [Remove all the inactive containers](#remove-all-the-inactive-containers)
 
-## Concepts
-
-### Container
+## Container
 
 * an **isolated unit of software**(**code**, **libraries**, **services**, **dependencies**, **processes** - all **packaged up** together)
 
@@ -25,24 +23,30 @@ date: 2019-04-20
 
 * more resources are shared between containers
 
-### VM
+## VM
 
 * virtualizes the hardware
 
-### Image 
+## Image 
 
 * shareable chunk of functionality (server, db engine, Linux distribution)
 
-### OS kernel
+## OS kernel
 
 - **interacts** with the **hardware**
 
 ---
 
-### Useful Commands
+## Useful Commands
 
-#### List names of all containers
+### List names of all containers
 
 ```bash
 docker ps -a --format="{{.Names}}"
+```
+
+### Remove all the inactive containers
+
+```bash
+docker container rm $(docker ps -a -f status='exited' -q)
 ```
