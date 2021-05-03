@@ -82,6 +82,7 @@ isArticleSample: true
 - [Web Workers](#web-workers)
 - [Service Workers](#service-workers)
 - [`String.prototype.replaceAll`](#stringprototypereplaceall)
+- [`Promise.any()`](#promiseany)
 
 ## Concepts
 
@@ -1797,4 +1798,29 @@ s.replaceAll(/\bis\b/g, '*')
 
 s.replace(/is/g, '*')
 // Output: "th* * a string. * it?"
+```
+
+---
+
+## `Promise.any()`
+
+* will resolve as soon as **one of the promises** fulfills; it rejects if all the given promises reject
+
+```js
+const fetchFn = (retVal, time, commitError = false) => new Promise((res, rej) => setTimeout(commitError ? rej : res, time, retVal));
+
+Promise.any([fetchFn(1, 500, true), fetchFn(2, 300), fetchFn(3, 1000, true)])
+    .then(console.warn)
+    .catch(err => console.log('[ERROR]: ', err))
+// Output: 2
+
+Promise.any([fetchFn(1, 500, true), fetchFn(2, 300, true), fetchFn(3, 1000, true)])
+    .then(console.warn)
+    .catch(err => console.log('[ERROR]: ', err))
+// Output: [ERROR]:  AggregateError: All promises were rejected
+
+Promise.any([fetchFn(1, 1500), fetchFn(2, 1300), fetchFn(3, 1000)])
+    .then(console.warn)
+    .catch(err => console.log('[ERROR]: ', err))
+// Output: 3
 ```
