@@ -84,6 +84,7 @@ isArticleSample: true
 - [`String.prototype.replaceAll`](#stringprototypereplaceall)
 - [`Promise.any()`](#promiseany)
 - [`Promise.race()`](#promiserace)
+- [`Promise.allSettled`](#promiseallsettled)
 
 ## Concepts
 
@@ -1843,3 +1844,9 @@ Promise.race([fetchFn(1, 500, true), fetchFn(2, 700), fetchFn(3, 1000, true)])
     .catch(err => console.log('[ERROR]: ', err))
 // Output: [ERROR]:  1
 ```
+
+---
+
+## `Promise.allSettled`
+
+* like `Promise.all()`, with the exception that it returns an array of objects that describe the outcome of each promise(fulfilled or rejected)
