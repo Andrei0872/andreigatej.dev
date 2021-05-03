@@ -81,6 +81,7 @@ isArticleSample: true
 - [WeakMap](#weakmap)
 - [Web Workers](#web-workers)
 - [Service Workers](#service-workers)
+- [`String.prototype.replaceAll`](#stringprototypereplaceall)
 
 ## Concepts
 
@@ -1773,3 +1774,27 @@ Object.getOwnPropertyNames(obj) // ["name", "age"]
 * a new service worker will wait for the current one to have zero clients(i.e the new service worker won't be activated until the existing one is no longer controlling clients - this behavior is ensuring that **only one version** of the service worker is running at a time); `self.skipWaiting()` skips the waiting, so the new service worker will be activated as soon as it has finished installing; you can spot these events with: `navigation.serviceWorker.addEventListener('controllerchange', () => {})`
 * cache storage API, just like IndexedDB and LocalStorage, is **origin storage**(meaning that *example.com/foo* and *example.com/bar* will share the same storage)
 * the **scope** of the service worker determines the pages that it can control
+
+---
+
+## `String.prototype.replaceAll`
+
+* can be thought of as a replacement for `replace(/.../g)`
+
+```typescript
+s = 'this is a string. is it?'
+s.replaceAll('is', '*')
+// Output: "th* * a string. * it?"
+
+// ERROR: it must be called with global argument
+s.replaceAll(/is/, '*')
+
+s.replaceAll(/is/g, '*')
+// Output: "th* * a string. * it?"
+
+s.replaceAll(/\bis\b/g, '*')
+// Output: "this * a string. * it?"
+
+s.replace(/is/g, '*')
+// Output: "th* * a string. * it?"
+```
