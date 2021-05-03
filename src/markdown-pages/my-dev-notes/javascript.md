@@ -83,6 +83,7 @@ isArticleSample: true
 - [Service Workers](#service-workers)
 - [`String.prototype.replaceAll`](#stringprototypereplaceall)
 - [`Promise.any()`](#promiseany)
+- [`Promise.race()`](#promiserace)
 
 ## Concepts
 
@@ -1823,4 +1824,22 @@ Promise.any([fetchFn(1, 1500), fetchFn(2, 1300), fetchFn(3, 1000)])
     .then(console.warn)
     .catch(err => console.log('[ERROR]: ', err))
 // Output: 3
+```
+
+---
+
+## `Promise.race()`
+
+* resolves/rejects as soon as on promise from the iterable resolves/rejects
+
+```js
+Promise.race([fetchFn(1, 500, true), fetchFn(2, 300), fetchFn(3, 1000, true)])
+    .then(console.warn)
+    .catch(err => console.log('[ERROR]: ', err))
+// Output: 2
+
+Promise.race([fetchFn(1, 500, true), fetchFn(2, 700), fetchFn(3, 1000, true)])
+    .then(console.warn)
+    .catch(err => console.log('[ERROR]: ', err))
+// Output: [ERROR]:  1
 ```
