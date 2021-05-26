@@ -20,6 +20,30 @@ date: 2021-02-22
 - [inheritance](#inheritance)
   - [both base classes have the same method](#both-base-classes-have-the-same-method)
   - [the diamond problem](#the-diamond-problem)
+- [*Constness*](#constness)
+  - [Basic notions](#basic-notions)
+  - [Casting away the `constness`](#casting-away-the-constness)
+  - [`const` when using parameters](#const-when-using-parameters)
+  - [`const` functions and overloading](#const-functions-and-overloading)
+  - [The `mutable` keyword](#the-mutable-keyword)
+- [Compiler generated functions](#compiler-generated-functions)
+  - [Copy constructor](#copy-constructor)
+  - [Copy assignment operator](#copy-assignment-operator)
+  - [Destructor](#destructor)
+  - [Virtual destructors and smart destructor](#virtual-destructors-and-smart-destructor)
+- [Covariance](#covariance)
+- [Implicit type conversions](#implicit-type-conversions)
+
+
+<details>
+  <summary>Resources</summary>
+
+  <p>
+    <ul>
+      <li>https://www.youtube.com/watch?v=7arYbAhu0aw&list=PLE28375D4AC946CC3</li>
+    </ul>
+  </p>
+</details>
 
 ## Pointer & References
 
@@ -425,5 +449,332 @@ int main () {
   // without `virtual public File` phrases
   // this would be invalid
   f.read();
+}
+```
+
+---
+
+
+## *Constness*
+
+### Basic notions
+
+```cpp
+// `const` - a **compile time** contraint that an object can't be modified
+const int v = 10;
+// v = 20; // Error
+
+// The data is const, the pointer is not
+const int* p = &v;
+int a = 100;
+// p++; // OK
+// p = &a; // OK - modified `p` itself, not the data
+// *p = 500; // Error
+
+// The pointer is const, the data is not
+// int* const p2;
+
+// Both data and pointer are const
+// const int* const p3;
+//* TAKEAWAY: in order to determine what is `const`, just read what
+//* follows the `const` keyword
+//* if `const` is on the left of `*`, the data is const
+//* if `const` is on the right of `*`, the pointer is const
+```
+
+### Casting away the `constness`
+
+```cpp
+// Casting away the _constness_
+const int value = 19;
+const_cast<int&>(value) = 100;
+
+// Changing the type of the variable
+int x;
+// static_cast<const int&>(x) = 100; // error: assignment of read-only location ‘x’
+```
+
+### `const` when using parameters
+
+```cpp
+void increment (const int& v) {
+  // Allowed with `int& v`
+  // NOT allowed with `const int& v`
+  // v++;
+}
+
+// `const` when using parameters
+int age = 20;
+increment(age);
+```
+
+### `const` functions and overloading
+
+```cpp
+class Person {
+  private:
+    string name;
+  
+  public:
+    Person () {
+      name = "Andrei";
+    }
+
+    // With `const string` it will return a copy
+    const string& getName () {
+      return name;
+    }
+
+    void printName () const {
+      cout << "CONST: " << name << '\n';
+
+      // Can't call the function if it's not `const` too
+      // getName();
+    }
+    // Overloading a `const` function
+    void printName () {
+      cout << "NON-CONST: " << name << '\n';
+    }
+
+int main () {
+  Person pers;
+  const string& name = pers.getName();
+  // name += "tst"; // Error
+
+  Person pers1;
+  pers1.printName(); // NON-CONST printed
+
+  const Person pers2;
+  pers2.printName(); // CONST printed
+
+  // pers1 = pers2; // OK
+  // pers2 = pers1; // Error: `pers2` is const
+}
+};
+```
+
+### The `mutable` keyword
+
+```cpp
+class Stack {
+  private:
+    int idx = 0;
+    mutable vector<int> items;
+
+    int *v2;
+  
+  public:
+    Stack () {}
+
+    // Might not be the logical best case where `const` could be used
+    void add (const int& item) const {
+      // Solved with `mutable`
+      items.push_back(item);
+
+      const_cast<Stack*>(this)->idx++;
+
+      // It doesn't change the member directly
+      v2[0] = item;
+    }
+};
+
+int main () {
+  Stack st;
+  st.add(1);
+  st.add(2);
+  st.add(3);
+}
+```
+
+---
+
+## Compiler generated functions
+
+* `const` & **reference** - can't be copied, can only be initialized
+* all the compiler generated functions are inline
+* a compiler generated default constructor will call the data members' constructor
+
+### Copy constructor
+
+* it does a **shallow copy**
+* it is also *implicit*: it is invoked when an object is passed as an argument to a function or when it is returned from a function
+
+```cpp
+// Member by member initialization
+ClassName(const ClassName& rhs) {};
+
+// Disabling it - this, or add it as `private`
+ClassName(const ClassName& rhs) = delete;
+
+int main () {
+  ClassName c1;
+
+  ClassName c2(c1);
+}
+```
+
+### Copy assignment operator
+
+```cpp
+// Will copy all the members from `rhs` to the current class
+ClassName& operator=(const ClassName& rhs) {}; // Member by member copying
+```
+
+### Destructor
+
+* a class with a private destructor can only be stored on heap, not on stack; that's because when the stack item is removed, the destructor will be called either way
+
+---
+
+### Virtual destructors and smart destructor
+
+```cpp
+
+class Parent {
+  public:
+    virtual ~Parent () {
+      cout << "PARENT DESTR \n";
+    }
+};
+
+class Child : public Parent {
+  public:
+    ~Child () {
+      cout << "CHILD DESTR \n";
+    }
+};
+
+int main () {
+  // Output: `PARENT DESTR` (without virtual ~Parent())
+  /*
+  Output: 
+    CHILD DESTR
+    PARENT DESTR
+  
+  (with virtual ~Parent())
+  */
+  // Parent* p = new Child();
+  // delete p;
+
+  shared_ptr<Parent> p = shared_ptr<Child>(new Child());
+  /*
+  Output:
+    CHILD DESTR
+    PARENT DESTR
+  */
+}
+```
+
+---
+
+## Covariance
+
+```cpp
+class Base {
+  public:
+    Base () {
+      cout << "BASE \n";
+    }
+
+    virtual void sayHi  () {
+      cout << "[BASE]: hi! \n";
+    }
+
+    virtual Base* clone () {
+      return new Base(*this);
+    }
+};
+
+class Extended : public Base {
+  public:
+    Extended () {
+      cout << "EXTENDED \n";
+    }
+
+    virtual void sayHi  () {
+      cout << "[EXTENDED]: hi! \n";
+    }
+
+    virtual Extended* clone () {
+      return new Extended(*this);
+    }
+};
+
+void foo (Base* b) {
+  // At this point, although `foo` might have been invoked with
+  // an `Extended`instance(the `Extended` class extends animal),
+  // `b2` is a `Base` instance
+  // Base* b2 = new Base(*b);
+  // b2->sayHi(); // Output: `[BASE]: hi!`
+
+  // Covariance - it allows an overriden method(virtual function)
+  // to have a different return type as long as that return type
+  // is derived from the base class' return type
+  Base* b2 = b->clone();
+  b2->sayHi(); // Output: `[EXTENDED]: hi!`
+}
+
+int main () {
+  // Bar bar1("bar1 var");
+  // Bar bar2("bar2 var");
+
+  // bar1 = bar2;
+  // cout << bar1.barVar;
+
+  Extended e;
+  foo(&e);
+}
+```
+
+---
+
+## Implicit type conversions
+
+```cpp
+class Test {
+  private:
+    string name;
+  
+  public:
+    // This is not only a constructor, but also a type converter.
+    // The type conversion is _implicit_ by default.
+    // What this means is that it will convert the `string` to a `Test` instance.
+    /* explicit */ Test(string name): name(name) {}
+    
+    // Providing a custom type conversion from `string`
+    // Test(const string& name) {}
+
+    // Providing an implicit conversion operator
+    // So that when you do `string(testInstance)`, it will invoke the function below.
+    operator string () const {
+      return name;
+    }
+
+    const string& getName () const {
+      return name;
+    }
+};
+
+// Nonmember operator so that it covers all cases
+const Test operator+(const Test& lhs, const Test& rhs) {
+  return Test(lhs.getName() + " " + rhs.getName());
+}
+
+int main () {
+  string testName = "Andrei";
+
+  // It works without the `explicit` keyword.
+  Test t1 = testName;
+
+  // It works because we've provided the custom conversion to `string`
+  cout << "My name is: " + string(t1) << '\n';
+  string myName = t1;
+  cout << myName << '\n'; // Output: `Andrei`
+
+
+  Test t2("Andrei");
+  Test t3("Gatej");
+  cout << (t2 + t3).getName() << '\n'; // Output: `Andrei Gatej`
+  cout << (t3 + t2).getName() << '\n'; // Output: `Gatej Andrei`
 }
 ```
