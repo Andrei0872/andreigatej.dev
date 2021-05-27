@@ -32,7 +32,11 @@ date: 2021-02-22
   - [Destructor](#destructor)
   - [Virtual destructors and smart destructor](#virtual-destructors-and-smart-destructor)
 - [Covariance](#covariance)
-- [Implicit type conversions](#implicit-type-conversions)
+- [Type conversions](#type-conversions)
+  - [Implicit type conversions](#implicit-type-conversions)
+  - [Explicit type conversions](#explicit-type-conversions)
+- [Types of inheritance](#types-of-inheritance)
+- [`rvalue` and `lvalue`](#rvalue-and-lvalue)
 
 
 <details>
@@ -728,7 +732,9 @@ int main () {
 
 ---
 
-## Implicit type conversions
+## Type conversions
+
+### Implicit type conversions
 
 ```cpp
 class Test {
@@ -778,3 +784,187 @@ int main () {
   cout << (t3 + t2).getName() << '\n'; // Output: `Gatej Andrei`
 }
 ```
+
+### Explicit type conversions
+
+* also called: **casting**
+
+```cpp
+class Base {
+  public:
+    Base () {
+      cout << "BASE \n";
+    }
+
+    virtual void sayHi  () {
+      cout << "[BASE]: hi! \n";
+    }
+
+    virtual Base* clone () {
+      return new Base(*this);
+    }
+};
+
+class Extended : public Base {
+  public:
+    Extended () {
+      cout << "EXTENDED \n";
+    }
+
+    virtual void sayHi  () {
+      cout << "[EXTENDED]: hi! \n";
+    }
+
+    virtual Extended* clone () {
+      return new Extended(*this);
+    }
+};
+
+
+
+ // `static_cast`
+  int i = 9;
+  float j = static_cast<float>(i);
+  // Converting pointer from one type to a **related** type(down/up casting)
+  // In this case, `Extended` is derived from `Base`
+  Base* b = static_cast<Base*>(new Extended());
+  Extended* e = static_cast<Extended*>(new Base());
+
+
+  // `dynamic_cast`
+  // Only works on pointer/references & it uses down casting(cast an object from base class to derived class)
+  // Works on related types
+  // Also performs a **runtime check**
+  // Also requires the 2 types to be polymorphic(to have at least a virtual function)
+  
+  // Down cast: from parent to child
+  Base*b = new Base();
+  Extended* e = dynamic_cast<Extended*>(b);
+
+  // `const_cast`
+  // Used to cast away the constness
+  // Only works on pointers/references
+  // Works on the **same type**(char* and const char*)
+
+  const char* str = "Hello world";
+  // Without it, the error would be: `a value of type "const char *" cannot be used to initialize an entity of type "char *"`
+  char* mut = const_cast<char*>(str);
+
+```
+
+---
+
+## Types of inheritance
+
+```cpp
+class A {
+  private:
+    string privateVar = "PRIVATE VAR";
+
+  protected:
+    string protectedVar = "PROTECTED VAR";
+
+  public:
+    string publicVar = "PUBLIC VAR";
+};
+
+// **None** of these can access A's private members
+
+// Inherits A's public members as public and A's public members as protected
+// `B_pub*` can be casted to `A*`
+class B_pub : public A {};
+// Inherits A's public and protected members as private
+class B_priv : private A {};
+// Inherits A's public and protected members as protected
+class B_prot : protected A {
+  public:
+    // (1)
+    // using A::publicVar;
+};
+
+int main () {
+  // Type of inheritance
+  B_pub bPub;
+  bPub.publicVar;
+  auto foo = dynamic_cast<A*>(&bPub);
+
+  B_priv bPriv;
+  // Error: `publicVar` is inaccessible
+  // bPriv.publicVar;
+
+  B_prot bProt;
+  // Error: `publicVar` is inaccessible
+  // The error goes away if you uncomment `(1)`
+  // bProt.publicVar;
+}
+```
+
+---
+
+## `rvalue` and `lvalue`
+
+* `lvalue` - an object that occupies some identifiable location in memory
+* `rvalue` - any object that is not a `lvalue`
+
+```cpp
+
+
+class Dog2 {};
+
+int square (/* (1) - `const` workaround */ const int& x) {
+  return x * x;
+}
+
+// (2)
+const int& foo () {
+  return 7;
+}
+
+int main () {
+  // `lvalue` examples
+  // `i` is an `lvalue`
+  int i;
+  // Its address(location) is identifiable
+  int *p = &i;
+  // Memory content is modified
+  i = 2;
+
+  // `lvalue`
+  Dog2 d1;
+
+
+  // `rvalue` examples;
+  // `2`
+  int x = 2;
+  // `(x + 2)`
+  int y = (x + 2);
+  // Error; can't identify them
+  // int* z = &(x + 2);
+  // int foo = sum(1,2); - `sum(1, 2)` - `rvalue`
+
+
+  // Reference(`lvalue` reference)
+  // Error: `initial value of reference to non-const must be an lvalue`
+  // int &a = 5;
+  int a;
+  // `a` is an `lvalue` - has an identifiable memory address
+  int& b = a; 
+
+  // Constant `lvalue` reference can be assigned an `rvalue`.
+  // Also the same reason `(2)` works
+  const int& r = 100;
+
+  int c = 100;
+  // OK - `c` is an `lvalue`
+  square(c);
+  // Error: `100` is **not** an `lvalue`
+  // The error can go away with `(1)`
+  square(100);
+
+  // `rvalue` can be used to create an `lvalue`
+  int v[3];
+  *(v + 2) = 10;
+}
+```
+
+---
