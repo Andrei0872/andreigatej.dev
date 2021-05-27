@@ -37,6 +37,7 @@ date: 2021-02-22
   - [Explicit type conversions](#explicit-type-conversions)
 - [Types of inheritance](#types-of-inheritance)
 - [`rvalue` and `lvalue`](#rvalue-and-lvalue)
+- [The `using` keyword in the class scope](#the-using-keyword-in-the-class-scope)
 
 
 <details>
@@ -968,3 +969,34 @@ int main () {
 ```
 
 ---
+
+## The `using` keyword in the class scope
+
+
+```cpp
+class A {
+  public:
+    void foo (int a) {
+      cout << "foo with int! \n";
+    }
+};
+
+class B : public A {
+  public:
+    /* (1) */using A::foo;
+    void foo () {
+      cout << "foo simple! \n";
+    }
+};
+
+int main () {
+  B b;
+
+  // Works as expected
+  // b.foo();
+
+  // This will result in an error, unless `(1)` is applied
+  // because `A`'s `foo` is **shadowed** by `B`'s `foo`(name hiding).
+  b.foo(100);
+}
+```
