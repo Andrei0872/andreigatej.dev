@@ -406,6 +406,10 @@ git add -p
 
 * `git diff --name--only HEAD^`: show the changes between **HEAD** and the previous commit **HEAD^**; with other words, this will list the **files** that are included in the **last commit**
 
+* `git diff HEAD..HEAD~5 -- package.json`: the same as asking *what do I need to add to/remove from the file `package.json` in the `HEAD` commit such that the file reaches same state as `HEAD~5`?*
+
+* `git diff HEAD~5 -- package.json`: the difference between the `package.json` file from the working tree and the commit `HEAD~5`
+
 #### `git diff ..` vs `git diff ...`
 
 * `git diff master..topic`: will print the changes from `G` to `C`(with effects on `F` and `G`); with other words, it will print the changes that occurred in `A`, `B` and `C`
