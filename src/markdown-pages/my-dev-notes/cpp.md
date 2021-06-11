@@ -644,6 +644,55 @@ int main () {
 }
 ```
 
+Passing arguments with and without reference:
+
+```cpp
+class A {
+  int x;
+  const int y;
+public:
+  A(int x = 7) : y(10) {this->x = x; cout<<"Const "<<x<<endl;}
+  A (const A& a) : y(a.x){
+    cout << a.x << " COPY CONSTRUCTOR ! \n";
+
+    // At this point, `x` is 0.
+    // cout << x << '\n';
+  }
+  void set_x(int x){this->x = x;}
+  int get_x() const { return x;}
+  ~A(){cout<<"Dest "<<x<<endl;}
+};
+
+/*
+With `A`(the copy constructor will be called), the output is:
+Const 7
+7
+7 COPY CONSTRUCTOR ! 
+10
+Dest 10
+Dest 7
+
+With `A&`, the output is:
+Const 7
+7
+10
+Dest 10
+*/
+void afisare(A ob) {
+  ob.set_x(10);
+  cout<<ob.get_x()<<endl;
+}
+
+int main () {
+  // Takeaway: when passing by reference, the Copy Constructor won't be invoked
+  
+  A o1;
+  cout<<o1.get_x()<<endl;
+  afisare(o1);
+  return 0;
+}
+```
+
 ### Copy assignment operator
 
 ```cpp
