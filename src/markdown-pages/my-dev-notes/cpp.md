@@ -9,6 +9,7 @@ date: 2021-02-22
   - [passing by pointer:](#passing-by-pointer)
   - [arrays are in fact **pointers**:](#arrays-are-in-fact-pointers)
   - [arrays of pointers:](#arrays-of-pointers)
+  - [Reassigning the reference](#reassigning-the-reference)
 - [The `const` keyword](#the-const-keyword)
   - [the `const` keyword in classes](#the-const-keyword-in-classes)
 - [Classes](#classes)
@@ -144,6 +145,27 @@ int main () {
   // cout << a[1] << '\n';
 
   cout << *a[1] << '\n'; // 3
+}
+```
+
+### Reassigning the reference
+
+```cpp
+int main () {
+  int a = 20;
+  // The reference can be thought of as an alias
+  int &ref = a;
+  cout << a << " " << ref << endl; // 20 20
+  
+  int b = 50;
+  // Now, `a` becomes `b`
+  ref = b;
+  ref--;
+  cout << a << " " << ref << endl; // 49 49
+
+  // Only `a` and its alias were affected
+  cout << b << endl; // 50
+  return 0;
 }
 ```
 
