@@ -334,6 +334,42 @@ int main () {
 }
 ```
 
+* the order of **constructors** and **destructors**
+
+```cpp
+class cls { public:
+  cls() { cout << "Inside constructor 1" << endl; }
+  ~cls() { cout << "Inside destructor 1" << endl; } };
+
+class clss { 
+  cls xx;
+public:
+  clss() { cout << "Inside constructor 2" << endl; }
+  ~clss() { cout << "Inside destructor 2" << endl; } };
+
+class clss2 { 
+  clss xx;
+  cls xxx;
+public:
+  clss2() { cout << "Inside constructor 3" << endl; }
+  ~clss2() { cout << "Inside destructor 3" << endl; } };
+
+int main() {
+  clss2 s;
+
+  /*
+    Inside constructor 1
+    Inside constructor 2
+    Inside constructor 1
+    Inside constructor 3
+    Inside destructor 3
+    Inside destructor 1
+    Inside destructor 2
+    Inside destructor 1
+  */
+}
+```
+
 ### references in class
 
 ```cpp
