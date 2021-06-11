@@ -38,6 +38,10 @@ date: 2021-02-22
 - [Types of inheritance](#types-of-inheritance)
 - [`rvalue` and `lvalue`](#rvalue-and-lvalue)
 - [The `using` keyword in the class scope](#the-using-keyword-in-the-class-scope)
+- [The `friend` keyword](#the-friend-keyword)
+  - [`friend` function](#friend-function)
+  - [`friend` method of another class](#friend-method-of-another-class)
+  - [`friend` class](#friend-class)
 
 
 <details>
@@ -998,5 +1002,150 @@ int main () {
   // This will result in an error, unless `(1)` is applied
   // because `A`'s `foo` is **shadowed** by `B`'s `foo`(name hiding).
   b.foo(100);
+}
+```
+
+---
+
+## The `friend` keyword
+
+### `friend` function
+
+```cpp
+class Animal {
+  public:
+    Animal () {
+      cout << "ANIMAL INSTANTIATED \n";
+    }
+};
+
+class Person {
+  private:
+    string hidden = "hidden!";
+    int secretNumber = 1904;
+    // Without `*`, `Animal`'s constructor would be invoked
+    Animal* a;
+  
+  protected:
+    int protectedNumber = 20;
+  
+  public:
+    Person (const string& name);
+
+    void printName(string defaultName = "andrei");
+
+    void setAge(int);
+
+    // Basically saying: the `printSecrets` can have access to all the `private`
+    // and `protected` of the `Person` class
+    friend void printSecrets(const Person& p);
+};
+
+Person::Person(const string& name) {
+  hidden = name;
+}
+
+void Person::printName(string defaultName) {
+  cout << "DEFAULT NAME: " << defaultName << '\n';
+}
+
+void Person::setAge(int x) {}
+
+//* `friend` class
+// Accesing `private` & `protected` members
+void printSecrets (const Person& p) {
+  cout << "The secret number is: " << p.secretNumber << '\n';
+  cout << "The protected number is: " << p.protectedNumber << '\n';
+}
+
+int main () {
+  Person p("Andrei");
+  p.printName();
+  printSecrets(p);
+
+  /*
+  OUTPUT:
+
+  DEFAULT NAME: andrei
+  The secret number is: 1904
+  The protected number is: 20
+  */
+  return 0;
+}
+```
+
+### `friend` method of another class
+
+```cpp
+// Forward declaration
+class B;
+
+class A {
+  public:
+    int getSecretNum (const B& b);
+};
+
+class B {
+  private:
+    const int secretNum = 100;
+  public:
+    // Allowing `A` to access this class' private and protected variables
+    friend int A::getSecretNum(const B& b);
+};
+
+int A::getSecretNum (const B& b) {
+  return b.secretNum;
+}
+
+int main () {
+  A a1;
+  B b1;  cout << "B's Secret num : " << a1.getSecretNum(b1) << '\n';
+
+  /*
+  OUTPUT:
+
+  B's Secret num : 100
+  */
+}
+```
+
+### `friend` class
+
+```cpp
+// `Friends` classes
+class F1;
+
+class F2 {
+  private:
+    int a = 10, b = 20;
+  protected:
+    int prot = 133;
+  public:
+    // Allowing F1 to access everything in `F2`
+    friend class F1;
+
+    void f2Meth ();
+};
+
+class F1 {
+  public:
+    void printValues (const F2& f2);
+};
+
+inline void F1::printValues(const F2& f2) {
+  cout << f2.a << ' ' << f2.b << ' ' << f2.prot << '\n';
+  // f2.f2Meth();
+}
+
+int main () {
+  F1 f1;
+  F2 f2;
+  f1.printValues(f2);
+
+  /*
+  OUTPUT:
+  
+  10 20 133
+   */
 }
 ```
