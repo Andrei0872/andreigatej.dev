@@ -683,6 +683,83 @@ int main () {
 }
 ```
 
+Basic case:
+
+```cpp
+class myclass {
+	int i = 20;
+public: 
+  myclass(){
+    cout << "CONSTR\n";
+  };
+
+  myclass (const myclass& mc) {
+    cout << "COPY CONSTR \n";
+  }
+
+	void set_i(int n) { i=n; } 
+	int get_i() const { return i; } 
+};
+
+myclass f() {
+  myclass x;
+  x.set_i(1);
+  return x;
+}
+
+int main () {
+  // Here the `o3`'s Copy Constructor is called and `mc` is `o4`
+  // myclass o4;
+  /*
+  OUTPUT:
+
+  CONSTR
+  COPY CONSTR 
+  */
+  // The output would be the same if we used `myclass o4 = f()` instead
+  myclass o4;
+  o4.set_i(100);
+  myclass o3(o4);
+}
+```
+
+A case where the Copy Constructor **won't** be invoked:
+
+```cpp
+class myclass {
+	int i = 20;
+public: 
+  myclass(){
+    cout << "CONSTR\n";
+  };
+
+  myclass (const myclass& mc) {
+    cout << "COPY CONSTR \n";
+  }
+
+	void set_i(int n) { i=n; } 
+	int get_i() const { return i; } 
+};
+
+myclass f() {
+  myclass x;
+  x.set_i(1);
+  return x;
+}
+
+int main () {
+  // The Copy Constructor will not be called
+  /*
+  OUTPUT:
+
+  CONSTR
+  CONSTR
+  */
+  myclass o2(f());
+  myclass o3 = f();
+}
+```
+
 Passing arguments with and without reference:
 
 ```cpp
