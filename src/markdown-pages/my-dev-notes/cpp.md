@@ -883,6 +883,24 @@ int main () {
 ClassName& operator=(const ClassName& rhs) {}; // Member by member copying
 ```
 
+The case where a class is using references or `const`:
+
+```cpp
+class Foo {
+  /* const  */string testVar = "andrei";
+  string& name = testVar;
+};
+
+int main () {
+  Foo f;
+  Foo g;
+
+  // The properties will be copied **member by member**
+  // and the reference can be paired with only one variable.
+  g = f; // Error!
+}
+```
+
 ### Destructor
 
 * a class with a private destructor can only be stored on heap, not on stack; that's because when the stack item is removed, the destructor will be called either way
