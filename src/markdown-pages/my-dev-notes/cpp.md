@@ -43,6 +43,9 @@ date: 2021-02-22
   - [`friend` function](#friend-function)
   - [`friend` method of another class](#friend-method-of-another-class)
   - [`friend` class](#friend-class)
+- [The `static` keyword](#the-static-keyword)
+  - [In class](#in-class)
+  - [In function](#in-function)
 
 
 <details>
@@ -1254,5 +1257,94 @@ int main () {
   
   10 20 133
    */
+}
+```
+
+---
+
+## The `static` keyword
+
+### In class
+
+```cpp
+class Computer {
+  public:
+    string name = "Ubuntu";
+    static string secret;
+  
+  public:
+    Computer ();
+  
+    static void printName();
+    void printNormally();
+};
+
+Computer::Computer () { }
+
+// Defining the static variable
+string Computer::secret = "this is a secret";
+
+void Computer::printName () {
+  // Error: `name` is not static
+  // auto r = name;
+
+  cout << secret << "\n";
+}
+
+void Computer::printNormally () {
+  // Static members can be accessed
+  cout << "[normally]: " << secret << "\n";
+
+  // printName();
+}
+
+int main () {
+  Computer::printName();
+
+  Computer c;
+  c.secret;
+  c.printName();
+  c.printNormally();
+
+  /* 
+  OUTPUT:
+
+  this is a secret
+  this is a secret
+  [normally]: this is a secret
+  */
+}
+```
+
+### In function
+
+```cpp
+void foo (int x = -1) {
+  static int sum = 0;
+
+  if (x != -1) {
+    sum += x;
+  }
+
+  cout << "crt sum: " << sum << "\n";
+}
+
+int main () {
+  foo(10);
+  foo(10);
+  foo(10);
+
+  foo();
+  foo();
+
+  /*
+  OUTPUT:
+  
+  crt sum: 10
+  crt sum: 20
+  crt sum: 30
+  crt sum: 30
+  crt sum: 30
+  */
 }
 ```
