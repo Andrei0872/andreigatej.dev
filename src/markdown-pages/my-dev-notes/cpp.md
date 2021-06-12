@@ -91,6 +91,15 @@ int main () {
   y = 999;
   // 999 999 999
   cout << y << " " << x << " " << *p << '\n';
+
+  int a = 123;
+  int &ref = a;
+  // Remember that `ref` is just an alias to `a`!
+  a = 10;
+  cout << a << " " << ref << "\n"; // 10 10
+
+  ref = 100;
+  cout << a << " " << ref << "\n"; // 100 100
 }
 ```
 
