@@ -10,6 +10,7 @@ date: 2021-02-22
   - [arrays are in fact **pointers**:](#arrays-are-in-fact-pointers)
   - [arrays of pointers:](#arrays-of-pointers)
   - [Reassigning the reference](#reassigning-the-reference)
+  - [Returning references](#returning-references)
 - [The `const` keyword](#the-const-keyword)
   - [the `const` keyword in classes](#the-const-keyword-in-classes)
 - [Classes](#classes)
@@ -169,6 +170,63 @@ int main () {
   // Only `a` and its alias were affected
   cout << b << endl; // 50
   return 0;
+}
+```
+
+### Returning references
+
+```cpp
+class myclass {
+	int i = 20;
+public: 
+  myclass(){
+    cout << "CONSTR\n";
+  };
+
+  myclass (const myclass& mc) {
+    cout << "COPY CONSTR \n";
+  }
+
+  myclass& operator=(const myclass& rhs);
+
+	void set_i(int n) { i=n; } 
+	int get_i() const { return i; } 
+}; 
+
+myclass& myclass::operator=(const myclass& rhs) {
+  cout << i << " Copy assignment " << rhs.get_i() << "\n";
+  return *this;
+}
+
+myclass f() {
+  myclass x;
+  x.set_i(1);
+  return x;
+}
+
+int main() {
+  // With `myclass& operator=(const myclass& rhs);`
+  // the output is:
+  /*
+  CONSTR
+  CONSTR
+  100 Copy assignment 19
+   */
+  // With `myclass operator=(const myclass& rhs);`
+  // the output is:
+  /*
+  CONSTR
+  CONSTR
+  100 Copy assignment 19
+  COPY CONSTR 
+  */
+  // So, what can be noticed is that if `operator=` does not return a refenrece,
+  // the Copy Constructor will be invoked.
+  myclass o2;
+  o2.set_i(19);
+  myclass o3;
+  o3.set_i(100);
+  o3 = o2;
 }
 ```
 
