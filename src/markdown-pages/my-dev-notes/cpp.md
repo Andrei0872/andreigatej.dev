@@ -1106,6 +1106,12 @@ class Extended : public Base {
   // In this case, `Extended` is derived from `Base`
   Base* b = static_cast<Base*>(new Extended());
   Extended* e = static_cast<Extended*>(new Base());
+  
+  Base* b2 = new Base();
+  // `static_cast` does not run RTTI, as opposed to `dynamic_cast`
+  Extended* e2 = static_cast<Extended*>(b2);
+  // Now, if you do `e2->methodOnlyFromExtended()`, it will not be the expected value
+  // However, if you do `e2->methodInheritedFromBase()`, it will work as expected
 
 
   // `dynamic_cast`
@@ -1115,7 +1121,7 @@ class Extended : public Base {
   // Also requires the 2 types to be polymorphic(to have at least a virtual function)
   
   // Down cast: from parent to child
-  Base*b = new Base();
+  Base*b = new Extended();
   Extended* e = dynamic_cast<Extended*>(b);
 
   // `const_cast`
