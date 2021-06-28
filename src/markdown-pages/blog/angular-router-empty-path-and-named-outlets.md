@@ -1,5 +1,5 @@
 ---
-title: 'Angular router: empty paths, named outlets and a fix that came with Angular 11'
+title: 'Angular Router: empty paths, named outlets and a fix that came with Angular 11'
 # publication: https://indepth.dev/posts/1143/a-thorough-exploration-of-angular-forms
 date: 2021-06-27
 published: true
@@ -351,3 +351,5 @@ Although the fix was a small one, it had a big impact. I had stumbled across a f
 Thanks for reading!
 
 *Credit goes to the Stack Overflow user Dina Flies, who posted the question.*
+
+*The diagrams were made with [Excalidraw](https://excalidraw.com/).*
