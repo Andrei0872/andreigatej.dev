@@ -4,8 +4,8 @@ title: 'Angular Router: empty paths, named outlets and a fix that came with Angu
 date: 2021-06-27
 published: true
 slug: /blog/angular-router-empty-paths-with-named-outlets
-tags: ["angular"]
-# isSample: true
+tags: ["angular", "publication: This is Angular"]
+isSample: false
 ---
 
 In this article, we are going to highlight the importance of a fix that came with the 11th version of Angular Router. We will do so by examining a scenario where the lack of that fix prevents an intuitive solution from working, as well as understanding why the fix in question solves the problem.  
@@ -179,7 +179,7 @@ It was necessary to briefly introduce this notion because, based on the *consume
 An example of this is even the one we have seen at the beginning of this article:
 
 <div style="text-align: center;">
-  <img src="src/../../../images/case-1.png">
+  <img src="/angular-router-empty-path-and-named-outlets/case-1.png">
 </div>
 
 ```typescript
@@ -220,7 +220,7 @@ An example of this is even the one we have seen at the beginning of this article
 
 Recall that `UrlSegmentGroup.children`'s values are named outlets and their segments.
 
-2. All the `UrlSegmentGroup.segments` are consumed **and** `UrlSegmentGroup.children` is empty:
+1. All the `UrlSegmentGroup.segments` are consumed **and** `UrlSegmentGroup.children` is empty:
 
 ```typescript
 const routes: Routes = [
@@ -339,7 +339,7 @@ const expanded$ = this.expandSegment(
 Let's briefly visualize the process:
 
 <div style="text-align: center;">
-  <img src="src/../../../images/case-3.png">
+  <img src="/angular-router-empty-path-and-named-outlets/case-3.png">
 </div>
 
 Because the outlet name won't always be `primary` and since all the paths until `FooComponent1` are `''`, the first `children` array will be traversed(denoted by`(1)`), then the second `children` array(denoted by `(2)`) and there it will finally find the match.
