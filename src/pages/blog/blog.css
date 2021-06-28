@@ -14,3 +14,7 @@
 .c-tags-container > .c-tags-container__tag.is-active {
   background-color: var(--light-grey);
 }
+
+div img {
+  width: 100%;
+}
