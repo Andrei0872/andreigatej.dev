@@ -21,8 +21,6 @@ date: 2019-04-20
 
 ## Concepts
 
-
-
 ### 2>&1
 
 * **2**: file descriptor for *stderr*
