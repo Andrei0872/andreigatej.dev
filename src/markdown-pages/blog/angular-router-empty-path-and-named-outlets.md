@@ -1,6 +1,6 @@
 ---
 title: 'Angular Router: empty paths, named outlets and a fix that came with Angular 11'
-# publication: https://indepth.dev/posts/1143/a-thorough-exploration-of-angular-forms
+publication: https://dev.to/this-is-angular/angular-router-empty-paths-named-outlets-and-a-fix-that-came-with-angular-11-1hbl
 date: 2021-06-27
 published: true
 slug: /blog/angular-router-empty-paths-with-named-outlets
