@@ -3,12 +3,8 @@ name: periodically-redeploy
 on:
   schedule:
     - cron: '0 0 */10 * *'
-  push:
-    branches:
-      - master
 
 env:
-  REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
   REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
   PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
