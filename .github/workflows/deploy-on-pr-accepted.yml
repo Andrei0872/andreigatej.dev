@@ -1,0 +1,31 @@
+name: deploy-on-pr-accepted
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
+  PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+jobs:
+  repo-sync:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+          ref: 'master'
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.4.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - run: |
+          ssh-keyscan -t rsa andreigatej.dev >> ~/.ssh/known_hosts
+          
+          git remote add prod "$REMOTE_PATH"
+          git config --global user.email "andreigtj01@gmail.com"
+          git config --global user.name "Andrei Gatej"
+          git push prod master --force
