@@ -1,9 +1,10 @@
 name: deploy-on-pr-accepted
 
 on:
-  push:
+  pull_request:
     branches:
       - master
+    types: [closed]
 
 env:
   REMOTE_PATH: ${{ secrets.REMOTE_PATH }}
