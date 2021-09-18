@@ -3,7 +3,7 @@
   justify-content: space-between;
   width: 100%;
   height: var(--header-height);
-  background-color: beige;
+  background-color: var(--gray-1);
   position: fixed;
   z-index: 2;
 
