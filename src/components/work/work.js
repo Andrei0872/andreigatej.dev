@@ -98,8 +98,6 @@ export default function Work() {
   sections[2].samples = sampleArticles;
   sections[3].samples = sampleNotes;
   
-  console.log(sections)
-
   return (
     <section id="work" className="c-work">
       <h1 className="c-work__title">Work</h1>
