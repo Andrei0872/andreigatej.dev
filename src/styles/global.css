@@ -15,6 +15,8 @@
   --gray-1: #D0D7DD;
   --dark-blue-1: #232130;
   --dark-blue-2: #0d3e5a;
+
+  --header-height: 9vh;
 }
 
 html, body {
