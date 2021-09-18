@@ -13,6 +13,17 @@ const sections = [
     </p>,
     clickHandler: () => window.open('https://stackoverflow.com/users/9632621/andrei-g%c4%83tej?tab=profile'),
     buttonText: 'Stack Overflow profile',
+    customClasses: ['is-stackoverflow']
+  },
+  { 
+    name: <span>YouTube Channel</span>,
+    desc: <p>
+      Sometimes explanations are more efficiently transmitted through videos. I also consider sharing my learnings through YouTube videos to be a good way to improve on
+      my communication skills.
+    </p>,
+    clickHandler: () => window.open('https://www.youtube.com/channel/UCiE1tVkSC8aSk8EtnbbP8NQ'),
+    buttonText: 'YouTube Channel',
+    customClasses: ['is-youtube']
   },
   { 
     name: <span>Projects</span>,
@@ -23,6 +34,7 @@ const sections = [
     samples: [],
     clickHandler: () => navigate('/projects'),
     buttonText: 'More projects',
+    customClasses: ['is-projects']
   },
   { 
     name: <span>Blog</span>,
@@ -33,6 +45,7 @@ const sections = [
     samples: [],
     clickHandler: () => navigate('/blog'),
     buttonText: 'More articles',
+    customClasses: ['is-blog']
   },
   {
     name: <span>My Dev notes</span>,
@@ -43,6 +56,7 @@ const sections = [
     samples: [],
     clickHandler: () => navigate('/my-dev-notes'),
     buttonText: 'More Dev notes',
+    customClasses: ['is-notes']
   },
 ];
 
@@ -94,32 +108,43 @@ export default function Work() {
     }
   `);
 
-  sections[1].samples = sampleProjects;
-  sections[2].samples = sampleArticles;
-  sections[3].samples = sampleNotes;
+  sections[2].samples = sampleProjects;
+  sections[3].samples = sampleArticles;
+  sections[4].samples = sampleNotes;
   
   return (
     <section id="work" className="c-work">
-      <h1 className="c-work__title">Work</h1>
+      <h1 className="c-work__title">My Work</h1>
 
       {
         sections.map(
-          s => <div key={s.buttonText} className="c-work-section">
+          s => <div key={s.buttonText} className={["c-work-section",  ...s.customClasses && s.customClasses || []].join(' ') }>
             <h2 className="c-work-section__name">{s.name}</h2>
-            {s.desc}
-            {
-              s.samples 
-                ? s.samples.map(
-                  ({ frontmatter: sample }) => <div 
-                    onClick={() => navigateToArticleOrBlog(sample)}
-                    key={sample.title} 
-                    className="c-work-section__sample"
-                  >
-                    <p>{sample.title}</p>
+
+            <div className="c-work-section__content">
+              {s.desc}
+              {
+                s.samples 
+                  ?
+                  <div className="c-samples">
+                    {
+                      s.samples
+                        ? s.samples.map(
+                          ({ frontmatter: sample }) => <div
+                            onClick={() => navigateToArticleOrBlog(sample)}
+                            key={sample.title}
+                            className="c-samples__sample"
+                          >
+                            {sample.title}
+                          </div>
+                        )
+                        : null
+                    }
                   </div>
-                )
-                : null
+                  : null
             }
+            </div>
+
             <button onClick={() => s.clickHandler()} className="c-work-section__button">{s.buttonText}</button>
           </div>
         )
