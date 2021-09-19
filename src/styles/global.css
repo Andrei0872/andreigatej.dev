@@ -42,6 +42,8 @@ html, body {
   position: relative;
   font-weight: bold;
   color: var(--dark-blue-2);
+  text-decoration: underline;
+  text-decoration-color: var(--dark-yellow);
 }
 
 h1 {

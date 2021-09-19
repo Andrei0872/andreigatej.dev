@@ -26,9 +26,6 @@
 }
 
 .c-home .is-important {
-  text-decoration: underline;
-  text-decoration-color: var(--dark-yellow);
-
   /* We don't want the value from `is-important` to be applied here. */
   font-size: inherit;
 }
