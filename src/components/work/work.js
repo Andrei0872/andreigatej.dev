@@ -114,7 +114,7 @@ export default function Work() {
   
   return (
     <section id="work" className="c-work">
-      <h1 className="c-work__title">My Work</h1>
+      <h2 className="c-work__title is-section-title">My Work</h2>
 
       {
         sections.map(
