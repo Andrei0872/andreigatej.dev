@@ -6,13 +6,13 @@
 
 .c-tags-container > .c-tags-container__tag {
   margin-left: .8rem;
-  font-size: .8rem;
+  font-size: .9rem;
   cursor: pointer;
   margin-top: .5rem;
 }
 
 .c-tags-container > .c-tags-container__tag.is-active {
-  background-color: var(--light-grey);
+  background-color: var(--selection-color);
 }
 
 div img {
