@@ -17,6 +17,8 @@
   --dark-blue-2: #0d3e5a;
 
   --header-height: 9vh;
+  /* Any section that is not `home` is considered _normal_ */
+  --normal-section-width: min(10rem + 65vw, 94vw);
 }
 
 html, body {
@@ -51,4 +53,12 @@ h1 {
 }
 ::-moz-selection {
   background: var(--selection-color);
+}
+
+.is-section-title {
+  background: var(--selection-color);
+  color: var(--dark-blue-1);
+  padding: 0.2rem .7rem;
+  border-radius: 4px;
+  font-size: clamp(1.2rem, 1rem + 1.5vw, 3rem);
 }

@@ -6,7 +6,7 @@
       "b b b b"
       "b b b b"
       "p p n n";
-  max-width: min(10rem + 65vw, 89vw);
+  max-width: var(--normal-section-width);
   margin: 0 auto;
   gap: 3rem 1rem;
   scroll-margin-top: var(--header-height);
@@ -43,12 +43,7 @@
 
 .c-work__title {
   grid-area: t;
-  background: var(--selection-color);
-  color: var(--dark-blue-1);
   justify-self: flex-start;
-  padding: 0.2rem .7rem;
-  border-radius: 4px;
-  font-size: clamp(1.2rem, 1rem + 1.5vw, 3rem);
 }
 
 .c-work-section {
