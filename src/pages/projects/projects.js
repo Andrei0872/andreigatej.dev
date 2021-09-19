@@ -1,7 +1,6 @@
 import React from 'react'
 import Layout from '../../components/layout'
 
-import './projects.css'
 import './project.css'
 import { graphql, useStaticQuery } from 'gatsby'
 import Tag from '../../components/tag/'
@@ -53,10 +52,14 @@ export default function Projects(props) {
                   }
                 </div>
               </div>
-
               <div className="c-project__content">
-                <h3 className="c-project__desc-title">Description</h3>
-                <p dangerouslySetInnerHTML={{ __html: proj.html }} className="c-project__desc-content"></p>
+                <p 
+                  dangerouslySetInnerHTML={{ 
+                    __html: proj.html
+                      .replace(/<(a|strong)/g, (_, match) => `<${match} class="${match === 'a' ? "is-link" : "is-important" }"`)
+                  }}
+                  className="c-project__desc-content"
+                ></p>
               </div>
             </article>
             ))

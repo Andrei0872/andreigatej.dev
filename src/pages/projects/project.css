@@ -1,8 +1,6 @@
 .c-project {
   display: flex;
   flex-direction: column;
-  border: .3rem solid black;
-  background: var(--light-yellow);
   margin-top: 3rem;
   scroll-margin-top: 100px;
 }
@@ -13,7 +11,8 @@
   align-items: center;
   justify-content: space-between;
   padding: .4rem .6rem;
-  border-bottom: .2rem solid black;
+  background: var(--dark-blue-2);
+  color: #fff;
 }
 
 .c-project__tags {
@@ -33,12 +32,21 @@
 }
 
 .c-project__content {
-  padding: 0.8rem;
-  line-height: 1.2rem;
-  font-size: 1.2rem;
+  border: 3px solid var(--dark-blue-2);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  padding: .7rem;
+  line-height: 1.2;
+}
+
+.c-project__content .is-important {
+  font-size: inherit;
 }
 
 .c-project__desc-content {
+  font-size: clamp(1.2rem, 0.5rem + 1vw, 1.5rem);
+}
+
+.is-link + br + .is-link {
   margin-top: 1rem;
-  line-height: 1.6rem;
 }
