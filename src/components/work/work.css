@@ -113,13 +113,6 @@ h2.c-work-section__name {
 }
 
 .c-samples__sample {
-  font-style: italic;
-  text-decoration: underline;
-  text-decoration-thickness: 3px;
-  text-decoration-color: var(--main-grey);
-  color: var(--dark-blue-1);
-  font-weight: bold;
-  cursor: pointer;
   transition: transform .3s;
 }
 

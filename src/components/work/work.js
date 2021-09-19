@@ -133,7 +133,7 @@ export default function Work() {
                           ({ frontmatter: sample }) => <div
                             onClick={() => navigateToArticleOrBlog(sample)}
                             key={sample.title}
-                            className="c-samples__sample"
+                            className="c-samples__sample is-link"
                           >
                             {sample.title}
                           </div>
