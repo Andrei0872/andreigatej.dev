@@ -23,10 +23,10 @@ export default function About() {
             One of my ambitions is to become the best programmer I can humanly be.
             <br />
             <br />
-            Although I find everything about programming interesting, <span class="is-important">web development</span> is my passion and I love working in all of its areas:
+            Although I find everything about programming interesting, <span className="is-important">web development</span> is my passion and I love working in all of its areas:
             Front-End, Back-End, DevOps, Databases and even Security.
             <br />
-            My experience mostly spans the JavaScript ecosystem: <span class="is-important">JavaScript</span>, <span class="is-important">TypeScript</span>, <span class="is-important">Vue.js</span>, <span class="is-important">Angular</span>, <span class="is-important">RxJS</span>, <span class="is-important">Node.js</span> and <span class="is-important">webpack</span>. I'm also familiar with <span className="is-important">SQL</span>, <span className="is-important">Go</span> and <span className="is-important">Docker</span>.
+            My experience mostly spans the JavaScript ecosystem: <span className="is-important">JavaScript</span>, <span className="is-important">TypeScript</span>, <span className="is-important">Vue.js</span>, <span className="is-important">Angular</span>, <span className="is-important">RxJS</span>, <span className="is-important">Node.js</span> and <span className="is-important">webpack</span>. I'm also familiar with <span className="is-important">SQL</span>, <span className="is-important">Go</span> and <span className="is-important">Docker</span>.
             <br />
             <br />
             I'm always open to face new challenges and to learn new things.
