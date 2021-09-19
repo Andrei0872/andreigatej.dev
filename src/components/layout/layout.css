@@ -1,0 +1,5 @@
+.c-main {
+  /* Without this, we'd get an undesired horizontal scroll */
+  /* because the section in the `About` section use a `transform: translateX()` */
+  overflow-x: hidden;
+}
