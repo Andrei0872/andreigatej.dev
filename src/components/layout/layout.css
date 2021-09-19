@@ -2,4 +2,11 @@
   /* Without this, we'd get an undesired horizontal scroll */
   /* because the section in the `About` section use a `transform: translateX()` */
   overflow-x: hidden;
+
+  /* This is to prevent the vertical scroll on the `blog` page */
+  /* which can occur due to a large number of articles */
+  overflow-y: hidden;
+
+  /* Resorting to this because the `<header>` has `position: fixed` */
+  margin-top: var(--header-height);
 }

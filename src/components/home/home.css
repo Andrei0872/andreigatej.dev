@@ -6,9 +6,6 @@
   flex-direction: column;
   padding: 0 1rem;
   text-align: center;
-
-  /* Resorting to this because the `<header>` has `position: fixed` */
-  margin-top: var(--header-height);
 }
 
 .c-home__intro-text {
