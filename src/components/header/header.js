@@ -4,7 +4,7 @@ import React, { useState } from "react"
 
 import './header.css'
 
-const Header = ({ siteTitle, links, toggleOverlay, isActive }) => {
+const Header = ({ siteTitle, links }) => {
   const [activeTab, setActiveTab] = useState(() => {
     const { hash, pathname } = window.location;
     // When clicking on the navigation tabs.
@@ -27,8 +27,10 @@ const Header = ({ siteTitle, links, toggleOverlay, isActive }) => {
     return 'home';
   });
 
+  const [isHamburgerActive, setHamburgerStatus] = useState(false);
+
   return (
-    <header className="c-header">
+    <header className={`c-header ${isHamburgerActive ? 'is-hamburger-active' : ''}`}>
       <h1 onClick={() => setActiveTab('home')} className="c-header__title">
         <Link
           to="/"
@@ -54,8 +56,8 @@ const Header = ({ siteTitle, links, toggleOverlay, isActive }) => {
         </ul>
 
         <div
-          onClick={toggleOverlay}
-          className={"c-header__hamburger " + (isActive ? 'c-header__hamburger--active' : '')}
+          onClick={() => setHamburgerStatus(!isHamburgerActive)}
+          className="c-header__hamburger"
         >
           <div></div>
           <div></div>
