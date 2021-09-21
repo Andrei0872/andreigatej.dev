@@ -1,46 +1,70 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
-import React from "react"
+import React, { useState } from "react"
 
 import './header.css'
 
-const Header = ({ siteTitle, links, toggleOverlay, isActive }) => (
-  <header className="c-header">
-    <h1 className="c-header__title">
-      <Link
-        to="/"
-        className="h-base-link"
-      >
-        {siteTitle}
-      </Link>
-    </h1>
+const Header = ({ siteTitle, links, toggleOverlay, isActive }) => {
+  const [activeTab, setActiveTab] = useState(() => {
+    const { hash, pathname } = window.location;
+    // When clicking on the navigation tabs.
+    if (hash) {
+      return hash.slice(1);
+    }
+    
+    if (
+      ['projects', 'blog', 'my-dev-notes'].find(
+        navItem => 
+          // When clicking in the links from the main page.
+          navItem === pathname.slice(1)
+          // When clicking _refresh_ while being on a secondary work page(e.g blog, projects).
+          || navItem === pathname.slice(1, -1)
+      )
+    ) {
+      return 'work';
+    }
+    
+    return 'home';
+  });
 
-    <nav className="c-header__nav">
-      <ul className="c-header__list-container">
-        {
-          links.map((l, idx) => (
-            <li key={idx} className="c-header__list-item">
-              {
-                l.external 
-                  ? <a className="h-base-link is-external" target="_blank" rel="noopener noreferrer" href={l.href}>{l.name}</a>
-                  : <Link className="h-base-link" to={l.href}>{l.name}</Link>
-              }
-            </li>
-          ))
-        }
-      </ul>
+  return (
+    <header className="c-header">
+      <h1 onClick={() => setActiveTab('home')} className="c-header__title">
+        <Link
+          to="/"
+          className="h-base-link"
+        >
+          {siteTitle}
+        </Link>
+      </h1>
 
-      <div
-        onClick={toggleOverlay} 
-        className={"c-header__hamburger " + (isActive ? 'c-header__hamburger--active' : '')}
-      >
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    </nav>
-  </header>
-)
+      <nav className="c-header__nav">
+        <ul className="c-header__list-container">
+          {
+            links.map((l, idx) => (
+              <li key={idx} className={`c-header__list-item ${l.name.toLowerCase() === activeTab ? 'is-active' : ''}`}>
+                {
+                  l.external
+                    ? <a className="h-base-link is-link" target="_blank" rel="noopener noreferrer" href={l.href}>{l.name}</a>
+                    : <Link onClick={() => setActiveTab(l.name.toLowerCase())} className="h-base-link" to={l.href}>{l.name}</Link>
+                }
+              </li>
+            ))
+          }
+        </ul>
+
+        <div
+          onClick={toggleOverlay}
+          className={"c-header__hamburger " + (isActive ? 'c-header__hamburger--active' : '')}
+        >
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </nav>
+    </header>
+  )
+}
 
 Header.propTypes = {
   siteTitle: PropTypes.string,
