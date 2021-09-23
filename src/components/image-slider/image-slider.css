@@ -1,0 +1,37 @@
+.c-slider {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+}
+
+.c-slider__button {
+  padding: calc(0.4rem + 0.5vw);
+  background-color: var(--dark-blue-2);
+  border: none;
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.c-slider__button:focus {
+  outline: none;
+}
+
+.c-slider__button-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: .4rem;
+}
+
+.c-slider__image {
+  opacity: 0;
+}
+
+.c-slider__image > img {
+  height: auto;
+}
+
+.c-slider__image.is-selected {
+  opacity: 1;
+  transition: opacity .5s ease-in-out;
+}
