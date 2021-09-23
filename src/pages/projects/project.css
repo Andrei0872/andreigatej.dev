@@ -35,7 +35,6 @@
   border: 3px solid var(--dark-blue-2);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  padding: .7rem;
   line-height: 1.2;
 }
 
@@ -45,6 +44,7 @@
 
 .c-project__desc-content {
   font-size: clamp(1.2rem, 0.5rem + 1vw, 1.5rem);
+  padding: .7rem;
 }
 
 .is-link + br + .is-link {
