@@ -8,17 +8,19 @@ const Header = ({ siteTitle, links }) => {
   const [activeTab, setActiveTab] = useState(() => {
     const { hash, pathname } = window.location;
     // When clicking on the navigation tabs.
-    if (hash) {
+    if (hash && pathname === '/') {
       return hash.slice(1);
     }
     
+    const nextSlashIdx = pathname.indexOf('/', 1);
+    const path = nextSlashIdx === - 1 
+      // When clicking in the links from the main page
+      ? pathname.slice(1)
+      // When clicking _refresh_ while being on a secondary work page(e.g blog, projects).
+      : pathname.slice(1, nextSlashIdx);
     if (
       ['projects', 'blog', 'my-dev-notes'].find(
-        navItem => 
-          // When clicking in the links from the main page.
-          navItem === pathname.slice(1)
-          // When clicking _refresh_ while being on a secondary work page(e.g blog, projects).
-          || navItem === pathname.slice(1, -1)
+        navItem => path === navItem
       )
     ) {
       return 'work';
