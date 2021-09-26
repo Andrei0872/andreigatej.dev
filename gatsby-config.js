@@ -56,10 +56,10 @@ module.exports = {
       options: {
         plugins: [
           {
-            resolve: `gatsby-remark-highlight-code`,
+            // resolve: `gatsby-remark-highlight-code`,
+            resolve: `gatsby-remark-prismjs`,
             options: {
-              terminal: 'carbon',
-              theme: 'vscode'
+              showLineNumbers: true,
             }
           },
           'gatsby-remark-autolink-headers'
