@@ -7,6 +7,7 @@
 
 .c-blog-post__title {
   text-align: center;
+  scroll-margin-top: var(--header-height);
 }
 
 .c-blog-post__back {
@@ -39,6 +40,24 @@ h1.c-blog-post__title {
 .c-blog-post__content :is(h2, h3, h4, h5, h6) {
   margin: 1rem 0 0.4rem;
   scroll-margin-top: var(--header-height);
+}
+
+.c-blog-post h2 {
+  position: relative;
+  display: inline-block;
+}
+
+.c-blog-post h2 > button[data-src] {
+  position: absolute;
+  right: 0;
+  transform: translateY(-40%) translateX(120%);
+  top: 50%;
+  border: none;
+  background: transparent;
+  color: var(--main-grey);
+  padding: 0;
+  cursor: pointer;
+  font-style: italic;
 }
 
 ul, ol {

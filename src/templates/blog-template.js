@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef } from "react"
 import { graphql, Link } from "gatsby"
 import Layout from "../components/layout"
 
@@ -9,10 +9,20 @@ export default function Template({ data, }) {
   const { frontmatter, html } = markdownRemark
   const parentPath = frontmatter.slug.slice(0, frontmatter.slug.indexOf('/', 1));
   
+  const ref = useRef();
+
+  const checkBackToTop = ({ target }) => {
+    if (target.dataset.src !== 'back-to-top') {
+      return;
+    }
+
+    ref.current.scrollIntoView(false);
+  };
+
   return (
     <Layout>
-      <div className="c-blog-post">
-        <h1 className="c-blog-post__title">{frontmatter.title}</h1>
+      <div className="c-blog-post" onClick={checkBackToTop}>
+        <h1 ref={ref} className="c-blog-post__title">{frontmatter.title}</h1>
 
         <Link className="h-base-link c-blog-post__back" to={parentPath}>Back to {frontmatter.parent || 'Blog'}</Link>
 
@@ -29,6 +39,7 @@ export default function Template({ data, }) {
               // There RegExps are to extract the actual id from the modifications that `prismjs` does.
               .replace(/<a[^>]+?href="#([^>]+)?code-classlanguage-text([^>]+?)code([^>"]{0,})"/g, (_, beforeFragment = '', realFragment, afterFragment = '') => `<a href="#${beforeFragment}${realFragment}${afterFragment}"`)
               .replace(/<(h[1-6])[^>]+?id="([^>]+)?code-classlanguage-text([^>]+?)code([^>"]{0,})"/g, (_, headingTag, beforeId = '', readId, afterId = '') => `<${headingTag} id="${beforeId}${readId}${afterId}"`)
+              .replace(/<h2[^>]{0,}>/g, fullMatch => `${fullMatch}<button data-src="back-to-top">Back to top</button>`)
           }}
         ></div>
       </div>
