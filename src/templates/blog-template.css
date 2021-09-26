@@ -1,61 +1,12 @@
 .c-blog-post {
   padding: 1rem;
-  padding-top: 5rem;
   height: 100%;
-  margin: 0 auto;
-  width: 65%;
-
-  --inline-code-color: #825e00;
-  --link-color: #433E0E;
-}
-
-ul > li > ul > li {
-  margin-left: 1rem;
-  margin-top: .4rem;
-}
-
-ul > li {
-  margin-top: .5rem;
+  margin: 2rem auto 0;
+  max-width: min(50rem + 6vw ,100%);
 }
 
 .c-blog-post__title {
   text-align: center;
-  margin-top: 3rem;
-}
-
-.c-blog-post__date {
-  padding-left: 1rem;
-  font-style: italic;
-}
-
-.c-blog-post__content {
-  padding: 1rem;
-}
-
-.c-blog-post__content h1, h2, h3, h4, h5 {
-  scroll-margin-top: 100px;
-}
-
-.c-blog-post__content p {
-  padding-top: .6rem;
-  line-height: 1.9rem;
-  font-size: 1.3rem;
-  padding-left: 0.5rem;
-}
-
-.c-blog-post__content h2, 
-.c-blog-post__content h3, 
-.c-blog-post__content h4, 
-.c-blog-post__content h5, 
-.c-blog-post__content h6 {
-  font-size: 1.8rem;
-  margin-top: 2rem;
-  padding-bottom: 0.7rem;
-}
-
-.c-blog-post__content a {
-  color: var(--link-color);
-  font-weight: bold;
 }
 
 .c-blog-post__back {
@@ -68,33 +19,70 @@ ul > li {
   color: var(--secondary-grey);
 }
 
-
-@media all and (max-width: 900px) {
-  .c-blog-post {
-    width: 80%;
-  }
-}
-
-@media all and (max-width: 500px) {
-  .c-blog-post__title {
-    font-size: 1.7rem;
-  }
-
-  .c-blog-post {
-    width: 95%;
-  }
-}
-
-deckgo-highlight-code {
-  margin: 1rem .5rem;
-  font-size: 1.3rem;
-}
-
 hr {
-  margin-top: 2rem;
+  margin: 1.2rem 0;
 }
 
-code {
-  color: var(--inline-code-color);
-  padding: 0.2rem;
+.c-blog-post__content p {
+  font-size: clamp(.7rem, .8rem + 1.1vw, 1.1rem);
+  line-height: 1.4;
+}
+
+.c-blog-post__content {
+  margin-top: 1rem;
+}
+
+h1.c-blog-post__title {
+  font-size: clamp(1.4rem, 1.4rem + 1.1vw, 1.9rem);
+}
+
+.c-blog-post__content :is(h2, h3, h4, h5, h6) {
+  margin: 1rem 0 0.4rem;
+  scroll-margin-top: var(--header-height);
+}
+
+ul, ol {
+  --padding-len: 2rem;
+  padding-left: var(--padding-len);
+}
+
+.c-blog-post details {
+  margin-bottom: 1rem;
+}
+
+.c-blog-post details > *:not(summary, .gatsby-highlight, ul, ol) {
+  padding: 0 .7rem;
+}
+
+.c-blog-post details > .gatsby-highlight {
+  margin-left: .7rem;
+}
+
+::marker {
+  color: var(--dark-blue-2);
+}
+
+.c-blog-post__date {
+  font-style: italic;
+}
+
+.c-blog-post__content .gatsby-highlight-code-line {
+  background-color: var(--light-grey);
+}
+
+.c-blog-post .is-important {
+  font-size: inherit;
+}
+
+/* This is the table of contents. */
+.c-blog-post__content > ul li > a {
+  color: var(--dark-blue-1);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.c-blog-post__content > ul li > a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--dark-blue-1);
 }
