@@ -19,7 +19,6 @@ export default function Projects(props) {
             title
             tags
             slug
-            images_dir
           }
           html
         }

@@ -6,6 +6,12 @@ import './header.css'
 
 const Header = ({ siteTitle, links }) => {
   const [activeTab, setActiveTab] = useState(() => {
+    try {
+      if (!window) {}
+    } catch {
+      return 'home';
+    }
+  
     const { hash, pathname } = window.location;
     // When clicking on the navigation tabs.
     if (hash && pathname === '/') {
