@@ -17,7 +17,7 @@
   content: attr(data-date);
   right: 0;
   top: 100%;
-  background: khaki;
+  background: var(--selection-color);
   padding: 0.4rem;
   font-size: 0.8rem;
   border-radius: 3px;
@@ -41,7 +41,7 @@
 }
 
 .c-article__tags > .c-article__tag {
-  background-color: var(--dark-yellow);
+  background-color: var(--selection-color);
 }
 
 .c-article__tags > .c-article__tag:not(:first-child) {

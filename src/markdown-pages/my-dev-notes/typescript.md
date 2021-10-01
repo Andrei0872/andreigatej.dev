@@ -101,7 +101,7 @@ isArticleSample: true
 
 ### Singleton Types
 
-[Resource](#https://medium.com/@tar.viturawong/using-typescripts-singleton-types-in-practice-f8b20b1ec3a6)
+[Resource](https://medium.com/@tar.viturawong/using-typescripts-singleton-types-in-practice-f8b20b1ec3a6)
 
 * allow TS to see a **specific primitive type exactly as that type**
 ```typescript
@@ -306,7 +306,7 @@ const f = new Foo(fooParam);
 
 ### Create a condition-based subset of types
 
-[Resouce](https://medium.com/dailyjs/typescript-create-a-condition-based-subset-types-9d902cea5b8c).
+[Resource](https://medium.com/dailyjs/typescript-create-a-condition-based-subset-types-9d902cea5b8c).
 
 <details>
 <summary>Example</summary>
@@ -465,7 +465,7 @@ type R2 = RetType<typeof foo> // // Person
 
 ### `as const`
 
-[Resource](#https://dev.to/aexol/typescript-tutorial-use-as-const-to-export-colors-39fl)
+[Resource](https://dev.to/aexol/typescript-tutorial-use-as-const-to-export-colors-39fl)
 
 * prevent widened literal types (from `"andrei"` to `string`)
 

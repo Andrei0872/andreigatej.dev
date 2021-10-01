@@ -1,68 +1,121 @@
 .c-work {
-  padding: 3rem;
-  padding-top: 1rem;
+  display: grid;
+  grid-template-areas:
+      "t t t t"
+      "s s y y"
+      "b b b b"
+      "b b b b"
+      "p p n n";
+  max-width: var(--normal-section-width);
+  margin: 0 auto;
+  gap: 3rem 1rem;
+  scroll-margin-top: var(--header-height);
+
+  --radius-corner: 5px;
+  --padding-content: 1.2rem;
 }
 
-.c-work .c-work__title {
-  font-size: 2.2rem;
-  margin-left: 1rem;
+@media all and (max-width: 726px) {
+  .c-work {
+    grid-template-areas: "t" "s" "y" "b" "p" "n";
+  }
+}
+
+.is-stackoverflow {
+  grid-area: s;
+}
+
+.is-youtube {
+  grid-area: y;
+}
+
+.is-projects {
+  grid-area: p;
+}
+
+.is-blog {
+  grid-area: b;
+}
+
+.is-notes {
+  grid-area: n;
+}
+
+.c-work__title {
+  grid-area: t;
+  justify-self: flex-start;
 }
 
 .c-work-section {
-  padding-left: 2rem;
-  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.c-work-section:not(:first-of-type) {
-  padding-top: 1rem;
+h2.c-work-section__name {
+  text-align: center;
+  padding: 0.5rem;
+  background: var(--gray-1);
+  font-size: clamp(1rem, 1rem + 0.7vw, 2rem);
+  border-radius: var(--radius-corner) var(--radius-corner) 0 0;
+  color: var(--dark-blue-2);
 }
 
-.c-work-section > p {
-  margin-top: 0.7rem;
-  font-size: 1.3rem;
-  line-height: 1.7rem;
+.c-work-section__content {
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(1.2rem, 0.5rem + 1.2vw, 1.5rem);
+  line-height: 1.3;
+  border-left: 3px solid var(--dark-blue-2);
+  border-right: 3px solid var(--dark-blue-2);
+  flex-grow: 1;
 }
 
-.c-work-section > *:not(:first-child) {
-  padding-left: 0.5rem;
+.c-work-section__content > p {
+  padding: var(--padding-content) 0.3rem var(--padding-content) .7rem;
 }
 
-button.c-work-section__button {
-  margin-top: 1.2rem;
-  font-size: 1rem;
-  background-color: var(--gray-1);
+.c-work-section__button {
+  font-size: clamp(1rem, 0.8rem + 1vw, 1.6rem);
+  background-color: var(--dark-blue-2);
   padding: 0.6rem;
   border: none;
   cursor: pointer;
-  border-radius: 4px;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 0 0 var(--radius-corner) var(--radius-corner);
 }
 
-.c-work-section__name {
-  clip-path: polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%);
-  background: var(--yellow-1);
-  padding: 0rem;
-  display: inline-block;
-  padding-left: 3rem;
-  padding-right: 3rem;
-}
-
-.c-work-section__sample {
-  padding-left: 1rem;
-  font-size: 1.3rem;
-  font-style: italic;
+.c-work-section__button:hover {
   text-decoration: underline;
-  cursor: pointer;
-  color: var(--dark-blue-1);
+  text-decoration-color: var(--dark-yellow);
 }
 
-.c-work-section__sample:first-of-type {
-  margin-top: 1rem;
+.c-samples {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+   */
+  /* Using this so that the flex child takes the width of tis content. */
+  /* Otherwise, since the default is `stretch`, the flex child would take the full width. */
+  /* As a side note, setting `margin-right: auto` on each child container would work too. */
+  /* align-items: flex-start;
+  flex-grow: 1;
+  gap: .8rem;
+  */
+  display: grid;
+  grid-row-gap: .8rem;
+  flex-grow: 1;
+  grid-auto-rows: max-content;
+  align-content: center;
+  justify-items: flex-start;
+  padding: var(--padding-content);
 }
 
-.c-work-section__sample[class]:not(:first-of-type) {
-  margin-top: .8rem;
+.c-samples__sample {
+  transition: transform .3s;
 }
 
-.c-work-section__sample:last-of-type {
-  margin-bottom: 1rem
+.c-samples__sample:hover {
+  transform: translateY(-3px);
 }

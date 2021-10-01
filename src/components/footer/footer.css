@@ -1,6 +1,6 @@
 .c-footer {
   width: 100%;
-  background-color: khaki;
+  background-color: var(--gray-1);
   height: 4rem;
 }
 

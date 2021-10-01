@@ -14,7 +14,11 @@
   --yellow-1: #F5F3BB;
   --gray-1: #D0D7DD;
   --dark-blue-1: #232130;
-  --dark-blue-2: #0E2431;
+  --dark-blue-2: #0d3e5a;
+
+  --header-height: 9vh;
+  /* Any section that is not `home` is considered _normal_ */
+  --normal-section-width: min(10rem + 65vw, 94vw);
 }
 
 html, body {
@@ -33,12 +37,23 @@ html, body {
   color: black;
 }
 
+.is-link {
+  font-style: italic;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-decoration-color: var(--main-grey);
+  color: var(--dark-blue-1);
+  font-weight: bold;
+  cursor: pointer;
+}
+
 .is-important {
   font-size: 1.1em;
   position: relative;
   font-weight: bold;
-  letter-spacing: .1rem;
   color: var(--dark-blue-2);
+  text-decoration: underline;
+  text-decoration-color: var(--dark-yellow);
 }
 
 h1 {
@@ -50,4 +65,26 @@ h1 {
 }
 ::-moz-selection {
   background: var(--selection-color);
+}
+
+.is-section-title {
+  background: var(--selection-color);
+  color: var(--dark-blue-1);
+  padding: 0.2rem .7rem;
+  border-radius: 4px;
+  font-size: clamp(1.2rem, 1rem + 1.5vw, 3rem);
+}
+
+.gatsby-highlight {
+  background-color: #fdf6e3;
+  border-radius: 0.3em;
+  margin: 0.5em 0;
+  padding: 1em;
+  overflow: auto;
+}
+
+.gatsby-highlight pre[class*="language-"].line-numbers {
+  padding: 0;
+  padding-left: 2.8em;
+  overflow: initial;
 }

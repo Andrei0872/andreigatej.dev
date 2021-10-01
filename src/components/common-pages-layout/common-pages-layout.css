@@ -1,8 +1,7 @@
 .c-common {
   height: 100%;
-  padding-top: 5rem;
-  width: 65%;
   margin: 0 auto;
+  max-width: calc(6rem + 60vw);
 }
 
 .c-common__header {
@@ -19,41 +18,9 @@
 }
 
 .c-common__back {
-  background-color: khaki;
   border-radius: 1rem;
   padding: 0.8rem;
   font-weight: bold;
-  border: .5px solid black;
-}
-
-@media all and (max-width: 1110px) {
-  .c-common {
-    width: 75%;
-  }
-}
-
-@media all and (max-width: 900px) {
-  .c-common__title {
-    font-size: 1.6rem;
-  }
-}
-
-@media all and (max-width: 600px) {
-  .c-common {
-    width: 75%;
-  }
-
-  .c-common__title {
-    font-size: 1.4rem;
-  }
-}
-
-@media all and (max-width: 600px) {
-  .c-common {
-    width: 85%;
-  }
-
-  .c-common__back {
-    font-size: .9rem;
-  }
+  border: 3px solid var(--dark-blue-2);
+  color: var(--dark-blue-2);
 }

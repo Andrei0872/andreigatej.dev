@@ -17,7 +17,7 @@ the original repo.
 
 <p style="margin-top: .7rem">
 <i>
-Monitorizare Vot is a mobile app for monitoring elections by authorized observers. They can use the app in order to offer a real-time snapshot on what is going on at polling stations and they can report on any noticeable irregularities.
+Monitorizare Vot(Vote Monitoring) is a mobile app for monitoring elections by authorized observers. They can use the app in order to offer a real-time snapshot on what is going on at polling stations and they can report on any noticeable irregularities.
 </i>
 </p>
 

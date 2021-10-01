@@ -1,17 +1,21 @@
 import React from 'react'
-import Img from "gatsby-image"
 
 import './home.css'
 
 export default function Home() {
   return (
     <section id="home" className="c-home">
-      <div className="c-home__desc">
-        <p className="is-important">Hello! I'm Andrei Gătej,</p>
-        <p>
-          a <span className="is-important">Software Developer</span> with a passion for solving problems and learning new things.
-        </p>
-      </div>
+      <h1 className="c-home__intro-text">
+        Hello! I'm Andrei Gătej, a <span className="is-important">software developer</span> with a passion for <span className="is-important">web development</span>.
+      </h1>
+
+      <p className="c-home__normal-text">
+        I enjoy solving problems and I'm always seeking improvement in the work I do. Nevertheless, I have a curious mind which often leads me to want to learn more about how tools work under the hood.
+      </p>
+
+      <p className="c-home__normal-text">
+        Here I'm sharing my programming journey, along with some of my thoughts.
+      </p>
     </section>
   )
 }
