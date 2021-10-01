@@ -35,21 +35,21 @@ export default function Projects(props) {
     }, 0);
   }
 
-  const projectsImagesLoader = require.context('/static/projects')
-  const projectsImagesPaths = projectsImagesLoader.keys();
+  // const projectsImagesLoader = require.context('/static/projects')
+  const projectsImagesPaths = /* projectsImagesLoader.keys() */[];
 
   return (
     <Layout>
       <CommonPagesLayout title="Projects">
         {
           projects.map(proj => {
-            const { images_dir: imagesDir } = proj.frontmatter;
-            const crtProjectImagesPaths = imagesDir
-              ? projectsImagesPaths
-                .filter(p => p.includes(`/${imagesDir}/`))
-                // `.slice(2)` - getting rid of `./`.
-                .map(p => require(`/static/projects/${p.slice(2)}`).default)
-              : [];
+            // const { images_dir: imagesDir } = proj.frontmatter;
+            const crtProjectImagesPaths = [];/* imagesDir */
+              // ? projectsImagesPaths
+              //   .filter(p => p.includes(`/${imagesDir}/`))
+              //   // `.slice(2)` - getting rid of `./`.
+              //   .map(p => require(`/static/projects/${p.slice(2)}`).default)
+              // : [];
             
             return (
               <article id={proj.frontmatter.slug.slice(proj.frontmatter.slug.indexOf('#') + 1)} key={proj.frontmatter.title} className="c-project">
