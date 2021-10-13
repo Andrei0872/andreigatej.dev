@@ -13,6 +13,7 @@ isArticleSample: false
   - [Function that returns the factorial of a number](#function-that-returns-the-factorial-of-a-number)
   - [Take the last `N` elements from a list](#take-the-last-n-elements-from-a-list)
   - [Remove an element from a list at a given position](#remove-an-element-from-a-list-at-a-given-position)
+  - [Create a list of `N` elements filled with a value `V`](#create-a-list-of-n-elements-filled-with-a-value-v)
 
 ## Getting Started
 
@@ -101,4 +102,15 @@ takeFinal l n =
 ```hs
 remove :: [a] -> Int -> [a]
 remove l pos = take pos l ++ drop (pos + 1) l
+```
+
+---
+
+### Create a list of `N` elements filled with a value `V`
+
+```hs
+myreplicate :: Int -> a -> [a]
+myreplicate 0 _ = []
+-- x : ls -> [x, ...ls]
+myreplicate n v = v : myreplicate (n -1) v
 ```
