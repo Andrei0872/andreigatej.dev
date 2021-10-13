@@ -12,6 +12,7 @@ isArticleSample: false
   - [Check if a number is even](#check-if-a-number-is-even)
   - [Function that returns the factorial of a number](#function-that-returns-the-factorial-of-a-number)
   - [Take the last `N` elements from a list](#take-the-last-n-elements-from-a-list)
+  - [Remove an element from a list at a given position](#remove-an-element-from-a-list-at-a-given-position)
 
 ## Getting Started
 
@@ -94,3 +95,10 @@ takeFinal l n =
 ```
 
 ---
+
+### Remove an element from a list at a given position
+
+```hs
+remove :: [a] -> Int -> [a]
+remove l pos = take pos l ++ drop (pos + 1) l
+```
