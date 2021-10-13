@@ -14,6 +14,7 @@ isArticleSample: false
   - [Take the last `N` elements from a list](#take-the-last-n-elements-from-a-list)
   - [Remove an element from a list at a given position](#remove-an-element-from-a-list-at-a-given-position)
   - [Create a list of `N` elements filled with a value `V`](#create-a-list-of-n-elements-filled-with-a-value-v)
+  - [Sum the lengths of the words which start with `A` form a given list](#sum-the-lengths-of-the-words-which-start-with-a-form-a-given-list)
 
 ## Getting Started
 
@@ -113,4 +114,17 @@ myreplicate :: Int -> a -> [a]
 myreplicate 0 _ = []
 -- x : ls -> [x, ...ls]
 myreplicate n v = v : myreplicate (n -1) v
+```
+
+---
+
+### Sum the lengths of the words which start with `A` form a given list
+
+```hs
+totalLen :: [String] -> Int
+totalLen [] = 0
+totalLen (word : restOfWords)
+  | word == "" = totalLen restOfWords
+  | head word == 'A' = length word + totalLen restOfWords
+  | otherwise = totalLen restOfWords
 ```
