@@ -11,6 +11,7 @@ isArticleSample: false
   - [A function that returns the sum of the squares of 2 numbers](#a-function-that-returns-the-sum-of-the-squares-of-2-numbers)
   - [Check if a number is even](#check-if-a-number-is-even)
   - [Function that returns the factorial of a number](#function-that-returns-the-factorial-of-a-number)
+  - [Take the last `N` elements from a list](#take-the-last-n-elements-from-a-list)
 
 ## Getting Started
 
@@ -77,6 +78,19 @@ factorial x
   | x == 0 = 1
   | x > 0 = x * factorial (x - 1)
   | otherwise = error "the input can't be negative!"
+```
+
+---
+
+### Take the last `N` elements from a list
+
+```hs
+takeFinal :: [a] -> Int -> [a]
+takeFinal l n =
+  if length l < n
+    then l
+  else
+    drop (length l - n) l
 ```
 
 ---
