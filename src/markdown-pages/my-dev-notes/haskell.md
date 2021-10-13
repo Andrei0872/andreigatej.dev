@@ -24,6 +24,18 @@ Install the *haskell extension* in VS Code.
 
 Once everything is installed, you can run the compiler *interactively*, by using the `ghci` command.
 
+A few commands that come handy when using `ghci`:
+
+* `:r` - reload the currently loaded file
+* `:l foo.hs` - load the `foo.hs` file
+* `:t entity` - get the `entity`'s type
+* `:m` - return to the initial stage(e.g `Prelude`)
+  ```bash
+  # Assuming a file has been loaded.
+  *Main> import Data.List
+  *Main Data.List> :m - Data.List 
+  ```
+
 ---
 
 ## Exercises
