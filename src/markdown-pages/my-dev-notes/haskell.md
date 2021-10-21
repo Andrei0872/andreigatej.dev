@@ -15,6 +15,13 @@ isArticleSample: false
   - [Remove an element from a list at a given position](#remove-an-element-from-a-list-at-a-given-position)
   - [Create a list of `N` elements filled with a value `V`](#create-a-list-of-n-elements-filled-with-a-value-v)
   - [Sum the lengths of the words which start with `A` form a given list](#sum-the-lengths-of-the-words-which-start-with-a-form-a-given-list)
+  - [Count the number of vocals of palindromes words](#count-the-number-of-vocals-of-palindromes-words)
+  - [Add a number `v` after all even numbers from a given list](#add-a-number-v-after-all-even-numbers-from-a-given-list)
+  - [Given a list, return a new list where each element is a list of corresponding divisors](#given-a-list-return-a-new-list-where-each-element-is-a-list-of-corresponding-divisors)
+  - [Given the upper and lower bound of an interval and a list, print the list's elements which belong to that interval](#given-the-upper-and-lower-bound-of-an-interval-and-a-list-print-the-lists-elements-which-belong-to-that-interval)
+  - [Select the positive numbers from the list](#select-the-positive-numbers-from-the-list)
+  - [Given a list of integers, return a list of indices, where each index corresponds to an odd number](#given-a-list-of-integers-return-a-list-of-indices-where-each-index-corresponds-to-an-odd-number)
+  - [Compute the product of all digits from a given string](#compute-the-product-of-all-digits-from-a-given-string)
 
 ## Getting Started
 
@@ -83,8 +90,6 @@ factorial x
   | otherwise = error "the input can't be negative!"
 ```
 
----
-
 ### Take the last `N` elements from a list
 
 ```hs
@@ -96,16 +101,12 @@ takeFinal l n =
     drop (length l - n) l
 ```
 
----
-
 ### Remove an element from a list at a given position
 
 ```hs
 remove :: [a] -> Int -> [a]
 remove l pos = take pos l ++ drop (pos + 1) l
 ```
-
----
 
 ### Create a list of `N` elements filled with a value `V`
 
@@ -116,8 +117,6 @@ myreplicate 0 _ = []
 myreplicate n v = v : myreplicate (n -1) v
 ```
 
----
-
 ### Sum the lengths of the words which start with `A` form a given list
 
 ```hs
@@ -127,4 +126,59 @@ totalLen (word : restOfWords)
   | word == "" = totalLen restOfWords
   | head word == 'A' = length word + totalLen restOfWords
   | otherwise = totalLen restOfWords
+```
+
+### Count the number of vocals of palindromes words
+
+```hs
+nrVocals :: [[Char]] -> Int
+nrVocals [] = 0
+nrVocals (c : lc) = (if isPalindrom c then nrVocC c else 0) + nrVocals lc
+  where
+    isPalindrom x = x == reverse x
+    vocals = "aeiouAEIOU"
+    nrVocC "" = 0
+    nrVocC (l : cuv) = (if l `elem` vocals then 1 else 0) + nrVocC cuv
+```
+
+### Add a number `v` after all even numbers from a given list
+
+```hs
+addNumToList :: Integer -> [Integer] -> [Integer]
+addNumToList el [] = []
+addNumToList el (crtElem : restOfElements) = (if even crtElem then [crtElem, el] else [crtElem]) ++ addNumToList el restOfElements
+```
+
+### Given a list, return a new list where each element is a list of corresponding divisors
+
+```hs
+divisors n = [d | d <- [1..n], n `mod` d == 0]
+listDivisors = map divisors
+```
+
+### Given the upper and lower bound of an interval and a list, print the list's elements which belong to that interval
+
+```hs
+inIntervalRec inf sup [] = []
+inIntervalRec inf sup (crt:rest) = if crt `elem` interval then crt : inIntervalRec inf sup rest else inIntervalRec inf sup rest
+  where interval = [inf..sup]
+```
+
+### Select the positive numbers from the list
+
+```hs
+pozitiveComp ls = sum [1 | x <- ls, x > 0]
+```
+
+### Given a list of integers, return a list of indices, where each index corresponds to an odd number
+
+```hs
+pozitiiImpareComp ls = [snd pair | let len = length ls, pair <- zip ls [0 .. len - 1], odd (fst pair)]
+```
+
+### Compute the product of all digits from a given string
+
+```hs
+multDigitsComp str = if length resultingList == 0 then 1 else product resultingList where
+  resultingList  = [digitToInt ch | ch <- str, isDigit ch]
 ```
