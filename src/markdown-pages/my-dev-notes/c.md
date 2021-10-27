@@ -6,6 +6,8 @@ date: 2021-10-13
 ---
 
 - [Custom implementation of `cp`](#custom-implementation-of-cp)
+- [Create a child process that will print the items in the current working directory](#create-a-child-process-that-will-print-the-items-in-the-current-working-directory)
+  - [For some given numbers, print the Collatz sequence for each number using child processes](#for-some-given-numbers-print-the-collatz-sequence-for-each-number-using-child-processes)
 
 ## Custom implementation of `cp`
 
@@ -69,4 +71,119 @@ Usage:
 ```bash
 gcc mycp.cpp -o mycp
 ./mycp foo bar
+```
+
+
+---
+
+## Create a child process that will print the items in the current working directory
+
+```cpp
+#include <stdio.h>
+#include <errno.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+int main () {
+  printf("Parent process ID: %d\n", getpid());
+  printf("Child process ID: %d\n", getppid());
+
+  pid_t pid = fork();
+  if (pid < 0) {
+    return errno;
+  }
+  else if (pid == 0) {
+    char* args[] = {"ls", NULL};
+    execve("/usr/bin/ls", args, NULL);
+    perror(NULL);
+  } else {
+    int parentProcessStatus;
+    pid_t p = wait(&parentProcessStatus);
+    if (p < 1) {
+      return errno;
+    }
+
+    printf("The process created from 'ls' has ended with status: %d", parentProcessStatus);
+  }
+}
+```
+
+---
+
+### For some given numbers, print the Collatz sequence for each number using child processes
+
+```cpp
+#include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
+#include <sys/wait.h>
+#include <unistd.h>
+
+int main (int argc, char* args[]) {
+  for (int i = 1; i < argc; i++) {
+    int collatsArg = atoi(args[i]);
+
+    pid_t pid = fork();
+    if (pid < 0) {
+      return errno;
+    } else if (pid == 0) {
+      printf("Child with ID %d\n", getpid());
+
+      char argAsStr[10] = "";
+      sprintf(argAsStr, "%d", collatsArg);
+
+      char *args[] = {"c", argAsStr, NULL};
+      // `c` - compiled `collatz.c`
+      execve("/home/anduser/Documents/learning-os/c", args, NULL);
+
+      perror(NULL);
+    } else {
+      // Sequential execution.
+      // waitpid(pid, NULL, 0);
+      // printf("Child process with id %d ready\n", pid);
+    
+
+      // It will always be the same
+      printf("test %d\n", getpid());
+    }
+  }
+
+  // If we left it like this, it will only wait for the **first** process
+  // that finished its jobs.
+  // wait(NULL);
+
+  // We use `wait` in a loop that's dependent on the number of arguments
+  // because `nr of child processes = number of arguments`.
+  for (int i = 1; i < argc; i++) {
+    wait(NULL);
+  }
+  printf("\n Parent with ID %d ready\n", getppid());
+}
+
+// `collatz.c` -> `c` executable 
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main (int argC, char* argv[]) {
+  if (argC != 2) {
+    printf("2 arguments were expected!");
+    return 1;
+  }
+
+  printf("In collatz: %d\n", getpid());
+  printf("[In collatz] PARENT ID: %d\n", getppid());
+
+  // ? *argv[1] returns something diff
+  int num = atoi(argv[1]);
+  // int num = *argv[1];
+  printf("num %d\n", num);
+  do {
+    printf("%d ", num);
+
+    num = num % 2 == 0 ? num / 2 : 3 * num + 1;
+  } while(num != 1);
+
+  printf("\n");
+}
 ```
