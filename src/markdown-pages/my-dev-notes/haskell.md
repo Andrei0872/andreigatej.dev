@@ -22,6 +22,10 @@ isArticleSample: false
   - [Select the positive numbers from the list](#select-the-positive-numbers-from-the-list)
   - [Given a list of integers, return a list of indices, where each index corresponds to an odd number](#given-a-list-of-integers-return-a-list-of-indices-where-each-index-corresponds-to-an-odd-number)
   - [Compute the product of all digits from a given string](#compute-the-product-of-all-digits-from-a-given-string)
+  - [Custom implementation of `zip`](#custom-implementation-of-zip)
+  - [Check if a list is ordered based on a custom operation](#check-if-a-list-is-ordered-based-on-a-custom-operation)
+  - [Creating a custom right-associative operator](#creating-a-custom-right-associative-operator)
+  - [Compose a function `fn` with list of functions and then apply all the functions on a value](#compose-a-function-fn-with-list-of-functions-and-then-apply-all-the-functions-on-a-value)
 
 ## Getting Started
 
@@ -181,4 +185,41 @@ pozitiiImpareComp ls = [snd pair | let len = length ls, pair <- zip ls [0 .. len
 ```hs
 multDigitsComp str = if length resultingList == 0 then 1 else product resultingList where
   resultingList  = [digitToInt ch | ch <- str, isDigit ch]
+```
+
+### Custom implementation of `zip`
+
+```hs
+myzip3 l1 l2 l3 = [(l1 !! idx, l2 !! idx, l3 !! idx) | let minimumLen = minimum (map length [l1, l2, l3]), idx <- [0 .. minimumLen - 1]]
+
+-- myzip3 [1,2,3] [1,2] [1,2,3,4] == [(1,1,1),(2,2,2)]
+```
+
+### Check if a list is ordered based on a custom operation
+
+```hs
+isOrdered :: [a] -> (a -> a -> Bool) -> Bool
+isOrdered [] _ = True
+isOrdered (crt : restOfElements) op = and [op crt r | r <- restOfElements] && isOrdered restOfElements op
+```
+
+### Creating a custom right-associative operator
+
+```hs
+infixr 6 *<*
+(*<*) :: (Integer, Integer) -> (Integer, Integer) -> Bool
+(*<*) (x1, y1) (x2, y2) = x1 /= x2 && y1 /= y2
+```
+
+### Compose a function `fn` with list of functions and then apply all the functions on a value
+
+```hs
+composeList :: (b -> c) -> [(a -> b)] -> [(a -> c)]
+composeList fn = map(fn.)
+
+applyList :: a -> [(a -> b)] -> [b]
+applyList elem = map(\fn -> fn elem)
+
+-- applyList 9 (composeList (+1) [sqrt, (^2), (/2)])
+-- [4.0,82.0,5.5]
 ```
