@@ -49,6 +49,7 @@ date: 2021-02-22
   - [In function](#in-function)
 - [Using the `virtual` keyword with inheritance](#using-the-virtual-keyword-with-inheritance)
 - [Converting constructor](#converting-constructor)
+- [Passing a pointer as a reference](#passing-a-pointer-as-a-reference)
 
 
 <details>
@@ -1585,5 +1586,35 @@ void func (Foo f) {
 int main () {
   func(10);
   func(20);
+}
+```
+
+---
+
+## Passing a pointer as a reference
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class Node {
+  public:
+    int x;
+    Node (int v) : x(v) {};
+};
+
+void foo (Node*& n) {
+  Node* newNode = new Node(100);
+  
+  n = newNode;
+}
+
+int main() { 
+  Node * n = new Node(19);
+  foo(n);
+
+  cout << n->x << '\n';
+
+  return 0;
 }
 ```
