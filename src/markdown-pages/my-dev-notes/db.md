@@ -29,6 +29,9 @@ date: 2019-04-20
   - [Views](#views)
   - [Commands](#commands)
     - [`on duplicate key`](#on-duplicate-key)
+- [Isolation](#isolation)
+  - [Isolation violations](#isolation-violations)
+  - [Isolation level](#isolation-level)
 
 ## Concepts
 
@@ -423,3 +426,23 @@ create view V_NAME as select name, age from customers where country = 'Brasil'
 ```sql
 insert into TABLE(c1, c2) values (vc1, vc2) on duplicate key update c1 = values(c1), c2 = values(c2)
 ```
+
+---
+
+## Isolation
+
+* isolation - how 2 transactions(T1, T2) are isolated to  each other
+
+### Isolation violations
+
+* dirty read - reading before commiting(a non-finalized transaction)
+* nonrepeatable read - *you can't repead the read*; occurs when a transaction reads an item for the first time and on the second time that item no longer exists or it has been modified
+* phantom read - when a transaction reads some data again, the new query returns additional/less data(besides the expected one)
+
+
+### Isolation level
+
+* read uncommitted - allows reading data by an uncommited transaction
+* read commited - does not allow uncommited data to be read; it blocks the records that are being modified, so it only sees data written by a committed transaction
+* repeatable read - it blocks the records that are being read, so the same read query always returns the same result
+* serializable - similar to above, but data is blocked until the transaction is over; it can achieve the same result if the transactions are executed sequentially in some order instead of concurrently
