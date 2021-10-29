@@ -47,6 +47,7 @@ date: 2021-02-22
 - [The `static` keyword](#the-static-keyword)
   - [In class](#in-class)
   - [In function](#in-function)
+- [Using the `virtual` keyword with inheritance](#using-the-virtual-keyword-with-inheritance)
 
 
 <details>
@@ -1516,3 +1517,45 @@ int main () {
   */
 }
 ```
+
+---
+
+## Using the `virtual` keyword with inheritance
+
+```cpp
+#include <iostream>
+
+class A {
+protected:
+    int nm;
+public:
+    A(int hbr = 1) : nm(hbr) { std::cout << "?"; }
+    int ha() { return nm; }
+
+    // Without `virtual`: ??!!
+    virtual void r(int x) const {};
+
+    virtual void r() const {};
+    virtual ~A() {};
+};
+
+class B : public A {
+    int d;
+public:
+    B(int b = 2) : d(b) { std::cout << "!!"; }
+    void r(int z) const  { std::cout << nm << " " << z << "\n"; }
+};
+
+void warranty(const A& am) {
+    am.r(8);
+}
+
+int main() {
+    A ha;
+    B un(ha.ha());
+    warranty(un);
+}
+// Output: ??!!1 8
+```
+
+---
