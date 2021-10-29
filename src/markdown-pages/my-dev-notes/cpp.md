@@ -48,6 +48,7 @@ date: 2021-02-22
   - [In class](#in-class)
   - [In function](#in-function)
 - [Using the `virtual` keyword with inheritance](#using-the-virtual-keyword-with-inheritance)
+- [Converting constructor](#converting-constructor)
 
 
 <details>
@@ -1559,3 +1560,30 @@ int main() {
 ```
 
 ---
+
+## Converting constructor
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+// Converting constructor
+// https://en.cppreference.com/w/cpp/language/converting_constructor
+
+class Foo {
+  public:
+    int x;
+    Foo (const int& v) : x(v) {};
+};
+
+// Also works with `const Foo&`
+void func (Foo f) {
+  cout << f.x << '\n';
+}
+
+int main () {
+  func(10);
+  func(20);
+}
+```
