@@ -29,6 +29,7 @@ isArticleSample: false
   - [Examples with the `map` function](#examples-with-the-map-function)
   - [Custom implementation of `filter` and `map`](#custom-implementation-of-filter-and-map)
   - [Examples with `foldr` and `foldl`](#examples-with-foldr-and-foldl)
+  - [Rotate the letters in a string by an amount of `X` positions](#rotate-the-letters-in-a-string-by-an-amount-of-x-positions)
 
 ## Getting Started
 
@@ -297,3 +298,16 @@ rmCharsFold ls1 ls2 = foldr rmChar ls2 ls1
 "ndreid"
 -}
 ```
+
+### Rotate the letters in a string by an amount of `X` positions
+
+```hs
+rotate :: Int -> String -> String
+rotate nr lst
+  | nr < 0 = error "Negative number not allowed"
+  | nr > length lst = error "nr > list length"
+  | otherwise = map (
+    \ch -> if isDigit ch then ch else toEnum (if (fromEnum ch + nr) `div` 90 == 0 || (fromEnum ch) + nr == 90 then fromEnum ch + nr else 65 + (fromEnum ch + nr - 1) `mod` 90) :: Char
+    ) lst
+```
+
