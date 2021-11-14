@@ -27,6 +27,7 @@ isArticleSample: false
   - [Creating a custom right-associative operator](#creating-a-custom-right-associative-operator)
   - [Compose a function `fn` with list of functions and then apply all the functions on a value](#compose-a-function-fn-with-list-of-functions-and-then-apply-all-the-functions-on-a-value)
   - [Examples with the `map` function](#examples-with-the-map-function)
+  - [Custom implementation of `filter` and `map`](#custom-implementation-of-filter-and-map)
 
 ## Getting Started
 
@@ -245,4 +246,16 @@ squareOdds = map (^2) . filter odd
 
 onlyVocals :: [String] -> [String]
 onlyVocals = map(filter(\ch -> toLower ch `elem` "aeiou"))
+```
+
+### Custom implementation of `filter` and `map`
+
+```hs
+myMap :: (t -> a) -> [t] -> [a]
+myMap _ [] = []
+myMap fn (x:rest) = fn x : myMap fn rest
+
+myFilter :: (a -> Bool) -> [a] -> [a]
+myFilter _ [] = []
+myFilter fn (x:rest) = if fn x then x : myFilter fn rest else myFilter fn rest
 ```
