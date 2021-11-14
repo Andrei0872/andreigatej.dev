@@ -28,6 +28,7 @@ isArticleSample: false
   - [Compose a function `fn` with list of functions and then apply all the functions on a value](#compose-a-function-fn-with-list-of-functions-and-then-apply-all-the-functions-on-a-value)
   - [Examples with the `map` function](#examples-with-the-map-function)
   - [Custom implementation of `filter` and `map`](#custom-implementation-of-filter-and-map)
+  - [Examples with `foldr` and `foldl`](#examples-with-foldr-and-foldl)
 
 ## Getting Started
 
@@ -258,4 +259,41 @@ myMap fn (x:rest) = fn x : myMap fn rest
 myFilter :: (a -> Bool) -> [a] -> [a]
 myFilter _ [] = []
 myFilter fn (x:rest) = if fn x then x : myFilter fn rest else myFilter fn rest
+```
+
+### Examples with `foldr` and `foldl`
+
+* `foldr`
+  - starts from the **end** of the array
+  - the **accumulator** is the **2nd argument**: `(crtItem, acc) => {}`
+
+* `foldl`
+  - starts from the **beginning** of the array
+  - the **accumulator** is the **1st argument**: `(acc, crtItem) => {}`
+
+```hs
+allTrue ls = foldr (&&) True ls
+
+-- 3 ^ 2 (=9) -> 2 ^ 9 (=512) -> 1 ^ 521 (=1)
+foldr (^) 2 [1, 2, 3] -- 1
+-- 1 ^ 2 (=1) -> 2 ^ 1 (=2) -> 3 ^ 2 (=9)
+foldr (^) 2 [3, 2, 1] -- 9
+
+-- 2 ^ 1 (=2) -> 2 ^ 2 (=4) -> 4 ^ 3 (=64)
+foldl (^) 2 [1, 2, 3] -- 64
+-- 2 ^ 3 (=8) -> 8 ^ 2 (=64) -> 64 ^ 1 (=64)
+foldl (^) 2 [3, 2, 1] -- 64
+
+
+rmChar :: Char -> String -> String
+rmChar ch = filter(/=ch)
+rmCharsFold :: String -> String -> String
+-- rmCharsFold ls1 = foldl (\acc ch -> if not (ch `elem` ls1) then acc ++ [ch] else acc) ""
+-- rmCharsFold ls1 ls2 = foldl (\acc ch1 -> rmChar ch1 acc) ls2 ls1
+
+rmCharsFold ls1 ls2 = foldr rmChar ls2 ls1
+{-
+*Main> rmCharsFold "abc" "andreibcd"
+"ndreid"
+-}
 ```
