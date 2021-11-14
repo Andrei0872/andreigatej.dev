@@ -26,6 +26,7 @@ isArticleSample: false
   - [Check if a list is ordered based on a custom operation](#check-if-a-list-is-ordered-based-on-a-custom-operation)
   - [Creating a custom right-associative operator](#creating-a-custom-right-associative-operator)
   - [Compose a function `fn` with list of functions and then apply all the functions on a value](#compose-a-function-fn-with-list-of-functions-and-then-apply-all-the-functions-on-a-value)
+  - [Examples with the `map` function](#examples-with-the-map-function)
 
 ## Getting Started
 
@@ -222,4 +223,26 @@ applyList elem = map(\fn -> fn elem)
 
 -- applyList 9 (composeList (+1) [sqrt, (^2), (/2)])
 -- [4.0,82.0,5.5]
+```
+
+### Examples with the `map` function
+
+```hs
+firstEl :: [(b1, b2)] -> [b1]
+firstEl = map fst
+
+sumList :: [[Int]] -> [Int]
+sumList = map sum
+
+prel2 :: [Int] -> [Int]
+prel2 = map (\x -> if even x then x `div` 2 else x * 2)
+
+hasCh :: Char -> [String] -> [String]
+hasCh ch = filter (elem ch)
+
+squareOdds :: [Int] -> [Int]
+squareOdds = map (^2) . filter odd
+
+onlyVocals :: [String] -> [String]
+onlyVocals = map(filter(\ch -> toLower ch `elem` "aeiou"))
 ```
