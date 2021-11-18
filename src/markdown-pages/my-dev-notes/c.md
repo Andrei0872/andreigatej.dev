@@ -7,7 +7,8 @@ date: 2021-10-13
 
 - [Custom implementation of `cp`](#custom-implementation-of-cp)
 - [Create a child process that will print the items in the current working directory](#create-a-child-process-that-will-print-the-items-in-the-current-working-directory)
-  - [For some given numbers, print the Collatz sequence for each number using child processes](#for-some-given-numbers-print-the-collatz-sequence-for-each-number-using-child-processes)
+- [For some given numbers, print the Collatz sequence for each number using child processes](#for-some-given-numbers-print-the-collatz-sequence-for-each-number-using-child-processes)
+- [Using threads - matrix multiplication](#using-threads---matrix-multiplication)
 
 ## Custom implementation of `cp`
 
@@ -110,7 +111,7 @@ int main () {
 
 ---
 
-### For some given numbers, print the Collatz sequence for each number using child processes
+## For some given numbers, print the Collatz sequence for each number using child processes
 
 ```cpp
 #include <stdio.h>
@@ -186,4 +187,111 @@ int main (int argC, char* argv[]) {
 
   printf("\n");
 }
+```
+
+---
+
+## Using threads - matrix multiplication
+
+```cpp
+#include <stdio.h>
+#include <pthread.h>
+#include <stdlib.h>
+
+typedef struct __MatrixProductArgs {
+  int size, resultRowIdx, resultColIdx;
+  int* row;
+  int* column;
+  int** matResult;
+} MatrixProductArgs;
+
+void * computeMatrixProdElement (void *arg) {
+  MatrixProductArgs* matProdArgs = (MatrixProductArgs*)arg;
+  const int rowIdx = matProdArgs->resultRowIdx;
+  const int colIdx = matProdArgs->resultColIdx;
+
+  int cellValue = 0;
+  for (int i = 0; i < matProdArgs->size; i++) {
+    cellValue += matProdArgs->row[i] * matProdArgs->column[i];
+  }
+
+  matProdArgs->matResult[rowIdx][colIdx] = cellValue;
+
+  return NULL;
+}
+
+int main () {
+  int rowsA = 3;
+  int A[3][3] = {
+    { 1, 2, 3 },
+    { 4, 5, 6 },
+    { 7, 8, 9 }
+  };
+
+  int columnsB = 3;
+  int B[3][3] = {
+    { 1, 2, 3 },
+    { 4, 5, 6 },
+    { 7, 8, 9 }
+  };
+
+  const int threadsCount = rowsA * columnsB;
+
+  pthread_t* threads= malloc(sizeof(pthread_t) * threadsCount);
+  MatrixProductArgs matProdArgs[threadsCount];
+
+  int** matResult = malloc(sizeof(int) * rowsA);
+  
+  for (int i = 0; i < rowsA; i++) {
+    matResult[i] = malloc(sizeof(int) * columnsB);
+
+    for (int j = 0; j < columnsB; j++) {
+      // It's essential to declare this here in order to make sure that no duplicate values
+      // are set into the resulting matrix.
+      int *rightMatrixColumn = malloc(sizeof(int) * rowsA);
+      for (int k = 0; k < rowsA; k++) {
+        rightMatrixColumn[k] = B[k][j];
+      }
+
+      int threadIdx = rowsA * i + j;
+
+      matProdArgs[threadIdx].row = A[i];
+      matProdArgs[threadIdx].size = rowsA;
+      matProdArgs[threadIdx].column = rightMatrixColumn;
+      matProdArgs[threadIdx].resultRowIdx = i;
+      matProdArgs[threadIdx].resultColIdx = j;
+      // Only share the place where each thread will write uniquely.
+      matProdArgs[threadIdx].matResult = matResult;
+
+      int r = pthread_create(&threads[threadIdx], NULL, computeMatrixProdElement, &matProdArgs[threadIdx]);
+      if (r != 0) {
+        perror(NULL);
+        return 1;
+      }
+    }
+  }
+
+  for (int i = 0; i < threadsCount; i++) {
+    pthread_join(threads[i], NULL);
+  }
+
+  for (int i = 0; i < rowsA; i++) {
+    for (int j = 0; j < columnsB; j++) {
+      printf("%d ", matProdArgs->matResult[i][j]);
+    }
+    printf("\n");
+  }
+
+  return 0;
+}
+```
+
+Usage:
+
+```bash
+gcc mat.c -o mat -pthread
+./mat
+30 36 42 
+66 81 96 
+102 126 150
 ```
