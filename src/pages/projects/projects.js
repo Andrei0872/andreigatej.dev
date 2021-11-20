@@ -66,13 +66,13 @@ export default function Projects(props) {
                   </div>
                 </div>
                 <div className="c-project__content">
-                  <p
+                  <div
                     dangerouslySetInnerHTML={{
                       __html: proj.html
                         .replace(/<(a|strong)/g, (_, match) => `<${match} class="${match === 'a' ? "is-link" : "is-important"}"`)
                     }}
                     className="c-project__desc-content"
-                  ></p>
+                  ></div>
                   <ImageSlider 
                     /* These are the image properties when taking a screenshot using ALT + PRINT SCREEN */
                     imageProps={{ width: 1848, height: 947 }}
