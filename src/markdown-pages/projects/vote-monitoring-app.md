@@ -5,6 +5,7 @@ order: 4
 date: 2020-12-27
 isSample: true
 slug: /projects#vote-monitoring-app
+images_dir: vote-monitoring
 ---
 
 This project is managed by the [Code for Romania](https://github.com/code4romania) organization.
