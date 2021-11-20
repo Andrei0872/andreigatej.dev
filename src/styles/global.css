@@ -45,6 +45,7 @@ html, body {
   color: var(--dark-blue-1);
   font-weight: bold;
   cursor: pointer;
+  padding-right: .1rem;
 }
 
 .is-important {
