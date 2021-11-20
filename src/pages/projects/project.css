@@ -35,7 +35,7 @@
   border: 3px solid var(--dark-blue-2);
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 .c-project__content .is-important {
@@ -45,6 +45,38 @@
 .c-project__desc-content {
   font-size: clamp(1.2rem, 0.5rem + 1vw, 1.5rem);
   padding: .7rem;
+}
+
+.c-project__desc-content :where(h2, h3, h4) {
+  color: var(--dark-blue-1);
+}
+
+.c-project__desc-content :where(h2, h3, h4) .is-link {
+  display: none;
+}
+
+.c-project__desc-content h2 {
+  margin: .5rem 0;
+}
+
+.c-project__desc-content h2 ~ *:not(h2, ul) {
+  padding-left: .3rem;
+}
+
+.c-project__desc-content h2 ~ h3 {
+  margin: .4rem 0;
+}
+
+.c-project__desc-content h2 ~ h3 ~ *:not(h3, ul) {
+  padding-left: .7rem;
+}
+
+.c-project__desc-content ul {
+  padding-left: 2.5rem;
+}
+
+.c-project__desc-content p + p {
+  margin-top: .7rem;
 }
 
 .is-link + br + .is-link {
