@@ -69,7 +69,7 @@ export default function Work() {
     myDevNotes: { nodes: sampleNotes },
   } = useStaticQuery(graphql`
     query FetchSamples {
-      blog: allMarkdownRemark(filter: {fileAbsolutePath: {regex: "/blog/"}, frontmatter: {isSample: {eq: true}}}) {
+      blog: allMarkdownRemark(filter: {fileAbsolutePath: {regex: "/blog/"}, frontmatter: {isSample: {eq: true}}}, sort: {order: DESC, fields: frontmatter___date}) {
         totalCount
         nodes {
           fileAbsolutePath
