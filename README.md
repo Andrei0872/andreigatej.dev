@@ -26,17 +26,24 @@ git --git-dir=/path/to/andrei-website/andrei-website.git --work-tree=/path/to/an
 npm install && npm run build
 ```
 
+One last step would be to make this file executable:
+
+```bash
+sudo chmod +x post-receive
+```
+
 3. Configure NGINX
 
 ```bash
 cd /etc/nginx/conf.d
 touch andreigatej.dev.conf && vim $_
 server {
+  listen 80;
+  listen [::]:80;
   server_name andreigatej.dev www.andreigatej.dev;
 
   root /var/www/andreigatej.dev/public;
   index index.html;
-  ...
 }
 ```
 
