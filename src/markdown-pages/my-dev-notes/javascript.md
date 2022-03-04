@@ -86,6 +86,7 @@ isArticleSample: true
 - [`Promise.race()`](#promiserace)
 - [`Promise.allSettled`](#promiseallsettled)
 - [Copying a `Map` object](#copying-a-map-object)
+- [`queueMicrotask`](#queuemicrotask)
 
 ## Concepts
 
@@ -1872,4 +1873,45 @@ m2 // Map(2) {1 => 'ONE', 2 => 'two'}
 
 // Notice that nothing changed her.
 m // Map(2) {1 => 'one', 2 => 'two'}
+```
+
+---
+
+## `queueMicrotask`
+
+<details>
+    <summary>References</summary>
+
+  * https://fergald.github.io/docs/explainers/queueMicrotask.html
+  * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide
+</details>
+
+`queueMicrotask` provides a way to schedule some work(i.e. a microtask) after the call stack becomes empty. It can also be used to ensure that tasks are performed in certain order, but asynchronously.
+
+```js
+queueMicrotask(
+    () => (
+        console.log('queueMicrotask'),
+        queueMicrotask(() => console.log('queueMicrotask2'))
+    )
+);
+
+Promise.resolve().then(
+    () => (
+        console.log('promise'),
+        queueMicrotask(() => console.log('queueMicrotask from resolved promise'))
+    )
+);
+
+console.log('console');
+```
+
+Output:
+
+```
+console
+queueMicrotask
+promise
+queueMicrotask2
+queueMicrotask from resolved promise
 ```
