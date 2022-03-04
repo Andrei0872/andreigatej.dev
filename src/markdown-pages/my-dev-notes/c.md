@@ -9,6 +9,7 @@ date: 2021-10-13
 - [Create a child process that will print the items in the current working directory](#create-a-child-process-that-will-print-the-items-in-the-current-working-directory)
 - [For some given numbers, print the Collatz sequence for each number using child processes](#for-some-given-numbers-print-the-collatz-sequence-for-each-number-using-child-processes)
 - [Using threads - matrix multiplication](#using-threads---matrix-multiplication)
+- [Using mutexes to allocate and deallocate resources](#using-mutexes-to-allocate-and-deallocate-resources)
 
 ## Custom implementation of `cp`
 
@@ -294,4 +295,104 @@ gcc mat.c -o mat -pthread
 30 36 42 
 66 81 96 
 102 126 150
+```
+
+---
+
+## Using mutexes to allocate and deallocate resources
+
+```cpp
+#include <stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+
+#define MAX_RESOURCES 5
+int available_resources = MAX_RESOURCES;
+
+pthread_mutex_t mtx;
+
+int decrease_count (int count) {
+  pthread_mutex_lock(&mtx);
+
+  if ( available_resources < count ) {
+    // printf("Can't get more resources - remaining: %d, requested: %d \n", available_resources, count);
+    pthread_mutex_unlock(&mtx);
+    return -1;
+  }
+  else
+    available_resources -= count ;
+
+  printf("Got %d resources, %d remaining\n", count, available_resources);
+  pthread_mutex_unlock(&mtx);
+  return 0;
+}
+
+int increase_count (int count) {
+  pthread_mutex_lock(&mtx);
+
+  available_resources += count;
+  printf("Released %d, %d remaning\n", count, available_resources);
+
+  pthread_mutex_unlock(&mtx);
+  return 0;
+}
+
+void* thread_fn (void* arg) {
+  int nrResRequired = *(int*) arg;
+
+  int successfullyAcquiredRes = decrease_count(nrResRequired) == 0;
+  if (!successfullyAcquiredRes) {
+    return NULL;
+  }
+
+  increase_count(nrResRequired);
+
+  return NULL;
+}
+
+int main () {
+  pthread_mutex_init(&mtx, NULL);
+
+  const int NR_THREADS = 10;
+  int threads_res_req[] = { 2, 3, 1, 3, 1, 2, 2, 1, 1, 4 };
+  pthread_t *threads = malloc(sizeof(pthread_t) * NR_THREADS);
+
+  for (int i = 0; i < NR_THREADS; i++) {
+    pthread_create(&threads[i], NULL, thread_fn, &threads_res_req[i]);
+  }
+
+  for (int i = 0; i < NR_THREADS; i++) {
+    pthread_join(threads[i], NULL);
+  }
+
+  pthread_mutex_destroy(&mtx);
+}
+```
+
+Usage:
+
+```bash
+gcc mtx.c -o mtx -pthread
+./mtx
+
+Got 2 resources, 3 remaining
+Released 2, 5 remaning
+Got 3 resources, 2 remaining
+Released 3, 5 remaning
+Got 3 resources, 2 remaining
+Released 3, 5 remaning
+Got 1 resources, 4 remaining
+Got 1 resources, 3 remaining
+Released 1, 4 remaning
+Got 2 resources, 2 remaining
+Released 2, 4 remaning
+Released 1, 5 remaning
+Got 2 resources, 3 remaining
+Released 2, 5 remaning
+Got 1 resources, 4 remaining
+Released 1, 5 remaning
+Got 1 resources, 4 remaining
+Released 1, 5 remaning
+Got 4 resources, 1 remaining
+Released 4, 5 remaning
 ```
