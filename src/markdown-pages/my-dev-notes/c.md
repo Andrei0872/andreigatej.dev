@@ -10,6 +10,7 @@ date: 2021-10-13
 - [For some given numbers, print the Collatz sequence for each number using child processes](#for-some-given-numbers-print-the-collatz-sequence-for-each-number-using-child-processes)
 - [Using threads - matrix multiplication](#using-threads---matrix-multiplication)
 - [Using mutexes to allocate and deallocate resources](#using-mutexes-to-allocate-and-deallocate-resources)
+- [Implementing a barrier](#implementing-a-barrier)
 
 ## Custom implementation of `cp`
 
@@ -395,4 +396,95 @@ Got 1 resources, 4 remaining
 Released 1, 5 remaning
 Got 4 resources, 1 remaining
 Released 4, 5 remaning
+```
+
+---
+
+## Implementing a barrier
+
+```cpp
+#include <stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <semaphore.h>
+
+#define NR_THREADS 5
+
+int barrierCount = 0;
+
+pthread_mutex_t mtx;
+sem_t sem;
+
+void barrier_point () {
+  int crtBarrierCount;
+  
+  pthread_mutex_lock(&mtx);
+  barrierCount++;
+  crtBarrierCount = barrierCount;
+  pthread_mutex_unlock(&mtx);
+  
+  if (crtBarrierCount < NR_THREADS) {
+    sem_wait(&sem);
+    return;
+  }
+
+  // `NR_THREADS - 1` because, if we reached this point,
+  // it means that this thread is the one which _releases the barrier_.
+  for (int i = 0; i < NR_THREADS - 1; i++) {
+    sem_post(&sem);
+  }
+}
+
+void *tfun(void *v) {
+  int tid = *(int *)v;
+
+  printf("%d reached the barrier \n", tid);
+  barrier_point();
+  printf("%d passed the barrier \n", tid);
+
+  return NULL;
+}
+
+int main () {
+  pthread_mutex_init(&mtx, NULL);
+  sem_init(&sem, 0, 0);
+
+  pthread_t* threads = malloc(sizeof(pthread_t) * NR_THREADS);
+
+  for (int i = 0; i < NR_THREADS; i++) {
+    // `int v = i` would not work *as expected*: we could be getting duplicate values in the output.
+    // From the stack perspective, `v` would would occupy the same space, so the threads would operate
+    // on the same part of memory.
+    // A solution would be to give each thread a *unique* part of memory to work on.
+    int* v = malloc(sizeof(i));
+    *v = i;
+
+    pthread_create(&threads[i] , NULL, tfun, v);
+  }
+
+  for (int i = 0; i < NR_THREADS; i++) {
+    pthread_join(threads[i], NULL);
+  }
+
+  pthread_mutex_destroy(&mtx);
+  sem_destroy(&sem);
+}
+```
+
+Usage:
+
+```bash
+gcc barrier.c -o b -pthread
+./b
+
+0 reached the barrier 
+4 reached the barrier 
+1 reached the barrier 
+3 reached the barrier 
+2 reached the barrier 
+0 passed the barrier 
+2 passed the barrier 
+4 passed the barrier 
+1 passed the barrier 
+3 passed the barrier 
 ```
