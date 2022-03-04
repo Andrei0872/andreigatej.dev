@@ -85,6 +85,7 @@ isArticleSample: true
 - [`Promise.any()`](#promiseany)
 - [`Promise.race()`](#promiserace)
 - [`Promise.allSettled`](#promiseallsettled)
+- [Copying a `Map` object](#copying-a-map-object)
 
 ## Concepts
 
@@ -1850,3 +1851,25 @@ Promise.race([fetchFn(1, 500, true), fetchFn(2, 700), fetchFn(3, 1000, true)])
 ## `Promise.allSettled`
 
 * like `Promise.all()`, with the exception that it returns an array of objects that describe the outcome of each promise(fulfilled or rejected)
+
+---
+
+## Copying a `Map` object
+
+The `Map`'s constructor can [take in an **iterable**](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/Map#parameters). Therefore, since `Map` is also an iterable structure, we can create a copy of a `Map` by providing the existing instance to the `Map` constructor.
+
+```js
+m = new Map([[1, 'one'], [2, 'two']]) // Map(2) {1 => 'one', 2 => 'two'}
+
+// The `Map` object is iterable.
+[...m] //  [[1, 'one'], [2, 'two']]
+
+m2 = new Map(m) // Map(2) {1 => 'one', 2 => 'two'}
+
+m2.set(1, 'ONE')
+
+m2 // Map(2) {1 => 'ONE', 2 => 'two'}
+
+// Notice that nothing changed her.
+m // Map(2) {1 => 'one', 2 => 'two'}
+```
