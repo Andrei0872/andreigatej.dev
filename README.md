@@ -27,6 +27,10 @@ cd /path/to/andrei-website/app
 
 git --git-dir=/path/to/andrei-website/andrei-website.git --work-tree=/path/to/andrei-website/app checkout master -f
 
+# In case you're using `nvm`, you'll have to explicitly define the
+# path where `npm` can be found.
+export PATH=$PATH:/home/$USER/.nvm/versions/node/v16.14.0/bin
+
 npm install && npm run build
 ```
 
