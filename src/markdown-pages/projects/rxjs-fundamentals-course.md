@@ -2,6 +2,7 @@
 title: "RxJS Fundamentals Course"
 tags: ["rxjs"]
 order: 1
+isSample: true
 date: 2021-08-30
 slug: /projects#rxjs-fundamentals-course
 ---
