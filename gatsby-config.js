@@ -45,13 +45,6 @@ module.exports = {
       },
     },
     {
-      resolve: `gatsby-source-filesystem`,
-      options: {
-        name: `my-dev-notes`,
-        path: `${__dirname}/src/markdown-pages/my-dev-notes/`,
-      },
-    },
-    {
       resolve: `gatsby-transformer-remark`,
       options: {
         plugins: [

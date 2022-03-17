@@ -5,7 +5,7 @@
       "s s y y"
       "b b b b"
       "b b b b"
-      "p p n n";
+      "p p p p";
   max-width: var(--normal-section-width);
   margin: 0 auto;
   gap: 3rem 1rem;
@@ -17,7 +17,7 @@
 
 @media all and (max-width: 726px) {
   .c-work {
-    grid-template-areas: "t" "s" "y" "b" "p" "n";
+    grid-template-areas: "t" "s" "y" "b" "p";
   }
 }
 
@@ -35,10 +35,6 @@
 
 .is-blog {
   grid-area: b;
-}
-
-.is-notes {
-  grid-area: n;
 }
 
 .c-work__title {

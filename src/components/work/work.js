@@ -47,17 +47,6 @@ const sections = [
     buttonText: 'More articles',
     customClasses: ['is-blog']
   },
-  {
-    name: <span>My Dev notes</span>,
-    desc: <p>
-      I like to keep track of my learning journey. Considering the abundance of great material that can be found of the Internet, it's difficult to keep up with everything.
-      Here I post things that are worth writing down, from my perspective.
-    </p>,
-    samples: [],
-    clickHandler: () => navigate('/my-dev-notes'),
-    buttonText: 'More Dev notes',
-    customClasses: ['is-notes']
-  },
 ];
 
 const navigateToArticleOrBlog = ({ slug, publication }) => publication ? window.open(publication) : navigate(slug);
@@ -66,7 +55,6 @@ export default function Work() {
   const { 
     projects: { nodes: sampleProjects }, 
     blog: { nodes: sampleArticles },
-    myDevNotes: { nodes: sampleNotes },
   } = useStaticQuery(graphql`
     query FetchSamples {
       blog: allMarkdownRemark(filter: {fileAbsolutePath: {regex: "/blog/"}, frontmatter: {isSample: {eq: true}}}, sort: {order: DESC, fields: frontmatter___date}) {
@@ -92,25 +80,11 @@ export default function Work() {
           }
         }
       }
-
-      myDevNotes: allMarkdownRemark(filter: {fileAbsolutePath: {regex: "/my-dev-notes/"}, frontmatter: {isArticleSample: {eq: true}}}) {
-        totalCount
-        nodes {
-          fileAbsolutePath
-          frontmatter {
-            title
-            tags
-            slug
-          }
-          html
-        }
-      }
     }
   `);
 
   sections[2].samples = sampleProjects;
   sections[3].samples = sampleArticles;
-  sections[4].samples = sampleNotes;
   
   return (
     <section id="work" className="c-work">

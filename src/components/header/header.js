@@ -25,7 +25,7 @@ const Header = ({ siteTitle, links }) => {
       // When clicking _refresh_ while being on a secondary work page(e.g blog, projects).
       : pathname.slice(1, nextSlashIdx);
     if (
-      ['projects', 'blog', 'my-dev-notes'].find(
+      ['projects', 'blog'].find(
         navItem => path === navItem
       )
     ) {
