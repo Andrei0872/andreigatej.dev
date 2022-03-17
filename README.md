@@ -1,5 +1,9 @@
 # andreigatej.dev
 
+- [andreigatej.dev](#andreigatejdev)
+  - [Deploying with one command](#deploying-with-one-command)
+  - [Setting up the SSH keys](#setting-up-the-ssh-keys)
+
 ## Deploying with one command
 
 1. Somewhere on a VPS, I create a bare **git repo**
@@ -73,4 +77,29 @@ git push
 
 # push to the bare repo - deploy
 git push prod master
+```
+
+---
+
+## Setting up the SSH keys
+
+
+1. Create a pair of keys(public and private)
+
+```bash
+ssh-keygen -b 4096 -t rsa
+```
+
+2. Add the public key to the remote host
+
+```bash
+# Optionally, you can use `ssh-copy-id -n username@andreigatej.dev`
+# to just print the key what would be added to the remote host.
+ssh-copy-id username@andreigatej.dev
+```
+
+3. Try logging into the remote machine
+
+```bash
+ssh username@andreigatej.dev
 ```
