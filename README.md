@@ -4,7 +4,7 @@
 
 1. Somewhere on a VPS, I create a bare **git repo**
 
-```bash
+```bash 
 git init --bare
 ```
 
