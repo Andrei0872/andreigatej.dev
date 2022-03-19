@@ -21,7 +21,9 @@ export default function Template({ data, }) {
 
   return (
     <Layout>
-      <div className="c-blog-post" onClick={checkBackToTop}>
+      <button onClick={checkBackToTop} className="back-to-top" data-src="back-to-top">Back to top</button>
+
+      <div className="c-blog-post">
         <h1 ref={ref} className="c-blog-post__title">{frontmatter.title}</h1>
 
         <Link className="h-base-link c-blog-post__back" to={parentPath}>Back to {frontmatter.parent || 'Blog'}</Link>
@@ -39,7 +41,7 @@ export default function Template({ data, }) {
               // There RegExps are to extract the actual id from the modifications that `prismjs` does.
               .replace(/<a[^>]+?href="#([^>]+)?code-classlanguage-text([^>]+?)code([^>"]{0,})"/g, (_, beforeFragment = '', realFragment, afterFragment = '') => `<a href="#${beforeFragment}${realFragment}${afterFragment}"`)
               .replace(/<(h[1-6])[^>]+?id="([^>]+)?code-classlanguage-text([^>]+?)code([^>"]{0,})"/g, (_, headingTag, beforeId = '', readId, afterId = '') => `<${headingTag} id="${beforeId}${readId}${afterId}"`)
-              .replace(/<h2[^>]{0,}>/g, fullMatch => `${fullMatch}<button data-src="back-to-top">Back to top</button>`)
+              // .replace(/<h2[^>]{0,}>/g, fullMatch => `${fullMatch}<button data-src="back-to-top">Back to top</button>`)
           }}
         ></div>
       </div>

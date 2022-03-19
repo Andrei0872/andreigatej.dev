@@ -105,3 +105,18 @@ ul, ol {
   text-decoration: underline;
   text-decoration-color: var(--dark-blue-1);
 }
+
+.back-to-top {
+  position: fixed;
+  bottom: 3vw;
+  right: 6vw;
+  z-index: 1;
+  padding: 0.6rem;
+  background-color: var(--dark-yellow);
+  color: var(--dark-blue-2);
+  font-weight: bold;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 0.2rem;
+}
