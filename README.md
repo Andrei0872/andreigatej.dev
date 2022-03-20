@@ -6,13 +6,18 @@
 
 ## Deploying with one command
 
-1. Somewhere on a VPS, I create a bare **git repo**
+1. Somewhere on a VPS, create a bare **git repo**
 
 ```bash
+cd apps
+mkdir andreigatej.dev && cd $_
+mkdir repo worktree
+cd repo
+
 git init --bare
 ```
 
-2. Create a post-receive hook
+1. Create a post-receive hook
 
 ```bash
 cd hooks/ && vim post-receive
@@ -23,9 +28,9 @@ Which would have this content
 ```bash
 #!/bin/bash
 
-cd /path/to/andrei-website/app
+cd /path/to/andrei-website/worktree
 
-git --git-dir=/path/to/andrei-website/andrei-website.git --work-tree=/path/to/andrei-website/app checkout master -f
+git --git-dir=/path/to/andrei-website/repo --work-tree=/path/to/andrei-website/worktree checkout master -f
 
 # In case you're using `nvm`, you'll have to explicitly define the
 # path where `npm` can be found.
@@ -45,6 +50,9 @@ sudo chmod +x post-receive
 ```bash
 cd /etc/nginx/conf.d
 touch andreigatej.dev.conf && vim $_
+```
+
+```conf
 server {
   listen 80;
   listen [::]:80;
